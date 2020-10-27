@@ -1,8 +1,8 @@
 {
-    "nomenclature": {
-        "name": "[[app_name]]",
-        "verboseName": "[[app_display_name]]"
-    },
-    "baseUrl": "/[[app_name]]",
-    "source": "[[app_name]]/src/index"
+  "nomenclature": {
+    "name": "people_search",
+    "verboseName": "People Search"
+  },
+  "baseUrl": "/people_search",
+  "source": "people_search/src/index"
 }
