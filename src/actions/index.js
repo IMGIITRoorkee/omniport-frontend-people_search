@@ -1,24 +1,54 @@
 import axios from 'axios'
 import {
-  urlResidenceOptions,
   urlStudentQuery,
   urlFacultyQuery,
-  urlInterestQuery
+  urlInterestQuery,
+  urlFacultyProfile,
+  urlStudentProfile
 } from '../urls'
 
-export const setOptions = (successCallback, errCallback) => {
+export const studentOptions = (successCallback, errCallback) => {
   return dispatch => {
     axios
-      .options(urlResidenceOptions())
+      .get(urlStudentQuery())
       .then(res => {
         dispatch({
-          type: `SET_OPTIONS`,
-          payload: {
-            optionsLoaded: true,
-            options: res.data.actions.PUT,
-            dataLoaded: false,
-            data: {}
-          }
+          type: `STUDENT_OPTIONS`,
+          payload: res.data
+        })
+        successCallback(res)
+      })
+      .catch(err => {
+        errCallback(err)
+      })
+  }
+}
+export const facultyOptions = (successCallback, errCallback) => {
+  return dispatch => {
+    axios
+      .get(urlFacultyQuery())
+      .then(res => {
+        dispatch({
+          type: `FACULTY_OPTIONS`,
+          payload: res.data
+        })
+        successCallback(res)
+      })
+      .catch(err => {
+        errCallback(err)
+      })
+  }
+}
+export const interestSearch = (query, successCallback, errCallback) => {
+  return dispatch => {
+    axios
+      .get(urlInterestQuery(), {
+        params: { query }
+      })
+      .then(res => {
+        dispatch({
+          type: `INTEREST_SEARCH`,
+          payload: res.data
         })
         successCallback(res)
       })
@@ -28,16 +58,14 @@ export const setOptions = (successCallback, errCallback) => {
   }
 }
 
-export const studentSearch = (query, successCallback, errCallback) => {
+export const facultyProfile = (id, successCallback, errCallback) => {
   return dispatch => {
     axios
-      .get(urlStudentQuery(), {
-        params: { query }
-      })
+      .get(urlFacultyProfile(id))
       .then(res => {
         dispatch({
-          type: `STUDENT_SEARCH`,
-          payload: res.data
+          type: `FACULTY_PROFILE`,
+          payload: res
         })
         successCallback(res)
       })
@@ -46,16 +74,14 @@ export const studentSearch = (query, successCallback, errCallback) => {
       })
   }
 }
-export const facultySearch = (query, successCallback, errCallback) => {
+export const studentProfile = (id, successCallback, errCallback) => {
   return dispatch => {
     axios
-      .get(urlFacultyQuery(), {
-        params: { query }
-      })
+      .get(urlStudentProfile(id))
       .then(res => {
         dispatch({
-          type: `FACULTY_SEARCH`,
-          payload: res.data
+          type: `STUDENT_PROFILE`,
+          payload: res
         })
         successCallback(res)
       })

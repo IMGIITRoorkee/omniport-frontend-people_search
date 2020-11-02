@@ -35,12 +35,12 @@ class App extends Component {
               <Switch>
                 <Route
                   exact
-                  path={appBaseUrl()}
+                  path="/people_search"
                   component={Search}
                 />
                 <Route
                   exact
-                  path={urlProfile()}
+                  path="/people_search/profile/:id"
                   component={Profile}
                 />
                 <Route render={props => <Redirect to='/404' />} />

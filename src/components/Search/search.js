@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 import { Icon, Menu, Table, Container, Button, Dropdown, Card, Segment, Grid } from 'semantic-ui-react'
 
 import blocks from '../../css/app.css'
-import { setOptions } from '../../actions/index'
-import { urlStudentQuery, urlFacultyQuery } from '../../urls'
+import { studentOptions, facultyOptions } from '../../actions/index'
+import { urlStudentQuery, urlFacultyQuery, urlInterestQuery } from '../../urls'
 
 
 class Search extends Component {
@@ -14,6 +14,10 @@ class Search extends Component {
     studentresults: [],
     facultyresults: [],
     residenceOptions: [],
+    yearOptions: [],
+    branchOptions: [],
+    designationOptions: [],
+    departmentOptions: [],
     hide: false,
     visible: false,
     student: true,
@@ -21,20 +25,56 @@ class Search extends Component {
     activeItem: 'all'
   }
   componentDidMount() {
-    this.props.SetOptions(this.successCallback, this.errorCallback)
+    this.props.StudentOptions(this.successStudentOptionsCallback, this.errorCallback)
+    this.props.FacultyOptions(this.successFacultyOptionsCallback, this.errorCallback)
   }
 
-  successCallback = res => {
+  successStudentOptionsCallback = res => {
     const { data } = res
-    this.setState({ residenceOptions: data.actions.PUT.residence.choices.map(({ displayName }) => displayName) })
-    console.log(this.state.residenceOptions)
-  }
+    let residence = [...new Set(data.results.map(({ bhawanInformation }) => bhawanInformation).filter(x => x))]
+    let year = [...new Set(data.results.map(({ currentYear }) => currentYear).filter(x => x))]
+    let branch = [...new Set(data.results.map(({ branchName }) => branchName).filter(x => x))]
+    var residenceList = []
+    var yearList = []
+    var branchList = []
+    residence.forEach(function (element) {
+      residenceList.push({ key: element, text: element, value: element })
+    })
+    year.forEach(function (element) {
+      yearList.push({ key: element, text: element, value: element })
+    })
+    branch.forEach(function (element) {
+      branchList.push({ key: element, text: element, value: element })
+    })
 
-  getStudentInfo = () => {
+    this.setState({
+      yearOptions: [...new Set(yearList)],
+      residenceOptions: [...new Set(residenceList)],
+      branchOptions: [...new Set(branchList)]
+    })
+  }
+  successFacultyOptionsCallback = res => {
+    const { data } = res
+    let designation = data.results.map(({ designation }) => designation).filter(x => x)
+    let departments = data.results.map(({ department }) => department).filter(x => x).map(({ name }) => name)
+    var designationList = []
+    var departmentsList = []
+    designation.forEach(function (element) {
+      designationList.push({ key: element, text: element, value: element })
+    })
+    departments.forEach(function (element) {
+      departmentsList.push({ key: element, text: element, value: element })
+    })
+    this.setState({
+      designationOptions: [...new Set(designationList)],
+      departmentOptions: [...new Set(departmentsList)]
+    })
+  }
+  studentSearch = () => {
     const { query } = this.state;
     axios({
       method: 'get',
-      url: urlStudentQuery,
+      url: urlStudentQuery(),
       params: {
         query
       }
@@ -45,17 +85,31 @@ class Search extends Component {
     })
   }
 
-  getFacultyInfo = () => {
+  facultySearch = () => {
     const { query } = this.state;
     axios({
       method: 'get',
-      url: urlFacultyQuery,
+      url: urlFacultyQuery(),
       params: {
         query
       }
     }).then(response => {
       this.setState({
         facultyresults: response.data.results
+      })
+    })
+  }
+  interestSearch = () => {
+    const { query } = this.state;
+    axios({
+      method: 'get',
+      url: urlInterestQuery(),
+      params: {
+        query
+      }
+    }).then(response => {
+      this.setState({
+        studentresults: this.state.studentresults.concat(response.data.results)
       })
     })
   }
@@ -74,28 +128,26 @@ class Search extends Component {
         this.hide;
       } else {
         if (this.state.query && this.state.query.length > 3) {
-          console.log(this.state.query)
-          console.log(this.state.studentresults)
-          console.log(this.state.facultyresults)
-          console.log(this.state.hide)
-          console.log(this.state.visible)
           this.hide()
-          this.getStudentInfo()
-          this.getFacultyInfo()
+          this.studentSearch()
+          this.facultySearch()
+          this.interestSearch()
         } else if (!this.state.query) {
         }
       }
     })
   }
   handleSubmit = () => {
-    console.log(this.state.activeItem)
-    if (this.state.activeItem == 'all' || this.state.activeItem == 'student') {
-      this.hide()
-      this.getStudentInfo()
-    }
-    if (this.state.activeItem == 'all' || this.state.activeItem == 'faculty') {
-      this.hide()
-      this.getFacultyInfo()
+    if (this.state.query.length > 0) {
+      if (this.state.activeItem == 'all' || this.state.activeItem == 'student') {
+        this.hide()
+        this.studentSearch()
+        this.interestSearch()
+      }
+      if (this.state.activeItem == 'all' || this.state.activeItem == 'faculty') {
+        this.hide()
+        this.facultySearch()
+      }
     }
   }
 
@@ -151,12 +203,12 @@ class Search extends Component {
           {this.state.studentresults.map(x =>
             <Segment styleName='blocks.result-segment'>
               <Grid columns='7'>
-                <Grid.Column styleName='blocks.result-item' style={{ color: '#6a6cff' }}>{x.name}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item' style={{ color: '#6a6cff' }}>{x.fullName}</Grid.Column>
                 <Grid.Column styleName='blocks.result-item'>{x.enrolmentNumber}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item'>{x.branch.code}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item'>{x.branchName}</Grid.Column>
                 <Grid.Column styleName='blocks.result-item'>{x.currentYear}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item'>{x.primary_email_id}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item'>{x.bhawan}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item'>{x.emailAddress}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item'>{x.bhawanInformation}</Grid.Column>
               </Grid>
             </Segment>
           )}
@@ -188,48 +240,7 @@ class Search extends Component {
     this.setState({ dropIndex: !this.state.dropIndex })
   }
   render() {
-    const options = [
-      {
-        key: '1',
-        text: '1st',
-        value: '1',
-      },
-      {
-        key: '2',
-        text: '2nd',
-        value: '2',
-      },
-      {
-        key: '3',
-        text: '3rd',
-        value: '3',
-      },
-      {
-        key: '4',
-        text: '4th',
-        value: '4',
-      },
-      {
-        key: '5',
-        text: '5th',
-        value: '5',
-      },
-      {
-        key: '6',
-        text: '6th',
-        value: '6',
-      },
-      {
-        key: '7',
-        text: '7th',
-        value: '7',
-      },
-      {
-        key: '8',
-        text: '8th',
-        value: '8',
-      },
-    ]
+    const { residenceOptions, yearOptions, branchOptions, designationOptions, departmentOptions } = this.state
     return (
       <Container styleName='blocks.content-div'>
         <center styleName='blocks.center'>
@@ -263,7 +274,7 @@ class Search extends Component {
                       <Grid.Column floated='left'>
                         <Dropdown
                           placeholder="Year"
-                          options={options}
+                          options={yearOptions}
                           selection
                           search
                           fluid
@@ -271,8 +282,8 @@ class Search extends Component {
                       </Grid.Column>
                       <Grid.Column floated='left'>
                         <Dropdown
-                          placeholder="Department"
-                          options={options}
+                          placeholder="Branch"
+                          options={branchOptions}
                           selection
                           search
                           fluid
@@ -281,7 +292,7 @@ class Search extends Component {
                       <Grid.Column floated='left'>
                         <Dropdown
                           placeholder="Bhawan"
-                          options={this.state.residenceOptions}
+                          options={residenceOptions}
                           selection
                           search
                           fluid
@@ -297,7 +308,7 @@ class Search extends Component {
                       <Grid.Column floated='left'>
                         <Dropdown
                           placeholder="Designation"
-                          options={options}
+                          options={designationOptions}
                           selection
                           search
                           fluid
@@ -306,7 +317,7 @@ class Search extends Component {
                       <Grid.Column floated='left'>
                         <Dropdown
                           placeholder="Department"
-                          options={options}
+                          options={departmentOptions}
                           selection
                           search
                           fluid
@@ -330,13 +341,17 @@ class Search extends Component {
 }
 const mapStateToProps = state => {
   return {
-    setOptions: state.setOptions,
+    studentOptions: state.studentOptions,
+    facultyOptions: state.facultyOptions
   }
 }
 const mapDispatchToProps = dispatch => {
   return {
-    SetOptions: (successCallback, errCallback) => {
-      dispatch(setOptions(successCallback, errCallback))
+    StudentOptions: (successCallback, errCallback) => {
+      dispatch(studentOptions(successCallback, errCallback))
+    },
+    FacultyOptions: (successCallback, errCallback) => {
+      dispatch(facultyOptions(successCallback, errCallback))
     }
   }
 }

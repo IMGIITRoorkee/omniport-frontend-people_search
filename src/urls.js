@@ -8,10 +8,6 @@ export const urlProfile = () => {
   return `${appBaseUrl()}/profile`
 }
 
-export const urlResidenceOptions = () => {
-  return `/api/settings/residential_information/`
-}
-
 export const urlStudentQuery = () => {
   return `/api/people_search/student_search/`
 }
@@ -20,4 +16,10 @@ export const urlFacultyQuery = () => {
 }
 export const urlInterestQuery = () => {
   return `/api/people_search/interest_search/`
+}
+export const urlFacultyProfile = (id) => {
+  return `${urlFacultyQuery()}/${id}`
+}
+export const urlStudentProfile = (id) => {
+  return `${urlStudentQuery()}/${id}`
 }
