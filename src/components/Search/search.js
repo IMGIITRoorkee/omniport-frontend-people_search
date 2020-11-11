@@ -1,16 +1,21 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
-import { Icon, Menu, Table, Container, Button, Dropdown, Card, Segment, Grid } from 'semantic-ui-react'
+import { Icon, Menu, Container, Button, Dropdown, Segment, Grid } from 'semantic-ui-react'
+
+import { studentOptions, facultyOptions } from '../../actions/index'
+import { urlStudentQuery, urlFacultyQuery, urlInterestQuery, urlProfile } from '../../urls'
 
 import blocks from '../../css/app.css'
-import { studentOptions, facultyOptions } from '../../actions/index'
-import { urlStudentQuery, urlFacultyQuery, urlInterestQuery } from '../../urls'
-
 
 class Search extends Component {
   state = {
     query: '',
+    branch_param: '',
+    current_year_param: '',
+    bhawan_param: '',
+    designation_param: '',
+    department_param: '',
     studentresults: [],
     facultyresults: [],
     residenceOptions: [],
@@ -71,12 +76,15 @@ class Search extends Component {
     })
   }
   studentSearch = () => {
-    const { query } = this.state;
+    const { query, branch_param, current_year_param, bhawan_param } = this.state;
     axios({
       method: 'get',
       url: urlStudentQuery(),
       params: {
-        query
+        query,
+        branch_param,
+        current_year_param,
+        bhawan_param
       }
     }).then(response => {
       this.setState({
@@ -86,12 +94,14 @@ class Search extends Component {
   }
 
   facultySearch = () => {
-    const { query } = this.state;
+    const { query, designation_param, department_param } = this.state;
     axios({
       method: 'get',
       url: urlFacultyQuery(),
       params: {
-        query
+        query,
+        designation_param,
+        department_param
       }
     }).then(response => {
       this.setState({
@@ -194,21 +204,23 @@ class Search extends Component {
       </div>)
 
   }
-
+  profileDirect = (id) => {
+    this.props.history.push({ pathname: `${urlProfile()}${id}` })
+    console.log(`${urlProfile()}${id}`)
+  }
   studentList = () => {
     if (this.state.hide === true && (this.state.activeItem === 'student' || this.state.activeItem === 'all')) {
       return (
-
         <div>
           {this.state.studentresults.map(x =>
             <Segment styleName='blocks.result-segment'>
               <Grid columns='7'>
-                <Grid.Column styleName='blocks.result-item' style={{ color: '#6a6cff' }}>{x.fullName}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item'>{x.enrolmentNumber}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item'>{x.branchName}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item'>{x.currentYear}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item'>{x.emailAddress}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item'>{x.bhawanInformation}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item' width={3} style={{ color: '#6a6cff' }} onClick={(e) => this.profileDirect(x.enrolmentNumber)}>{x.fullName}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item' width={2}>{x.enrolmentNumber}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item' width={1}>{x.branchName}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item' width={3}>{x.emailAddress}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item' width={3}>{x.bhawanInformation}</Grid.Column>
               </Grid>
             </Segment>
           )}
@@ -225,7 +237,7 @@ class Search extends Component {
           {this.state.facultyresults.map(x =>
             <Segment styleName='blocks.result-segment'>
               <Grid columns='4'>
-                <Grid.Column styleName='blocks.result-item' style={{ color: '#6a6cff' }}>{x.name}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item' style={{ color: '#6a6cff' }} onClick={(e) => this.profileDirect(x.employeeId)}>{x.name}</Grid.Column>
                 <Grid.Column styleName='blocks.result-item'>{x.department.code}</Grid.Column>
                 <Grid.Column styleName='blocks.result-item'>{x.designation}</Grid.Column>
               </Grid>
@@ -239,8 +251,11 @@ class Search extends Component {
   handleDrop = () => {
     this.setState({ dropIndex: !this.state.dropIndex })
   }
+  dropdownChange = (name, value) => {
+    this.setState({ [name]: value })
+  }
   render() {
-    const { residenceOptions, yearOptions, branchOptions, designationOptions, departmentOptions } = this.state
+    const { residenceOptions, yearOptions, branchOptions, designationOptions, departmentOptions, current_year_param, branch_param, bhawan_param, designation_param, department_param } = this.state
     return (
       <Container styleName='blocks.content-div'>
         <center styleName='blocks.center'>
@@ -256,9 +271,6 @@ class Search extends Component {
                 ref={input => this.search = input}
                 onChange={this.handleInputChange}
               />
-              <Button icon onClick={this.handleSubmit} styleName='blocks.icon-button' >
-                <Icon name='search' />
-              </Button>
             </form>
 
             <div styleName='blocks.advanced' onClick={this.handleDrop}>
@@ -273,29 +285,41 @@ class Search extends Component {
                     <Grid columns={3}>
                       <Grid.Column floated='left'>
                         <Dropdown
+                          name='current_year_param'
+                          onChange={(e, { name, value }) => this.dropdownChange(name, value)}
                           placeholder="Year"
                           options={yearOptions}
                           selection
+                          clearable
+                          scrolling
                           search
-                          fluid
+                          value={current_year_param}
                         />
                       </Grid.Column>
                       <Grid.Column floated='left'>
                         <Dropdown
+                          name='branch_param'
+                          onChange={(e, { name, value }) => this.dropdownChange(name, value)}
                           placeholder="Branch"
                           options={branchOptions}
                           selection
+                          clearable
+                          scrolling
                           search
-                          fluid
+                          value={branch_param}
                         />
                       </Grid.Column>
                       <Grid.Column floated='left'>
                         <Dropdown
+                          name='bhawan_param'
+                          onChange={(e, { name, value }) => this.dropdownChange(name, value)}
                           placeholder="Bhawan"
                           options={residenceOptions}
                           selection
+                          clearable
+                          scrolling
                           search
-                          fluid
+                          value={bhawan_param}
                         />
                       </Grid.Column>
                     </Grid>
@@ -307,20 +331,28 @@ class Search extends Component {
                     <Grid columns={2}>
                       <Grid.Column floated='left'>
                         <Dropdown
+                          name='designation_param'
+                          onChange={(e, { name, value }) => this.dropdownChange(name, value)}
                           placeholder="Designation"
                           options={designationOptions}
                           selection
+                          clearable
+                          scrolling
                           search
-                          fluid
+                          value={designation_param}
                         />
                       </Grid.Column>
                       <Grid.Column floated='left'>
                         <Dropdown
+                          name='department_param'
+                          onChange={(e, { name, value }) => this.dropdownChange(name, value)}
                           placeholder="Department"
                           options={departmentOptions}
                           selection
+                          clearable
+                          scrolling
                           search
-                          fluid
+                          value={department_param}
                         />
                       </Grid.Column>
                     </Grid>
@@ -331,6 +363,11 @@ class Search extends Component {
 
             ) : <></>
             }
+            <div styleName='blocks.menu'>
+              <Button onClick={this.handleSubmit} styleName='blocks.icon-button' style={{ backgroundColor: '#6a6cff', color: '#ffffff' }}>
+                Search
+              </Button>
+            </div>
             <div> {this.studentList()} </div>
             <div> {this.facultyList()} </div>
           </div >

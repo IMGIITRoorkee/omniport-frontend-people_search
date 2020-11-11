@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { getCookie } from 'formula_one'
+import { toast } from 'react-semantic-toasts'
 import {
   urlStudentQuery,
   urlFacultyQuery,
@@ -87,6 +89,42 @@ export const studentProfile = (id, successCallback, errCallback) => {
       })
       .catch(err => {
         errCallback(err)
+      })
+  }
+}
+
+export const setVisibility = (id, formData, successCallback, errCallback) => {
+  let headers = {
+    'X-CSRFToken': getCookie('csrftoken')
+  }
+  return dispatch => {
+    axios
+      .put(urlStudentProfile(`${id}/`), formData, { headers: headers })
+      .then(res => {
+        dispatch({
+          type: `SET_VISIBILITY`,
+          payload: res
+        })
+        successCallback(res)
+        toast({
+          type: 'success',
+          title: 'Success',
+          description: 'Visibility changes updated',
+          animation: 'fade up',
+          icon: 'check',
+          time: 3000
+        })
+      })
+      .catch(err => {
+        errCallback(err)
+        toast({
+          type: 'error',
+          title: 'Error',
+          description: 'Failed to update',
+          animation: 'fade up',
+          icon: 'frown up',
+          time: 3000
+        })
       })
   }
 }

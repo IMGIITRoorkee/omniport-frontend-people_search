@@ -188,19 +188,21 @@
 }
 
 .icon-button {
-  color: #444444;
-  background-color: #444444;
+  height: 3.5rem;
+  width: 9.5rem;
+  float: right;
 }
 
 .info-box {
   background-color: #ffffff;
   height: 25.5rem;
+  width: 15rem;
   padding: 2rem;
 }
 
 .info-list {
   /* background-color: #ffffff; */
-  /* height: 25.5rem; */
+  /* height: 11rem; */
   /* width: 40%; */
   padding: 2rem;
 }

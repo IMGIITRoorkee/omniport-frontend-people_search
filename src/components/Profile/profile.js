@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 import { connect } from 'react-redux'
-import { Icon, Menu, Table, List, Button, Dropdown, Divider, Card, Segment, Grid, Image, Container } from 'semantic-ui-react'
+import { Icon, Menu, Message, List, Button, Form, Rail, Modal, Card, Checkbox, Grid, Image, Container } from 'semantic-ui-react'
+
 import { DefaultDP } from 'formula_one'
-import { facultyProfile, studentProfile } from '../../actions/index'
+import { facultyProfile, studentProfile, setVisibility } from '../../actions/index'
+
 import blocks from '../../css/app.css'
 
 
@@ -11,7 +12,12 @@ class Profile extends Component {
   state = {
     facultyInfo: [],
     studentInfo: [],
-    error: false
+    emailVisibility: '',
+    mobileNumberVisibility: '',
+    roomNumberVisibility: '',
+    bhawanVisibility: '',
+    error: false,
+    open: false
   }
   componentDidMount() {
     this.props.FacultyProfile(this.props.match.params.id, this.successFacultyCallback, this.errFacultyCallback)
@@ -24,10 +30,131 @@ class Profile extends Component {
     this.setState({ error: true })
   }
   successStudentCallback = res => {
-    this.setState({ studentInfo: res.data })
+    this.setState({
+      studentInfo: res.data,
+      emailVisibility: res.data.primaryEmailId,
+      mobileNumberVisibility: res.data.primaryMobileNo,
+      roomNumberVisibility: res.data.roomNo,
+      bhawanVisibility: res.data.bhawan
+    })
   }
   errStudentCallback = err => {
     this.setState({ error: true })
+  }
+  showModal = () => {
+    this.setState({ open: true })
+  }
+  visibilityModal = (name) => {
+    return (
+      <List.Content floated='right'>
+        <Modal
+          trigger={<Icon link name='users' onClick={this.showModal} />}
+          size='tiny'
+          closeIcon
+          open={this.state.open}
+        >
+          <Modal.Header><h3 style={{ color: '#6a6cff' }}>Show To</h3></Modal.Header>
+          <Modal.Content>
+            <Form>
+              <Form.Field>
+                <Checkbox
+                  label='All'
+                  name={name}
+                  value='all'
+                  checked={this.state[name] === 'all'}
+                  onChange={(e, { name, value }) => this.handleChange(name, value)}
+                />
+              </Form.Field>
+              <Form.Field>
+                <Checkbox
+                  label='Only Students'
+                  name={name}
+                  value='students'
+                  checked={this.state[name] === 'students'}
+                  onChange={(e, { name, value }) => this.handleChange(name, value)}
+                />
+              </Form.Field>
+              <Form.Field>
+                <Checkbox
+                  label='Only Faculty'
+                  name={name}
+                  value='faculty'
+                  checked={this.state[name] === 'faculty'}
+                  onChange={(e, { name, value }) => this.handleChange(name, value)}
+                />
+              </Form.Field>
+              <Form.Field>
+                <Checkbox
+                  label='Only Branch'
+                  name={name}
+                  value='branch'
+                  checked={this.state[name] === 'branch'}
+                  onChange={(e, { name, value }) => this.handleChange(name, value)}
+                />
+              </Form.Field>
+              <Form.Field>
+                <Checkbox
+                  label='Only Bhawan'
+                  name={name}
+                  value='bhawan'
+                  checked={this.state[name] === 'bhawan'}
+                  onChange={(e, { name, value }) => this.handleChange(name, value)}
+                />
+              </Form.Field>
+            </Form>
+          </Modal.Content>
+          <Modal.Actions>
+
+            <Button
+              content='Save'
+              onClick={this.handleSubmit}
+              style={{ backgroundColor: '#6a6cff', color: '#ffffff' }} />
+          </Modal.Actions>
+        </Modal>
+
+      </List.Content>
+    )
+  }
+  handleChange = (name, value) => {
+    this.setState({ [name]: value })
+  }
+  handleSubmit = () => {
+    const {
+      studentInfo,
+      emailVisibility,
+      mobileNumberVisibility,
+      roomNumberVisibility,
+      bhawanVisibility } = this.state;
+    const formData = new FormData()
+    formData.append(
+      'student',
+      studentInfo.student
+    )
+    formData.append(
+      'primary_email_id',
+      emailVisibility
+    )
+    formData.append(
+      'primary_mobile_no',
+      mobileNumberVisibility
+    )
+    formData.append(
+      'room_no',
+      roomNumberVisibility
+    )
+    formData.append(
+      'bhawan',
+      bhawanVisibility
+    )
+    this.props.SetVisibility(
+      this.props.match.params.id,
+      formData,
+      this.successCallback,
+      this.errCallback
+    )
+  }
+  successCallback = res => {
+    this.setState({ open: false })
   }
   render() {
     const { studentInfo, facultyInfo } = this.state
@@ -85,25 +212,25 @@ class Profile extends Component {
                             <List divided verticalAlign='middle'>
                               {studentInfo.emailAddress &&
                                 <List.Item styleName='blocks.info-item'>
-                                  <List.Content floated='right'><Icon name='users' /></List.Content>
+                                  {this.visibilityModal('emailVisibility')}
                                   <List.Content floated='left'>{studentInfo.emailAddress}</List.Content>
                                 </List.Item>
                               }
                               {studentInfo.mobileNumber &&
                                 <List.Item styleName='blocks.info-item'>
-                                  <List.Content floated='right'><Icon name='users' /></List.Content>
+                                  {this.visibilityModal('mobileNumberVisibility')}
                                   <List.Content floated='left'>{studentInfo.mobileNumber}</List.Content>
                                 </List.Item>
                               }
                               {studentInfo.roomNoInformation &&
                                 <List.Item styleName='blocks.info-item'>
-                                  <List.Content floated='right'><Icon name='users' /></List.Content>
+                                  {this.visibilityModal('roomNumberVisibility')}
                                   <List.Content floated='left'>{studentInfo.roomNoInformation}</List.Content>
                                 </List.Item>
                               }
                               {studentInfo.bhawanInformation &&
                                 <List.Item styleName='blocks.info-item'>
-                                  <List.Content floated='right'><Icon name='users' /></List.Content>
+                                  {this.visibilityModal('bhawanVisibility')}
                                   <List.Content floated='left'>{studentInfo.bhawanInformation}</List.Content>
                                 </List.Item>
                               }
@@ -143,7 +270,7 @@ class Profile extends Component {
                           <List.Header><List.Content floated='left'><h3 style={{ color: '#6a6cff' }}>Interests</h3></List.Content></List.Header>
 
                           <Container styleName='blocks.info-list'>
-                            <List divided verticalAlign='middle'>
+                            <List divided verticalAlign='middle' style={{ maxHeight: 100, overflow: 'auto' }}>
                               {studentInfo.interests.map((item, i) => (
                                 <List.Item styleName='blocks.info-item' key={i}><List.Content floated='left'>{item}</List.Content></List.Item>
                               )
@@ -161,14 +288,15 @@ class Profile extends Component {
             </Grid>
           </div >
         </center>
-      </Container>
+      </Container >
     )
   }
 }
 const mapStateToProps = state => {
   return {
     facultyProfile: state.facultyProfile,
-    studentProfile: state.studentProfile
+    studentProfile: state.studentProfile,
+    setVisibility: state.setVisibility
   }
 }
 const mapDispatchToProps = dispatch => {
@@ -178,6 +306,9 @@ const mapDispatchToProps = dispatch => {
     },
     StudentProfile: (id, successCallback, errCallback) => {
       dispatch(studentProfile(id, successCallback, errCallback))
+    },
+    SetVisibility: (id, formData, successCallback, errCallback) => {
+      dispatch(setVisibility(id, formData, successCallback, errCallback))
     }
   }
 }

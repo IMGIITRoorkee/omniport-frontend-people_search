@@ -5,7 +5,7 @@ export const appBaseUrl = () => {
 }
 
 export const urlProfile = () => {
-  return `${appBaseUrl()}/profile`
+  return `${appBaseUrl()}/profile/`
 }
 
 export const urlStudentQuery = () => {
@@ -18,8 +18,8 @@ export const urlInterestQuery = () => {
   return `/api/people_search/interest_search/`
 }
 export const urlFacultyProfile = (id) => {
-  return `${urlFacultyQuery()}/${id}`
+  return `${urlFacultyQuery()}${id}`
 }
 export const urlStudentProfile = (id) => {
-  return `${urlStudentQuery()}/${id}`
+  return `${urlStudentQuery()}${id}`
 }
