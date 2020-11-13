@@ -20,6 +20,9 @@ export const urlInterestQuery = () => {
 export const urlFacultyProfile = (id) => {
   return `${urlFacultyQuery()}${id}`
 }
+export const urlStudentDetailProfile = () => {
+  return `/api/people_search/student_detail_search/`
+}
 export const urlStudentProfile = (id) => {
-  return `${urlStudentQuery()}${id}`
+  return `${urlStudentDetailProfile()}${id}`
 }
