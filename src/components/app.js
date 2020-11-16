@@ -40,7 +40,7 @@ class App extends Component {
                 />
                 <Route
                   exact
-                  path="/people_search/profile/:id"
+                  path="/people_search/profile/"
                   component={Profile}
                 />
                 <Route render={props => <Redirect to='/404' />} />

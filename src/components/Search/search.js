@@ -13,9 +13,9 @@ class Search extends Component {
     query: '',
     branch: '',
     current_year: '',
-    bhawan_param: '',
-    designation_param: '',
-    department_param: '',
+    residence: '',
+    designation: '',
+    department: '',
     studentresults: [],
     facultyresults: [],
     residenceOptions: [],
@@ -42,14 +42,17 @@ class Search extends Component {
   }
   successStudentOptionsCallback = res => {
     const { data } = res
-    let residence = [...new Set(data.results.map(({ bhawanInformation }) => bhawanInformation).filter(x => x))]
+    let residenceName = [...new Set(data.results.map(({ bhawanInformation }) => bhawanInformation).filter(x => x))]
+    let residenceCode = [...new Set(data.results.map(({ bhawanCode }) => bhawanCode).filter(x => x))]
+    let residence = {}
+    residenceName.forEach((key, i) => residence[key] = residenceCode[i])
     let year = [...new Set(data.results.map(({ currentYear }) => currentYear).filter(x => x))]
     let branch = [...new Set(data.results.map(({ branchName }) => branchName).filter(x => x))]
     var residenceList = []
     var yearList = []
     var branchList = []
-    residence.forEach(function (element) {
-      residenceList.push({ key: element, text: element, value: element })
+    Object.keys(residence).forEach(key => {
+      residenceList.push({ key: residence[key], text: key, value: residence[key] })
     })
     year.forEach(function (element) {
       yearList.push({ key: element, text: element, value: element })
@@ -82,7 +85,7 @@ class Search extends Component {
     })
   }
   studentSearch = () => {
-    const { query, branch, current_year, bhawan_param } = this.state;
+    const { query, branch, current_year, residence } = this.state;
     axios({
       method: 'get',
       url: urlStudentQuery(),
@@ -90,7 +93,7 @@ class Search extends Component {
         query,
         branch,
         current_year,
-        bhawan_param
+        residence
       }
     }).then(response => {
       this.setState({
@@ -100,14 +103,14 @@ class Search extends Component {
   }
 
   facultySearch = () => {
-    const { query, designation_param, department_param } = this.state;
+    const { query, designation, department } = this.state;
     axios({
       method: 'get',
       url: urlFacultyQuery(),
       params: {
         query,
-        designation_param,
-        department_param
+        designation,
+        department
       }
     }).then(response => {
       this.setState({
@@ -280,7 +283,7 @@ class Search extends Component {
     this.setState({ [name]: value })
   }
   render() {
-    const { residenceOptions, yearOptions, branchOptions, designationOptions, departmentOptions, current_year, branch, bhawan_param, designation_param, department_param } = this.state
+    const { residenceOptions, yearOptions, branchOptions, designationOptions, departmentOptions, current_year, branch, residence, designation, department } = this.state
     return (
       <Container styleName='blocks.content-div'>
         <center styleName='blocks.center'>
@@ -336,7 +339,7 @@ class Search extends Component {
                       </Grid.Column>
                       <Grid.Column>
                         <Dropdown
-                          name='bhawan_param'
+                          name='residence'
                           onChange={(e, { name, value }) => this.dropdownChange(name, value)}
                           placeholder="Bhawan"
                           options={residenceOptions}
@@ -344,7 +347,7 @@ class Search extends Component {
                           clearable
                           scrolling
                           search
-                          value={bhawan_param}
+                          value={residence}
                         />
                       </Grid.Column>
                     </Grid>
@@ -356,7 +359,7 @@ class Search extends Component {
                     <Grid columns={4}>
                       <Grid.Column>
                         <Dropdown
-                          name='designation_param'
+                          name='designation'
                           onChange={(e, { name, value }) => this.dropdownChange(name, value)}
                           placeholder="Designation"
                           options={designationOptions}
@@ -364,12 +367,12 @@ class Search extends Component {
                           clearable
                           scrolling
                           search
-                          value={designation_param}
+                          value={designation}
                         />
                       </Grid.Column>
                       <Grid.Column>
                         <Dropdown
-                          name='department_param'
+                          name='department'
                           onChange={(e, { name, value }) => this.dropdownChange(name, value)}
                           placeholder="Department"
                           options={departmentOptions}
@@ -377,7 +380,7 @@ class Search extends Component {
                           clearable
                           scrolling
                           search
-                          value={department_param}
+                          value={department}
                         />
                       </Grid.Column>
                     </Grid>

@@ -22,6 +22,7 @@ class Profile extends Component {
     this.props.StudentProfile(this.successStudentCallback, this.errStudentCallback)
   }
   successStudentCallback = res => {
+    console.log(res.data)
     this.setState({
       studentInfo: res.data,
       emailVisibility: res.data.primaryEmailId,
@@ -218,15 +219,16 @@ class Profile extends Component {
                       <List.Item>
                         <List.Content>
                           <List.Header><List.Content floated='left'><h3 style={{ color: '#6a6cff' }}>Interests</h3></List.Content></List.Header>
-
-                          <Container styleName='blocks.info-list'>
-                            <List divided verticalAlign='middle' style={{ maxHeight: 100, overflow: 'auto' }}>
-                              {studentInfo.interests.map((item, i) => (
-                                <List.Item styleName='blocks.info-item' key={i}><List.Content floated='left'>{item}</List.Content></List.Item>
-                              )
-                              )}
-                            </List>
-                          </Container>
+                          {studentInfo.interests &&
+                            <Container styleName='blocks.info-list'>
+                              <List divided verticalAlign='middle' style={{ maxHeight: 100, overflow: 'auto' }}>
+                                {studentInfo.interests.map((item, i) => (
+                                  <List.Item styleName='blocks.info-item' key={i}><List.Content floated='left'>{item}</List.Content></List.Item>
+                                )
+                                )}
+                              </List>
+                            </Container>
+                          }
                         </List.Content>
 
                       </List.Item>
