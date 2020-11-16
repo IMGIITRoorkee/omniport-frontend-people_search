@@ -162,7 +162,7 @@
 }
 
 .result-segment {
-  width: 65%;
+  width: 85%;
   height: 5rem;
   border-top: 0px;
   margin-top: 1rem !important;
@@ -171,13 +171,10 @@
 .result-item {
   height: 2.5rem;
   padding: 1rem;
-  /* border: 1px solid #dddddd; */
   margin-top: 1rem;
   margin-bottom: 1rem;
   margin-left: 0.1rem;
   margin-right: 1em;
-  /* box-sizing: border-box; */
-  /* border-radius: 4px; */
   font-family: Lato;
   font-style: normal;
   font-weight: normal;
@@ -201,9 +198,6 @@
 }
 
 .info-list {
-  /* background-color: #ffffff; */
-  /* height: 11rem; */
-  /* width: 40%; */
   padding: 2rem;
 }
 

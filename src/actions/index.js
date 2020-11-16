@@ -6,7 +6,8 @@ import {
   urlFacultyQuery,
   urlInterestQuery,
   urlFacultyProfile,
-  urlStudentProfile
+  urlStudentProfile,
+  getWhoAmIApi
 } from '../urls'
 
 export const studentOptions = (successCallback, errCallback) => {
@@ -34,6 +35,18 @@ export const facultyOptions = (successCallback, errCallback) => {
           type: `FACULTY_OPTIONS`,
           payload: res.data
         })
+        successCallback(res)
+      })
+      .catch(err => {
+        errCallback(err)
+      })
+  }
+}
+export const whoami = (successCallback, errCallback) => {
+  return dispatch => {
+    axios
+      .get(getWhoAmIApi())
+      .then(res => {
         successCallback(res)
       })
       .catch(err => {
@@ -76,10 +89,10 @@ export const facultyProfile = (id, successCallback, errCallback) => {
       })
   }
 }
-export const studentProfile = (id, successCallback, errCallback) => {
+export const studentProfile = (successCallback, errCallback) => {
   return dispatch => {
     axios
-      .get(urlStudentProfile(id))
+      .get(urlStudentProfile())
       .then(res => {
         dispatch({
           type: `STUDENT_PROFILE`,
@@ -93,13 +106,13 @@ export const studentProfile = (id, successCallback, errCallback) => {
   }
 }
 
-export const setVisibility = (id, formData, successCallback, errCallback) => {
+export const setVisibility = (formData, successCallback, errCallback) => {
   let headers = {
     'X-CSRFToken': getCookie('csrftoken')
   }
   return dispatch => {
     axios
-      .put(urlStudentProfile(`${id}/`), formData, { headers: headers })
+      .put(urlStudentProfile(), formData, { headers: headers })
       .then(res => {
         dispatch({
           type: `SET_VISIBILITY`,

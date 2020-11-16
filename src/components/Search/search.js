@@ -3,8 +3,8 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import { Icon, Menu, Container, Button, Dropdown, Segment, Grid } from 'semantic-ui-react'
 
-import { studentOptions, facultyOptions } from '../../actions/index'
-import { urlStudentQuery, urlFacultyQuery, urlInterestQuery, urlProfile } from '../../urls'
+import { studentOptions, facultyOptions, whoami } from '../../actions/index'
+import { urlStudentQuery, urlFacultyQuery, urlInterestQuery, urlProfile, appBaseUrl } from '../../urls'
 
 import blocks from '../../css/app.css'
 
@@ -27,13 +27,19 @@ class Search extends Component {
     visible: false,
     student: true,
     dropIndex: false,
+    studentRole: false,
     activeItem: 'all'
   }
   componentDidMount() {
     this.props.StudentOptions(this.successStudentOptionsCallback, this.errorCallback)
     this.props.FacultyOptions(this.successFacultyOptionsCallback, this.errorCallback)
+    this.props.Whoami(this.successUserCheck, this.errorCallback)
   }
-
+  successUserCheck = res => {
+    if (res.data.roles[0].role === 'Student') {
+      this.setState({ studentRole: true })
+    }
+  }
   successStudentOptionsCallback = res => {
     const { data } = res
     let residence = [...new Set(data.results.map(({ bhawanInformation }) => bhawanInformation).filter(x => x))]
@@ -204,9 +210,14 @@ class Search extends Component {
       </div>)
 
   }
-  profileDirect = (id) => {
-    this.props.history.push({ pathname: `${urlProfile()}${id}` })
-    console.log(`${urlProfile()}${id}`)
+  profileDirect = () => {
+    this.props.history.push({ pathname: urlProfile() })
+  }
+  studentHomepage = (id) => {
+    this.props.history.push({ pathname: `/student_profile/${id}` })
+  }
+  facultyHomepage = (id) => {
+    this.props.history.push({ pathname: `/faculty_profile/${id}` })
   }
   studentList = () => {
     if (this.state.hide === true && (this.state.activeItem === 'student' || this.state.activeItem === 'all')) {
@@ -214,13 +225,27 @@ class Search extends Component {
         <div>
           {this.state.studentresults.map(x =>
             <Segment styleName='blocks.result-segment'>
-              <Grid columns='7'>
-                <Grid.Column styleName='blocks.result-item' width={3} style={{ color: '#6a6cff' }} onClick={(e) => this.profileDirect(x.enrolmentNumber)}>{x.fullName}</Grid.Column>
+              <Grid columns='12'>
+                <Grid.Column styleName='blocks.result-item' width={2} style={{ color: '#6a6cff' }} onClick={(e) => this.studentHomepage(x.enrolmentNumber)}>{x.fullName}</Grid.Column>
                 <Grid.Column styleName='blocks.result-item' width={2}>{x.enrolmentNumber}</Grid.Column>
                 <Grid.Column styleName='blocks.result-item' width={1}>{x.branchName}</Grid.Column>
                 <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}</Grid.Column>
                 <Grid.Column styleName='blocks.result-item' width={3}>{x.emailAddress}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item' width={3}>{x.bhawanInformation}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item' width={2}>{x.bhawanInformation}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item' width={1}>{x.roomNoInformation}</Grid.Column>
+                {x.interests.length !== 0 &&
+                  <Grid.Column styleName='blocks.result-item' width={2}>
+                    <Menu vertical size='mini'>
+                      <Dropdown item text='Interests'>
+                        <Dropdown.Menu>
+                          {x.interests.map((item, i) => (
+                            <Dropdown.Item>{item}</Dropdown.Item>
+                          ))}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </Menu>
+                  </Grid.Column>
+                }
               </Grid>
             </Segment>
           )}
@@ -237,7 +262,7 @@ class Search extends Component {
           {this.state.facultyresults.map(x =>
             <Segment styleName='blocks.result-segment'>
               <Grid columns='4'>
-                <Grid.Column styleName='blocks.result-item' style={{ color: '#6a6cff' }} onClick={(e) => this.profileDirect(x.employeeId)}>{x.name}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item' style={{ color: '#6a6cff' }} onClick={(e) => this.facultyHomepage(x.employeeId)}>{x.name}</Grid.Column>
                 <Grid.Column styleName='blocks.result-item'>{x.department.code}</Grid.Column>
                 <Grid.Column styleName='blocks.result-item'>{x.designation}</Grid.Column>
               </Grid>
@@ -282,8 +307,8 @@ class Search extends Component {
                 {this.menus()}
                 {this.state.activeItem == 'student' ? (
                   <div styleName='blocks.menu'>
-                    <Grid columns={3}>
-                      <Grid.Column floated='left'>
+                    <Grid columns={4}>
+                      <Grid.Column>
                         <Dropdown
                           name='current_year_param'
                           onChange={(e, { name, value }) => this.dropdownChange(name, value)}
@@ -296,7 +321,7 @@ class Search extends Component {
                           value={current_year_param}
                         />
                       </Grid.Column>
-                      <Grid.Column floated='left'>
+                      <Grid.Column>
                         <Dropdown
                           name='branch_param'
                           onChange={(e, { name, value }) => this.dropdownChange(name, value)}
@@ -309,7 +334,7 @@ class Search extends Component {
                           value={branch_param}
                         />
                       </Grid.Column>
-                      <Grid.Column floated='left'>
+                      <Grid.Column>
                         <Dropdown
                           name='bhawan_param'
                           onChange={(e, { name, value }) => this.dropdownChange(name, value)}
@@ -328,8 +353,8 @@ class Search extends Component {
                 }
                 {this.state.activeItem == 'faculty' ? (
                   <div styleName='blocks.menu'>
-                    <Grid columns={2}>
-                      <Grid.Column floated='left'>
+                    <Grid columns={4}>
+                      <Grid.Column>
                         <Dropdown
                           name='designation_param'
                           onChange={(e, { name, value }) => this.dropdownChange(name, value)}
@@ -342,7 +367,7 @@ class Search extends Component {
                           value={designation_param}
                         />
                       </Grid.Column>
-                      <Grid.Column floated='left'>
+                      <Grid.Column>
                         <Dropdown
                           name='department_param'
                           onChange={(e, { name, value }) => this.dropdownChange(name, value)}
@@ -367,6 +392,16 @@ class Search extends Component {
               <Button onClick={this.handleSubmit} styleName='blocks.icon-button' style={{ backgroundColor: '#6a6cff', color: '#ffffff' }}>
                 Search
               </Button>
+              {this.state.studentRole && (
+                <Button
+                  secondary
+                  onClick={this.profileDirect}
+                  styleName='blocks.icon-button'
+                  style={{ backgroundColor: '#303030', color: '#ffffff' }}>
+                  Edit Visibility
+                </Button>
+              )
+              }
             </div>
             <div> {this.studentList()} </div>
             <div> {this.facultyList()} </div>
@@ -379,7 +414,8 @@ class Search extends Component {
 const mapStateToProps = state => {
   return {
     studentOptions: state.studentOptions,
-    facultyOptions: state.facultyOptions
+    facultyOptions: state.facultyOptions,
+    whoami: state.whoami
   }
 }
 const mapDispatchToProps = dispatch => {
@@ -389,6 +425,9 @@ const mapDispatchToProps = dispatch => {
     },
     FacultyOptions: (successCallback, errCallback) => {
       dispatch(facultyOptions(successCallback, errCallback))
+    },
+    Whoami: (successCallback, errCallback) => {
+      dispatch(whoami(successCallback, errCallback))
     }
   }
 }

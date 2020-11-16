@@ -8,6 +8,9 @@ export const urlProfile = () => {
   return `${appBaseUrl()}/profile/`
 }
 
+export const getWhoAmIApi = () => {
+  return '/kernel/who_am_i/'
+}
 export const urlStudentQuery = () => {
   return `/api/people_search/student_search/`
 }
@@ -20,9 +23,6 @@ export const urlInterestQuery = () => {
 export const urlFacultyProfile = (id) => {
   return `${urlFacultyQuery()}${id}`
 }
-export const urlStudentDetailProfile = () => {
+export const urlStudentProfile = () => {
   return `/api/people_search/student_detail_search/`
-}
-export const urlStudentProfile = (id) => {
-  return `${urlStudentDetailProfile()}${id}`
 }

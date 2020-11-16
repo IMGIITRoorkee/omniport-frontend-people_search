@@ -1,16 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Icon, Menu, Message, List, Button, Form, Rail, Modal, Card, Checkbox, Grid, Image, Container } from 'semantic-ui-react'
+import { Icon, List, Button, Form, Modal, Card, Checkbox, Grid, Image, Container } from 'semantic-ui-react'
 
 import { DefaultDP } from 'formula_one'
-import { facultyProfile, studentProfile, setVisibility } from '../../actions/index'
+import { studentProfile, setVisibility } from '../../actions/index'
 
 import blocks from '../../css/app.css'
 
 
 class Profile extends Component {
   state = {
-    facultyInfo: [],
     studentInfo: [],
     emailVisibility: '',
     mobileNumberVisibility: '',
@@ -20,14 +19,7 @@ class Profile extends Component {
     open: false
   }
   componentDidMount() {
-    this.props.FacultyProfile(this.props.match.params.id, this.successFacultyCallback, this.errFacultyCallback)
-    this.props.StudentProfile(this.props.match.params.id, this.successStudentCallback, this.errStudentCallback)
-  }
-  successFacultyCallback = res => {
-    this.setState({ facultyInfo: res.data })
-  }
-  errFacultyCallback = err => {
-    this.setState({ error: true })
+    this.props.StudentProfile(this.successStudentCallback, this.errStudentCallback)
   }
   successStudentCallback = res => {
     this.setState({
@@ -147,7 +139,6 @@ class Profile extends Component {
       bhawanVisibility
     )
     this.props.SetVisibility(
-      this.props.match.params.id,
       formData,
       this.successCallback,
       this.errCallback
@@ -157,32 +148,14 @@ class Profile extends Component {
     this.setState({ open: false })
   }
   render() {
-    const { studentInfo, facultyInfo } = this.state
+    const { studentInfo } = this.state
     return (
       <Container styleName='blocks.content-div'>
         <center styleName='blocks.center'>
           <div>
             <Grid columns={2} divided>
               <Grid.Column width={5}>
-                {(facultyInfo.length !== 0) && (studentInfo.length === 0) &&
-                  <Card>
-                    {facultyInfo.displayPicture ? (
-                      < Image src={facultyInfo.displayPicture} />
-                    ) : (
-                        <DefaultDP
-                          name={facultyInfo.name}
-                          size='5em'
-                        />
-                      )}
-
-                    <Card.Content>
-                      <Card.Header>{facultyInfo.name}</Card.Header>
-                      <Card.Meta>{facultyInfo.designation}</Card.Meta>
-                      <Card.Description>{facultyInfo.department.name}</Card.Description>
-                    </Card.Content>
-                  </Card>
-                }
-                {(studentInfo.length !== 0) && (facultyInfo.length === 0) &&
+                {(studentInfo.length !== 0) &&
                   <Card>
                     {studentInfo.displayPicture ? (
                       < Image src={studentInfo.displayPicture} />
@@ -207,7 +180,7 @@ class Profile extends Component {
 
                       <List.Content>
                         <List.Header><List.Content floated='left'><h3 style={{ color: '#6a6cff' }}>About info</h3></List.Content></List.Header>
-                        {(studentInfo.length !== 0) && (facultyInfo.length === 0) &&
+                        {(studentInfo.length !== 0) &&
                           <Container styleName='blocks.info-list'>
                             <List divided verticalAlign='middle'>
                               {studentInfo.emailAddress &&
@@ -237,30 +210,7 @@ class Profile extends Component {
                             </List>
                           </Container>
                         }
-                        {(facultyInfo.length !== 0) && (studentInfo.length === 0) &&
-                          <Container styleName='blocks.info-list'>
-                            <List divided verticalAlign='middle'>
-                              {facultyInfo.employeeId &&
-                                <List.Item styleName='blocks.info-item'>
-                                  <List.Content floated='right'><Icon name='users' /></List.Content>
-                                  <List.Content floated='left'>{facultyInfo.employeeId}</List.Content>
-                                </List.Item>
-                              }
-                              {facultyInfo.designation &&
-                                <List.Item styleName='blocks.info-item'>
-                                  <List.Content floated='right'><Icon name='users' /></List.Content>
-                                  <List.Content floated='left'>{facultyInfo.designation}</List.Content>
-                                </List.Item>
-                              }
-                              {facultyInfo.department &&
-                                <List.Item styleName='blocks.info-item'>
-                                  <List.Content floated='right'><Icon name='users' /></List.Content>
-                                  <List.Content floated='left'>{facultyInfo.department.name}</List.Content>
-                                </List.Item>
-                              }
-                            </List>
-                          </Container>
-                        }
+
                       </List.Content>
 
                     </List.Item>
@@ -294,16 +244,12 @@ class Profile extends Component {
 }
 const mapStateToProps = state => {
   return {
-    facultyProfile: state.facultyProfile,
     studentProfile: state.studentProfile,
     setVisibility: state.setVisibility
   }
 }
 const mapDispatchToProps = dispatch => {
   return {
-    FacultyProfile: (id, successCallback, errCallback) => {
-      dispatch(facultyProfile(id, successCallback, errCallback))
-    },
     StudentProfile: (id, successCallback, errCallback) => {
       dispatch(studentProfile(id, successCallback, errCallback))
     },
