@@ -11,8 +11,8 @@ import blocks from '../../css/app.css'
 class Search extends Component {
   state = {
     query: '',
-    branch_param: '',
-    current_year_param: '',
+    branch: '',
+    current_year: '',
     bhawan_param: '',
     designation_param: '',
     department_param: '',
@@ -82,14 +82,14 @@ class Search extends Component {
     })
   }
   studentSearch = () => {
-    const { query, branch_param, current_year_param, bhawan_param } = this.state;
+    const { query, branch, current_year, bhawan_param } = this.state;
     axios({
       method: 'get',
       url: urlStudentQuery(),
       params: {
         query,
-        branch_param,
-        current_year_param,
+        branch,
+        current_year,
         bhawan_param
       }
     }).then(response => {
@@ -280,7 +280,7 @@ class Search extends Component {
     this.setState({ [name]: value })
   }
   render() {
-    const { residenceOptions, yearOptions, branchOptions, designationOptions, departmentOptions, current_year_param, branch_param, bhawan_param, designation_param, department_param } = this.state
+    const { residenceOptions, yearOptions, branchOptions, designationOptions, departmentOptions, current_year, branch, bhawan_param, designation_param, department_param } = this.state
     return (
       <Container styleName='blocks.content-div'>
         <center styleName='blocks.center'>
@@ -310,7 +310,7 @@ class Search extends Component {
                     <Grid columns={4}>
                       <Grid.Column>
                         <Dropdown
-                          name='current_year_param'
+                          name='current_year'
                           onChange={(e, { name, value }) => this.dropdownChange(name, value)}
                           placeholder="Year"
                           options={yearOptions}
@@ -318,12 +318,12 @@ class Search extends Component {
                           clearable
                           scrolling
                           search
-                          value={current_year_param}
+                          value={current_year}
                         />
                       </Grid.Column>
                       <Grid.Column>
                         <Dropdown
-                          name='branch_param'
+                          name='branch'
                           onChange={(e, { name, value }) => this.dropdownChange(name, value)}
                           placeholder="Branch"
                           options={branchOptions}
@@ -331,7 +331,7 @@ class Search extends Component {
                           clearable
                           scrolling
                           search
-                          value={branch_param}
+                          value={branch}
                         />
                       </Grid.Column>
                       <Grid.Column>
