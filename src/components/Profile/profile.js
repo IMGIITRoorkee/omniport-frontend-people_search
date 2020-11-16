@@ -22,13 +22,12 @@ class Profile extends Component {
     this.props.StudentProfile(this.successStudentCallback, this.errStudentCallback)
   }
   successStudentCallback = res => {
-    console.log(res.data)
     this.setState({
-      studentInfo: res.data,
-      emailVisibility: res.data.primaryEmailId,
-      mobileNumberVisibility: res.data.primaryMobileNo,
-      roomNumberVisibility: res.data.roomNo,
-      bhawanVisibility: res.data.bhawan
+      studentInfo: res.data.results[0],
+      emailVisibility: res.data.results[0].primaryEmailId,
+      mobileNumberVisibility: res.data.results[0].primaryMobileNo,
+      roomNumberVisibility: res.data.results[0].roomNo,
+      bhawanVisibility: res.data.results[0].bhawan
     })
   }
   errStudentCallback = err => {
