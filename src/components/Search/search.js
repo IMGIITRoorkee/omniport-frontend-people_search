@@ -16,6 +16,7 @@ class Search extends Component {
     residence: '',
     designation: '',
     department: '',
+    selfId: '',
     studentresults: [],
     facultyresults: [],
     residenceOptions: [],
@@ -37,7 +38,7 @@ class Search extends Component {
   }
   successUserCheck = res => {
     if (res.data.roles[0].role === 'Student') {
-      this.setState({ studentRole: true })
+      this.setState({ studentRole: true, selfId: res.data.roles[0].data.id })
     }
   }
   successStudentOptionsCallback = res => {
@@ -70,14 +71,17 @@ class Search extends Component {
   successFacultyOptionsCallback = res => {
     const { data } = res
     let designation = data.results.map(({ designation }) => designation).filter(x => x)
-    let departments = data.results.map(({ department }) => department).filter(x => x).map(({ name }) => name)
+    let departmentName = data.results.map(({ department }) => department).filter(x => x).map(({ name }) => name)
+    let departmentCode = data.results.map(({ department }) => department).filter(x => x).map(({ code }) => code)
+    let department = {}
+    departmentName.forEach((key, i) => department[key] = departmentCode[i])
     var designationList = []
     var departmentsList = []
     designation.forEach(function (element) {
       designationList.push({ key: element, text: element, value: element })
     })
-    departments.forEach(function (element) {
-      departmentsList.push({ key: element, text: element, value: element })
+    Object.keys(department).forEach(key => {
+      departmentsList.push({ key: department[key], text: key, value: department[key] })
     })
     this.setState({
       designationOptions: [...new Set(designationList)],
@@ -213,8 +217,11 @@ class Search extends Component {
       </div>)
 
   }
-  profileDirect = () => {
-    this.props.history.push({ pathname: urlProfile() })
+  profileDirect = (id) => {
+    this.props.history.push({
+      pathname: urlProfile(),
+      state: { id: id }
+    })
   }
   studentHomepage = (id) => {
     this.props.history.push({ pathname: `/student_profile/${id}` })
@@ -283,7 +290,7 @@ class Search extends Component {
     this.setState({ [name]: value })
   }
   render() {
-    const { residenceOptions, yearOptions, branchOptions, designationOptions, departmentOptions, current_year, branch, residence, designation, department } = this.state
+    const { residenceOptions, yearOptions, branchOptions, designationOptions, departmentOptions, current_year, branch, residence, designation, department, selfId } = this.state
     return (
       <Container styleName='blocks.content-div'>
         <center styleName='blocks.center'>
@@ -398,7 +405,7 @@ class Search extends Component {
               {this.state.studentRole && (
                 <Button
                   secondary
-                  onClick={this.profileDirect}
+                  onClick={(e) => this.profileDirect(selfId)}
                   styleName='blocks.icon-button'
                   style={{ backgroundColor: '#303030', color: '#ffffff' }}>
                   Edit Visibility

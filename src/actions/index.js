@@ -89,10 +89,10 @@ export const facultyProfile = (id, successCallback, errCallback) => {
       })
   }
 }
-export const studentProfile = (successCallback, errCallback) => {
+export const studentProfile = (id, successCallback, errCallback) => {
   return dispatch => {
     axios
-      .get(urlStudentProfile())
+      .get(urlStudentProfile(id))
       .then(res => {
         dispatch({
           type: `STUDENT_PROFILE`,
@@ -106,13 +106,13 @@ export const studentProfile = (successCallback, errCallback) => {
   }
 }
 
-export const setVisibility = (formData, successCallback, errCallback) => {
+export const setVisibility = (id, formData, successCallback, errCallback) => {
   let headers = {
     'X-CSRFToken': getCookie('csrftoken')
   }
   return dispatch => {
     axios
-      .put(urlStudentProfile(), formData, { headers: headers })
+      .put(urlStudentProfile(id), formData, { headers: headers })
       .then(res => {
         dispatch({
           type: `SET_VISIBILITY`,

@@ -15,96 +15,97 @@ class Profile extends Component {
     mobileNumberVisibility: '',
     roomNumberVisibility: '',
     bhawanVisibility: '',
+    name: '',
     error: false,
     open: false
   }
   componentDidMount() {
-    this.props.StudentProfile(this.successStudentCallback, this.errStudentCallback)
+    this.props.StudentProfile(this.props.location.state.id, this.successStudentCallback, this.errStudentCallback)
   }
   successStudentCallback = res => {
     this.setState({
-      studentInfo: res.data.results[0],
-      emailVisibility: res.data.results[0].primaryEmailId,
-      mobileNumberVisibility: res.data.results[0].primaryMobileNo,
-      roomNumberVisibility: res.data.results[0].roomNo,
-      bhawanVisibility: res.data.results[0].bhawan
+      studentInfo: res.data,
+      emailVisibility: res.data.primaryEmailId,
+      mobileNumberVisibility: res.data.primaryMobileNo,
+      roomNumberVisibility: res.data.roomNo,
+      bhawanVisibility: res.data.bhawan
     })
   }
   errStudentCallback = err => {
     this.setState({ error: true })
   }
-  showModal = () => {
-    this.setState({ open: true })
+  showModal = (name) => {
+    this.setState({ open: true, name: name })
   }
-  visibilityModal = (name) => {
+  closeModal = () => {
+    this.setState({ open: false })
+  }
+  visibilityModal = () => {
     return (
-      <List.Content floated='right'>
-        <Modal
-          trigger={<Icon link name='users' onClick={this.showModal} />}
-          size='tiny'
-          closeIcon
-          open={this.state.open}
-        >
-          <Modal.Header><h3 style={{ color: '#6a6cff' }}>Show To</h3></Modal.Header>
-          <Modal.Content>
-            <Form>
-              <Form.Field>
-                <Checkbox
-                  label='All'
-                  name={name}
-                  value='all'
-                  checked={this.state[name] === 'all'}
-                  onChange={(e, { name, value }) => this.handleChange(name, value)}
-                />
-              </Form.Field>
-              <Form.Field>
-                <Checkbox
-                  label='Only Students'
-                  name={name}
-                  value='students'
-                  checked={this.state[name] === 'students'}
-                  onChange={(e, { name, value }) => this.handleChange(name, value)}
-                />
-              </Form.Field>
-              <Form.Field>
-                <Checkbox
-                  label='Only Faculty'
-                  name={name}
-                  value='faculty'
-                  checked={this.state[name] === 'faculty'}
-                  onChange={(e, { name, value }) => this.handleChange(name, value)}
-                />
-              </Form.Field>
-              <Form.Field>
-                <Checkbox
-                  label='Only Branch'
-                  name={name}
-                  value='branch'
-                  checked={this.state[name] === 'branch'}
-                  onChange={(e, { name, value }) => this.handleChange(name, value)}
-                />
-              </Form.Field>
-              <Form.Field>
-                <Checkbox
-                  label='Only Bhawan'
-                  name={name}
-                  value='bhawan'
-                  checked={this.state[name] === 'bhawan'}
-                  onChange={(e, { name, value }) => this.handleChange(name, value)}
-                />
-              </Form.Field>
-            </Form>
-          </Modal.Content>
-          <Modal.Actions>
+      < Modal
+        open={this.state.open}
+        onClose={this.closeModal}
+        size='tiny'
+        closeIcon
+      >
+        <Modal.Header><h3 style={{ color: '#6a6cff' }}>Show To</h3></Modal.Header>
+        <Modal.Content>
+          <Form>
+            <Form.Field>
+              <Checkbox
+                label='All'
+                name={this.state.name}
+                value='all'
+                checked={this.state[this.state.name] === 'all'}
+                onChange={(e, { name, value }) => this.handleChange(name, value)}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Checkbox
+                label='Only Students'
+                name={this.state.name}
+                value='students'
+                checked={this.state[this.state.name] === 'students'}
+                onChange={(e, { name, value }) => this.handleChange(name, value)}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Checkbox
+                label='Only Faculty'
+                name={this.state.name}
+                value='faculty'
+                checked={this.state[this.state.name] === 'faculty'}
+                onChange={(e, { name, value }) => this.handleChange(name, value)}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Checkbox
+                label='Only Branch'
+                name={this.state.name}
+                value='branch'
+                checked={this.state[this.state.name] === 'branch'}
+                onChange={(e, { name, value }) => this.handleChange(name, value)}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Checkbox
+                label='Only Bhawan'
+                name={this.state.name}
+                value='bhawan'
+                checked={this.state[this.state.name] === 'bhawan'}
+                onChange={(e, { name, value }) => this.handleChange(name, value)}
+              />
+            </Form.Field>
+          </Form>
+        </Modal.Content>
+        <Modal.Actions>
 
-            <Button
-              content='Save'
-              onClick={this.handleSubmit}
-              style={{ backgroundColor: '#6a6cff', color: '#ffffff' }} />
-          </Modal.Actions>
-        </Modal>
-
-      </List.Content>
+          <Button
+            content='Save'
+            onClick={this.handleSubmit}
+            style={{ backgroundColor: '#6a6cff', color: '#ffffff' }} />
+        </Modal.Actions>
+      </Modal >
     )
   }
   handleChange = (name, value) => {
@@ -139,6 +140,7 @@ class Profile extends Component {
       bhawanVisibility
     )
     this.props.SetVisibility(
+      this.props.location.state.id,
       formData,
       this.successCallback,
       this.errCallback
@@ -185,29 +187,35 @@ class Profile extends Component {
                             <List divided verticalAlign='middle'>
                               {studentInfo.emailAddress &&
                                 <List.Item styleName='blocks.info-item'>
-                                  {this.visibilityModal('emailVisibility')}
+                                  < List.Content floated='right' >< Icon link name='users' onClick={(e) => this.showModal('emailVisibility')
+                                  } /></List.Content>
+
                                   <List.Content floated='left'>{studentInfo.emailAddress}</List.Content>
                                 </List.Item>
                               }
                               {studentInfo.mobileNumber &&
                                 <List.Item styleName='blocks.info-item'>
-                                  {this.visibilityModal('mobileNumberVisibility')}
+                                  < List.Content floated='right' >< Icon link name='users' onClick={(e) => this.showModal('mobileNumberVisibility')
+                                  } /></List.Content>
                                   <List.Content floated='left'>{studentInfo.mobileNumber}</List.Content>
                                 </List.Item>
                               }
                               {studentInfo.roomNoInformation &&
                                 <List.Item styleName='blocks.info-item'>
-                                  {this.visibilityModal('roomNumberVisibility')}
+                                  < List.Content floated='right' >< Icon link name='users' onClick={(e) => this.showModal('roomNumberVisibility')
+                                  } /></List.Content>
                                   <List.Content floated='left'>{studentInfo.roomNoInformation}</List.Content>
                                 </List.Item>
                               }
                               {studentInfo.bhawanInformation &&
                                 <List.Item styleName='blocks.info-item'>
-                                  {this.visibilityModal('bhawanVisibility')}
+                                  < List.Content floated='right' >< Icon link name='users' onClick={(e) => this.showModal('bhawanVisibility')
+                                  } /></List.Content>
                                   <List.Content floated='left'>{studentInfo.bhawanInformation}</List.Content>
                                 </List.Item>
                               }
                             </List>
+                            {this.visibilityModal()}
                           </Container>
                         }
 
