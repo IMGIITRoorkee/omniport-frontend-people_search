@@ -70,15 +70,18 @@ class Search extends Component {
   }
   successFacultyOptionsCallback = res => {
     const { data } = res
-    let designation = data.results.map(({ designation }) => designation).filter(x => x)
+    let designationName = data.results.map(({ designation }) => designation).filter(x => x)
+    let designationCode = data.results.map(({ designationCode }) => designationCode).filter(x => x)
     let departmentName = data.results.map(({ department }) => department).filter(x => x).map(({ name }) => name)
     let departmentCode = data.results.map(({ department }) => department).filter(x => x).map(({ code }) => code)
     let department = {}
     departmentName.forEach((key, i) => department[key] = departmentCode[i])
+    let designation = {}
+    designationName.forEach((key, i) => designation[key] = designationCode[i])
     var designationList = []
     var departmentsList = []
-    designation.forEach(function (element) {
-      designationList.push({ key: element, text: element, value: element })
+    Object.keys(designation).forEach(key => {
+      designationList.push({ key: designation[key], text: key, value: designation[key] })
     })
     Object.keys(department).forEach(key => {
       departmentsList.push({ key: department[key], text: key, value: department[key] })
@@ -236,7 +239,7 @@ class Search extends Component {
           {this.state.studentresults.map(x =>
             <Segment styleName='blocks.result-segment'>
               <Grid columns='12'>
-                <Grid.Column styleName='blocks.result-item' width={2} style={{ color: '#6a6cff' }} onClick={(e) => this.studentHomepage(x.enrolmentNumber)}>{x.fullName}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item' width={2} style={{ color: '#6a6cff' }} >{x.fullName}</Grid.Column>
                 <Grid.Column styleName='blocks.result-item' width={2}>{x.enrolmentNumber}</Grid.Column>
                 <Grid.Column styleName='blocks.result-item' width={1}>{x.branchName}</Grid.Column>
                 <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}</Grid.Column>
@@ -272,7 +275,7 @@ class Search extends Component {
           {this.state.facultyresults.map(x =>
             <Segment styleName='blocks.result-segment'>
               <Grid columns='4'>
-                <Grid.Column styleName='blocks.result-item' style={{ color: '#6a6cff' }} onClick={(e) => this.facultyHomepage(x.employeeId)}>{x.name}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item' style={{ color: '#6a6cff' }} >{x.name}</Grid.Column>
                 <Grid.Column styleName='blocks.result-item'>{x.department.code}</Grid.Column>
                 <Grid.Column styleName='blocks.result-item'>{x.designation}</Grid.Column>
               </Grid>
