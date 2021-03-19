@@ -238,16 +238,26 @@ class Search extends Component {
         <div>
           {this.state.studentresults.map(x =>
             <Segment styleName='blocks.result-segment'>
-              <Grid columns='12'>
-                <Grid.Column styleName='blocks.result-item' width={2} style={{ color: '#6a6cff' }} >{x.fullName}</Grid.Column>
+              <Grid columns='14'>
+                <Grid.Column styleName='blocks.result-item-name' width={1} style={{ color: '#6a6cff' }} >{x.fullName}</Grid.Column>
                 <Grid.Column styleName='blocks.result-item' width={2}>{x.enrolmentNumber}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item' width={1}>{x.branchName}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item' width={3}>{x.emailAddress}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item' width={2}>{x.bhawanInformation}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item' width={1}>{x.roomNoInformation}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item-branch' width={3}>{x.branchName}</Grid.Column>
+                {x.currentYear==3 ? (
+                  <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}{"rd"}</Grid.Column>
+                ) : 
+                  x.currentYear==2 ? (
+                    <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}{"nd"}</Grid.Column>
+                  ) : 
+                      x.currentYear==1 ? (
+                        <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}{"st"}</Grid.Column>
+                        ) : (
+                    <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}{"rd"}</Grid.Column>
+                  )}
+                <Grid.Column styleName='blocks.result-item' width={2}>{x.emailAddress}</Grid.Column>
+                {/* <Grid.Column styleName='blocks.result-item' width={1}>{x.mobileNumber}</Grid.Column> */}
+                <Grid.Column styleName='blocks.result-item' width={3}>{x.roomNoInformation}{"  "}{x.bhawanInformation}</Grid.Column>
                 {x.interests.length !== 0 &&
-                  <Grid.Column styleName='blocks.result-item' width={2}>
+                  <Grid.Column styleName='blocks.result-item-interest' width={2}>
                     <Menu vertical size='mini'>
                       <Dropdown item text='Interests'>
                         <Dropdown.Menu>
@@ -295,7 +305,7 @@ class Search extends Component {
   render() {
     const { residenceOptions, yearOptions, branchOptions, designationOptions, departmentOptions, current_year, branch, residence, designation, department, selfId } = this.state
     return (
-      <Container styleName='blocks.content-div'>
+      <div styleName='blocks.content-div'>
         <center styleName='blocks.center'>
           <div styleName='blocks.heading'>
             <span styleName='blocks.people'> People </span>
@@ -314,18 +324,19 @@ class Search extends Component {
             <div styleName='blocks.advanced' onClick={this.handleDrop}>
               <span styleName='blocks.link'> Advanced Search </span>
               <Icon name={this.state.dropIndex ? 'chevron up' : 'chevron down'} link onClick={this.handleDrop} styleName='blocks.arrow' />
-            </div>
+            </div >
             {this.state.dropIndex ? (
-              <div>
+              <div styleName='blocks.advanced-all'>
                 {this.menus()}
                 {this.state.activeItem == 'student' ? (
-                  <div styleName='blocks.menu'>
+                  <div styleName='blocks.menu-student-filters'>
                     <Grid columns={4}>
-                      <Grid.Column>
+                      <Grid.Column styleName = "blocks.menu-student_items">
                         <Dropdown
                           name='current_year'
                           onChange={(e, { name, value }) => this.dropdownChange(name, value)}
                           placeholder="Year"
+                          styleName = "blocks.menu-student_items"
                           options={yearOptions}
                           selection
                           clearable
@@ -334,7 +345,7 @@ class Search extends Component {
                           value={current_year}
                         />
                       </Grid.Column>
-                      <Grid.Column>
+                      <Grid.Column styleName = "blocks.menu-student_items">
                         <Dropdown
                           name='branch'
                           onChange={(e, { name, value }) => this.dropdownChange(name, value)}
@@ -347,7 +358,7 @@ class Search extends Component {
                           value={branch}
                         />
                       </Grid.Column>
-                      <Grid.Column>
+                      <Grid.Column styleName = "blocks.menu-student_items">
                         <Dropdown
                           name='residence'
                           onChange={(e, { name, value }) => this.dropdownChange(name, value)}
@@ -365,9 +376,9 @@ class Search extends Component {
                 ) : <></>
                 }
                 {this.state.activeItem == 'faculty' ? (
-                  <div styleName='blocks.menu'>
+                  <div styleName='blocks.menu-student-filters'>
                     <Grid columns={4}>
-                      <Grid.Column>
+                      <Grid.Column styleName = "blocks.menu-faculty_items">
                         <Dropdown
                           name='designation'
                           onChange={(e, { name, value }) => this.dropdownChange(name, value)}
@@ -379,8 +390,8 @@ class Search extends Component {
                           search
                           value={designation}
                         />
-                      </Grid.Column>
-                      <Grid.Column>
+                      </Grid.Column >
+                      <Grid.Column styleName = "blocks.menu-faculty_items">
                         <Dropdown
                           name='department'
                           onChange={(e, { name, value }) => this.dropdownChange(name, value)}
@@ -401,7 +412,7 @@ class Search extends Component {
 
             ) : <></>
             }
-            <div styleName='blocks.menu'>
+            <div styleName='blocks.submit-menu'>
               <Button onClick={this.handleSubmit} styleName='blocks.icon-button' style={{ backgroundColor: '#6a6cff', color: '#ffffff' }}>
                 Search
               </Button>
@@ -420,7 +431,7 @@ class Search extends Component {
             <div> {this.facultyList()} </div>
           </div >
         </center>
-      </Container>
+      </div>
     )
   }
 }

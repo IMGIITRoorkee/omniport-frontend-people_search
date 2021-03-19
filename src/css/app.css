@@ -1,10 +1,13 @@
+* {
+  box-sizing: border-box;
+}
+
 .content-div {
-  height: 100%;
+  height: 70rem;
   display: flex !important;
   flex-direction: column;
   justify-content: center;
-  background: #f5f6fa;
-  flex-grow: 1;
+  background: #f5f6fa !important;
   width: 100% !important;
 }
 
@@ -17,7 +20,7 @@
 }
 
 .center {
-  height: 75%;
+  height: 90%;
 }
 
 .heading {
@@ -111,18 +114,44 @@
 }
 
 .menu {
-  width: 55%;
+  width: 100%;
   height: 5rem;
   border-top: 0px;
-  margin-top: 1rem !important;
+  border: none;
+  margin-top: 0rem;
+  background-color: white;
+  padding: 0rem;
+  display: flex;
+}
+
+.menu-student-filters{
+  width: 100%;
+  height: 5rem;
+  border-top: 0px;
+  border: none;
+  margin-top: 0rem;
+  background-color: white;
+  padding: 2rem;
+  display: flex;
+  padding-top: 1rem;
+  padding-left: 1.5rem;
+}
+
+.submit-menu {
+  width: 55%;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 0px;
+  padding: 0rem;
+  margin-top: 3.2rem !important; 
+  margin-bottom: 4rem;
 }
 
 .menu-item {
   height: 2.5rem;
-  padding: 2rem;
   border: 1px solid #dddddd;
   margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0rem;
   margin-left: 1.5rem;
   box-sizing: border-box;
   border-radius: 4px;
@@ -135,6 +164,15 @@
   color: #444444;
 }
 
+.menu-student_items{
+ margin-right: 2rem;
+}
+
+.menu-faculty_items{
+  margin-right: 5rem;
+ }
+ 
+
 .advanced {
   width: 55%;
   height: 2.5rem;
@@ -142,7 +180,17 @@
   padding: 0.5rem;
   background: #ffffff;
   box-shadow: 0px 7px 16px rgba(0, 0, 0, 0.03);
-  border-radius: 4px;
+  border-radius: 2px;
+}
+
+.advanced-all {
+  width: 55%;
+  height: 2.5rem;
+  padding: 0%;
+  background: #ffffff;
+  box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.03);
+  border-radius: 0px;
+  margin-bottom: 2rem;
 }
 
 .link {
@@ -162,7 +210,7 @@
 }
 
 .result-segment {
-  width: 85%;
+  width: 75%;
   height: 5rem;
   border-top: 0px;
   margin-top: 1rem !important;
@@ -170,12 +218,44 @@
 
 .result-item {
   height: 2.5rem;
-  padding: 1rem;
-  margin-top: 1rem;
+  padding: 0rem;
+  margin-top: 0.7rem;
   margin-bottom: 1rem;
-  margin-left: 0.1rem;
+  margin-left: 0rem;
   margin-right: 1em;
   font-family: Lato;
+  font-size: medium;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  text-align: center;
+  letter-spacing: 0.02em;
+  color: #444444;
+}
+
+.result-item-name{
+  margin-top: 0.7rem;
+  margin-bottom: 1rem;
+  font-size: medium;
+  margin-right: 3em;
+}
+
+.result-item-branch{
+  margin-top: 0.7rem;
+  margin-bottom: 1%;
+  font-size: medium;
+  margin-right: 3em;
+}
+
+.result-item-interest{
+  height: 2.5rem;
+  padding: 0rem;
+  margin-top: 0.4rem;
+  margin-bottom: 1rem;
+  margin-left: 0rem;
+  margin-right: 1em;
+  font-family: Lato;
+  font-size: medium;
   font-style: normal;
   font-weight: normal;
   line-height: normal;
