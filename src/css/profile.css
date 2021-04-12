@@ -309,3 +309,25 @@
       font-size: medium;
       padding-top: 0.5rem;
   }
+
+@media only screen and (max-width: 804px) {
+  .content-div {
+    height: 100%;
+    overflow-x: scroll;
+    position: fixed !important;
+    display: flex !important;
+    flex-direction: column;
+    background: #f5f6fa !important;
+    width: 100% !important;
+  }
+  .profile-div{
+    margin-top: 2%;
+    width: 50rem !important;
+    margin-left: 2%;
+    margin-right: 2%;
+  }
+  /* .profile-pic{
+    display: none !;
+  } */
+
+}

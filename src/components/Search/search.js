@@ -153,25 +153,29 @@ class Search extends Component {
       if (event.key == 'Enter') {
         this.hide;
       } else {
-        if (this.state.query && this.state.query.length > 3) {
+        if (this.state.query && this.state.query.length > 2) {
           this.hide()
           this.studentSearch()
           this.facultySearch()
           this.interestSearch()
-        } else if (!this.state.query) {
         }
       }
     })
   }
   handleSubmit = () => {
     if (this.state.query.length > 0) {
-      if (this.state.activeItem == 'all' || this.state.activeItem == 'student') {
+      if (this.state.activeItem == 'student') {
         this.hide()
         this.studentSearch()
         this.interestSearch()
       }
-      if (this.state.activeItem == 'all' || this.state.activeItem == 'faculty') {
+      if (this.state.activeItem == 'faculty') {
         this.hide()
+        this.facultySearch()
+      }
+      if(this.state.activeItem == 'all'){
+        this.hide()
+        this.studentSearch()
         this.facultySearch()
       }
     }
@@ -237,12 +241,13 @@ class Search extends Component {
   studentList = () => {
     if (this.state.hide === true && (this.state.activeItem === 'student' || this.state.activeItem === 'all')) {
       return (
-        <div>
+        <div styleName='blocks.student-div'>
+          <div styleName='blocks.search-title-heading'> Students </div>
           {this.state.studentresults.map(x =>
             <Segment styleName='blocks.result-segment'>
               <Grid columns='16'>
                 <Grid.Column styleName='blocks.result-item-name' width={1} style={{ color: '#6a6cff' }} >{x.fullName}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item' width={1}>{x.enrolmentNumber}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item-enrolment' width={1}>{x.enrolmentNumber}</Grid.Column>
                 <Grid.Column styleName='blocks.result-item-branch' width={3}>{x.branchName}</Grid.Column>
                 {x.currentYear==3 ? (
                   <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}{"rd"}</Grid.Column>
@@ -274,9 +279,10 @@ class Search extends Component {
               </Grid>
             </Segment>
           )}
-        </div>)
+        </div>
+        )
     } else {
-      return null
+      return <div styleName='blocks.no-match'>There are no students matching your query</div>
     }
   }
 
@@ -284,26 +290,28 @@ class Search extends Component {
     if (this.state.hide === true && (this.state.activeItem === 'faculty' || this.state.activeItem === 'all')) {
       return (
         <div>
+          <div styleName='blocks.search-title-heading'> Faculty </div>
           {this.state.facultyresults.map(x =>
             <Segment styleName='blocks.result-segment'>
-              <Grid columns='4'>
-                <Grid.Column styleName='blocks.result-item' style={{ color: '#6a6cff' }} >{x.name}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item'>{x.department.code}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item'>{x.designation}</Grid.Column>
+              <Grid columns='9'>
+                <Grid.Column styleName='blocks.result-item-name' width={1} style={{ color: '#6a6cff' }} >{x.name}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item-branch' width={5}>{x.department.name}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item-branch' width={3}>{x.designation}</Grid.Column>
               </Grid>
             </Segment>
           )}
         </div>)
     } else {
-      return null
+      return <div styleName='blocks.no-match'>There is no faculty matching your query</div>
     }
   }
   handleDrop = () => {
     this.setState({ dropIndex: !this.state.dropIndex })
   }
   dropdownChange = (name, value) => {
-    this.setState({ [name]: value })
+    this.setState({ [name]: value });
   }
+
   render() {
     const { residenceOptions, yearOptions, branchOptions, designationOptions, departmentOptions, current_year, branch, residence, designation, department, selfId } = this.state
     return (

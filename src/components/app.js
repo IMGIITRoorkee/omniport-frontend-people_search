@@ -15,14 +15,13 @@ class App extends Component {
   render() {
     const creators = [
       {
-        name: 'Dhruv Bhanushali',
-        role: 'Mentor',
-        link: 'https://dhruvkb.github.io/'
-      },
+        name: "Anshul Dutt Sharma",
+        role: "Full Stack Developer",
+        link: 'https://internet.channeli.in/maintainer_site/team/Anshul/',      },
+
       {
-        name: 'Praduman Goyal',
+        name: 'Pushpam Choudhary',
         role: 'Frontend developer',
-        link: 'https://pradumangoyal.github.io'
       }
     ]
 
