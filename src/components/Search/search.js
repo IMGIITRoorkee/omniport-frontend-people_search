@@ -245,10 +245,10 @@ class Search extends Component {
           <div styleName='blocks.search-title-heading'> Students </div>
           {this.state.studentresults.map(x =>
             <Segment styleName='blocks.result-segment'>
-              <Grid columns='16'>
-                <Grid.Column styleName='blocks.result-item-name' width={1} style={{ color: '#6a6cff' }} >{x.fullName}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item-enrolment' width={1}>{x.enrolmentNumber}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item-branch' width={3}>{x.branchName}</Grid.Column>
+              <Grid columns='8'>
+                <Grid.Column styleName='blocks.result-item-name' width={2} style={{ color: '#6a6cff' }} >{x.fullName}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item' width={1}>{x.enrolmentNumber}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item' width={3}>{x.branchName}</Grid.Column>
                 {x.currentYear==3 ? (
                   <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}{"rd"}</Grid.Column>
                 ) : 
@@ -261,10 +261,10 @@ class Search extends Component {
                     <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}{"rd"}</Grid.Column>
                   )}
                 <Grid.Column styleName='blocks.result-item' width={2}>{x.emailAddress}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item' width={1}>{x.mobileNumber}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item' width={2}>{x.mobileNumber}</Grid.Column>
                 <Grid.Column styleName='blocks.result-item' width={3}>{x.roomNoInformation}{"  "}{x.bhawanInformation}</Grid.Column>
                 {x.interests.length !== 0 &&
-                  <Grid.Column styleName='blocks.result-item-interest' width={2}>
+                  <Grid.Column styleName='blocks.result-item-interests' width={2}>
                     <Menu vertical size='mini'>
                       <Dropdown item text='Interests'>
                         <Dropdown.Menu>
@@ -295,8 +295,8 @@ class Search extends Component {
             <Segment styleName='blocks.result-segment'>
               <Grid columns='9'>
                 <Grid.Column styleName='blocks.result-item-name' width={1} style={{ color: '#6a6cff' }} >{x.name}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item-branch' width={5}>{x.department.name}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item-branch' width={3}>{x.designation}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item-branch-faculty' width={5}>{x.department.name}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item-branch-faculty' width={3}>{x.designation}</Grid.Column>
               </Grid>
             </Segment>
           )}

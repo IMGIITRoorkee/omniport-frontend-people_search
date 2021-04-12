@@ -156,7 +156,7 @@ class Profile extends Component {
         <center>
           <div styleName='blocks.profile-div'>
             <Grid columns={2}>
-              <Grid.Column width={3}>
+              <Grid.Column width={3} styleName = 'blocks.picture'>
                 {(studentInfo.length !== 0) &&
                   <Card>
                     {studentInfo.displayPicture ? (
@@ -175,7 +175,7 @@ class Profile extends Component {
                   </Card>
                 }
               </Grid.Column>
-              <Grid.Column width={9}>
+              <Grid.Column width={10}>
                 <Container styleName='blocks.info-box' >
                   <List verticalAlign='middle'>
                     <List.Item>
@@ -228,7 +228,7 @@ class Profile extends Component {
                           <List.Header><List.Content floated='left'><h3 style={{ color: '#6a6cff' }}>Interests</h3></List.Content></List.Header>
                           {studentInfo.interests &&
                             <Container styleName='blocks.info-list'>
-                              <List divided verticalAlign='middle' style={{ maxHeight: 100, overflow: 'auto' }}>
+                              <List divided verticalAlign='middle'>
                                 {studentInfo.interests.map((item, i) => (
                                   <List.Item styleName='blocks.info-item' key={i}><List.Content floated='left'>{item}</List.Content></List.Item>
                                 )
