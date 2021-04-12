@@ -153,25 +153,29 @@ class Search extends Component {
       if (event.key == 'Enter') {
         this.hide;
       } else {
-        if (this.state.query && this.state.query.length > 3) {
+        if (this.state.query && this.state.query.length > 2) {
           this.hide()
           this.studentSearch()
           this.facultySearch()
           this.interestSearch()
-        } else if (!this.state.query) {
         }
       }
     })
   }
   handleSubmit = () => {
     if (this.state.query.length > 0) {
-      if (this.state.activeItem == 'all' || this.state.activeItem == 'student') {
+      if (this.state.activeItem == 'student') {
         this.hide()
         this.studentSearch()
         this.interestSearch()
       }
-      if (this.state.activeItem == 'all' || this.state.activeItem == 'faculty') {
+      if (this.state.activeItem == 'faculty') {
         this.hide()
+        this.facultySearch()
+      }
+      if(this.state.activeItem == 'all'){
+        this.hide()
+        this.studentSearch()
         this.facultySearch()
       }
     }
@@ -184,7 +188,9 @@ class Search extends Component {
     this.setState({ facultyresults: res.data.results })
   }
 
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+  handleItemClick = (e, { name }) => {
+    this.setState({ activeItem: name });
+  }
 
   submitHandler = (e) => {
     e.preventDefault();
@@ -197,21 +203,21 @@ class Search extends Component {
         <Menu styleName='blocks.menu'>
           <Menu.Item
             as='Button'
-            styleName='blocks.menu-item'
             name='all'
             active={activeItem === 'all'}
+            styleName={activeItem != "all" ? "blocks.menu-item" : "blocks.menu-item-color"}
             onClick={this.handleItemClick
             }>All</Menu.Item>
           <Menu.Item
             as='Button'
-            styleName='blocks.menu-item'
+            styleName={activeItem != "student" ? "blocks.menu-item" : "blocks.menu-item-color"}
             name='student'
             active={activeItem === 'student'}
             onClick={this.handleItemClick
             }>Student</Menu.Item>
           <Menu.Item
             as='Button'
-            styleName='blocks.menu-item'
+            styleName={activeItem != "faculty" ? "blocks.menu-item" : "blocks.menu-item-color"}
             name='faculty'
             active={activeItem === 'faculty'}
             onClick={this.handleItemClick}
@@ -235,19 +241,30 @@ class Search extends Component {
   studentList = () => {
     if (this.state.hide === true && (this.state.activeItem === 'student' || this.state.activeItem === 'all')) {
       return (
-        <div>
+        <div styleName='blocks.student-div'>
+          <div styleName='blocks.search-title-heading'> Students </div>
           {this.state.studentresults.map(x =>
             <Segment styleName='blocks.result-segment'>
-              <Grid columns='12'>
-                <Grid.Column styleName='blocks.result-item' width={2} style={{ color: '#6a6cff' }} >{x.fullName}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item' width={2}>{x.enrolmentNumber}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item' width={1}>{x.branchName}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item' width={3}>{x.emailAddress}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item' width={2}>{x.bhawanInformation}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item' width={1}>{x.roomNoInformation}</Grid.Column>
+              <Grid columns='16'>
+                <Grid.Column styleName='blocks.result-item-name' width={1} style={{ color: '#6a6cff' }} >{x.fullName}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item-enrolment' width={1}>{x.enrolmentNumber}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item-branch' width={3}>{x.branchName}</Grid.Column>
+                {x.currentYear==3 ? (
+                  <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}{"rd"}</Grid.Column>
+                ) : 
+                  x.currentYear==2 ? (
+                    <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}{"nd"}</Grid.Column>
+                  ) : 
+                      x.currentYear==1 ? (
+                        <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}{"st"}</Grid.Column>
+                        ) : (
+                    <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}{"rd"}</Grid.Column>
+                  )}
+                <Grid.Column styleName='blocks.result-item' width={2}>{x.emailAddress}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item' width={1}>{x.mobileNumber}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item' width={3}>{x.roomNoInformation}{"  "}{x.bhawanInformation}</Grid.Column>
                 {x.interests.length !== 0 &&
-                  <Grid.Column styleName='blocks.result-item' width={2}>
+                  <Grid.Column styleName='blocks.result-item-interest' width={2}>
                     <Menu vertical size='mini'>
                       <Dropdown item text='Interests'>
                         <Dropdown.Menu>
@@ -262,9 +279,10 @@ class Search extends Component {
               </Grid>
             </Segment>
           )}
-        </div>)
+        </div>
+        )
     } else {
-      return null
+      return <div styleName='blocks.no-match'>There are no students matching your query</div>
     }
   }
 
@@ -272,30 +290,32 @@ class Search extends Component {
     if (this.state.hide === true && (this.state.activeItem === 'faculty' || this.state.activeItem === 'all')) {
       return (
         <div>
+          <div styleName='blocks.search-title-heading'> Faculty </div>
           {this.state.facultyresults.map(x =>
             <Segment styleName='blocks.result-segment'>
-              <Grid columns='4'>
-                <Grid.Column styleName='blocks.result-item' style={{ color: '#6a6cff' }} >{x.name}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item'>{x.department.code}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item'>{x.designation}</Grid.Column>
+              <Grid columns='9'>
+                <Grid.Column styleName='blocks.result-item-name' width={1} style={{ color: '#6a6cff' }} >{x.name}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item-branch' width={5}>{x.department.name}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item-branch' width={3}>{x.designation}</Grid.Column>
               </Grid>
             </Segment>
           )}
         </div>)
     } else {
-      return null
+      return <div styleName='blocks.no-match'>There is no faculty matching your query</div>
     }
   }
   handleDrop = () => {
     this.setState({ dropIndex: !this.state.dropIndex })
   }
   dropdownChange = (name, value) => {
-    this.setState({ [name]: value })
+    this.setState({ [name]: value });
   }
+
   render() {
     const { residenceOptions, yearOptions, branchOptions, designationOptions, departmentOptions, current_year, branch, residence, designation, department, selfId } = this.state
     return (
-      <Container styleName='blocks.content-div'>
+      <div styleName='blocks.content-div'>
         <center styleName='blocks.center'>
           <div styleName='blocks.heading'>
             <span styleName='blocks.people'> People </span>
@@ -314,18 +334,19 @@ class Search extends Component {
             <div styleName='blocks.advanced' onClick={this.handleDrop}>
               <span styleName='blocks.link'> Advanced Search </span>
               <Icon name={this.state.dropIndex ? 'chevron up' : 'chevron down'} link onClick={this.handleDrop} styleName='blocks.arrow' />
-            </div>
+            </div >
             {this.state.dropIndex ? (
-              <div>
+              <div styleName='blocks.advanced-all'>
                 {this.menus()}
                 {this.state.activeItem == 'student' ? (
-                  <div styleName='blocks.menu'>
+                  <div styleName='blocks.menu-student-filters'>
                     <Grid columns={4}>
-                      <Grid.Column>
+                      <Grid.Column styleName = "blocks.menu-student_items">
                         <Dropdown
                           name='current_year'
                           onChange={(e, { name, value }) => this.dropdownChange(name, value)}
                           placeholder="Year"
+                          styleName = "blocks.menu-student_items"
                           options={yearOptions}
                           selection
                           clearable
@@ -334,7 +355,7 @@ class Search extends Component {
                           value={current_year}
                         />
                       </Grid.Column>
-                      <Grid.Column>
+                      <Grid.Column styleName = "blocks.menu-student_items">
                         <Dropdown
                           name='branch'
                           onChange={(e, { name, value }) => this.dropdownChange(name, value)}
@@ -347,7 +368,7 @@ class Search extends Component {
                           value={branch}
                         />
                       </Grid.Column>
-                      <Grid.Column>
+                      <Grid.Column styleName = "blocks.menu-student_items">
                         <Dropdown
                           name='residence'
                           onChange={(e, { name, value }) => this.dropdownChange(name, value)}
@@ -365,9 +386,9 @@ class Search extends Component {
                 ) : <></>
                 }
                 {this.state.activeItem == 'faculty' ? (
-                  <div styleName='blocks.menu'>
+                  <div styleName='blocks.menu-student-filters'>
                     <Grid columns={4}>
-                      <Grid.Column>
+                      <Grid.Column styleName = "blocks.menu-faculty_items">
                         <Dropdown
                           name='designation'
                           onChange={(e, { name, value }) => this.dropdownChange(name, value)}
@@ -379,8 +400,8 @@ class Search extends Component {
                           search
                           value={designation}
                         />
-                      </Grid.Column>
-                      <Grid.Column>
+                      </Grid.Column >
+                      <Grid.Column styleName = "blocks.menu-faculty_items">
                         <Dropdown
                           name='department'
                           onChange={(e, { name, value }) => this.dropdownChange(name, value)}
@@ -401,7 +422,7 @@ class Search extends Component {
 
             ) : <></>
             }
-            <div styleName='blocks.menu'>
+            <div styleName='blocks.submit-menu'>
               <Button onClick={this.handleSubmit} styleName='blocks.icon-button' style={{ backgroundColor: '#6a6cff', color: '#ffffff' }}>
                 Search
               </Button>
@@ -420,7 +441,7 @@ class Search extends Component {
             <div> {this.facultyList()} </div>
           </div >
         </center>
-      </Container>
+      </div>
     )
   }
 }

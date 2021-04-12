@@ -1,10 +1,15 @@
+* {
+  box-sizing: border-box;
+}
+
 .content-div {
   height: 100%;
+  overflow-y: scroll;
+  overflow-x: scroll;
   display: flex !important;
   flex-direction: column;
   justify-content: center;
-  background: #f5f6fa;
-  flex-grow: 1;
+  background: #f5f6fa !important;
   width: 100% !important;
 }
 
@@ -17,7 +22,7 @@
 }
 
 .center {
-  height: 75%;
+  height: 90%;
 }
 
 .heading {
@@ -111,15 +116,43 @@
 }
 
 .menu {
-  width: 55%;
+  width: 100%;
   height: 5rem;
   border-top: 0px;
-  margin-top: 1rem !important;
+  border: none;
+  margin-top: 0rem;
+  background-color: white;
+  padding: 0rem;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.menu-student-filters{
+  width: 100%;
+  height: 5rem;
+  border-top: 0px;
+  border: none;
+  margin-top: 0rem;
+  background-color: white;
+  padding: 2rem;
+  display: flex;
+  padding-top: 1rem;
+  padding-left: 1.5rem;
+}
+
+.submit-menu {
+  width: 55%;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 0px;
+  padding: 0rem;
+  margin-top: 1rem !important; 
+  margin-bottom: 4rem;
 }
 
 .menu-item {
-  height: 2.5rem;
-  padding: 2rem;
+  width: 6em;
+  position: absolute;
   border: 1px solid #dddddd;
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -135,6 +168,146 @@
   color: #444444;
 }
 
+@media only screen and (max-width: 1216px) {
+  .menu-item {
+    width: 6em;
+    position: absolute;
+    border: 1px solid #dddddd;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-left: 1.5rem;
+    box-sizing: border-box;
+    border-radius: 4px;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    text-align: center;
+    letter-spacing: 0.02em;
+    color: #444444;
+  }
+
+  .menu {
+    width: 100%;
+    height: 15rem;
+    border-top: 0px;
+    border: none;
+    margin-top: 0rem;
+    background-color: white;
+    padding: 0rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .menu-student-filters{
+    width: 40%;
+    height: 15em;
+    border-top: 0px;
+    border: none;
+    margin-top: 0rem;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    margin-left: -50% !important;
+    justify-content: left;
+  }
+  
+  .advanced {
+    height: 10em;
+    background: #ffffff;
+    box-shadow: 0px 7px 16px rgba(0, 0, 0, 0.03);
+  }
+  
+  .advanced-all {
+    width: 100%;
+    height: 100%;
+    padding: 0%;
+    background: #ffffff;
+    box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.03);
+    border-radius: 0px;
+  }
+
+   .menu-faculty_items{
+     margin-right: 5rem;
+    }
+    .result-segment {
+      width: 60em !important;
+      height: 5rem;
+      margin-left: 2% !important; 
+      border-top: 0px;
+      margin-top: 1rem !important;
+    }
+    
+    .result-item {
+      height: 2.5rem;
+      padding: 0rem;
+      margin-top: 0.7rem;
+      margin-bottom: 1rem;
+      margin-left: 0rem;
+      margin-right: 1em;
+      font-family: Lato;
+      font-size: 0.9em !important;
+      font-style: normal;
+      font-weight: normal;
+      line-height: normal;
+      text-align: center;
+      letter-spacing: 0.02em;
+      color: 444444;
+    }
+    
+    .result-item-name{
+      margin-top: 0.7rem;
+      margin-bottom: 1rem;
+      font-size: 0.9em !important;
+      margin-right: 3.5em;
+    }
+
+    .result-item-enrolment{
+      display: none !important;
+    }
+
+    .result-item-branch{
+      margin-top: 0rem !important;
+      margin-bottom: 0% !important;
+      font-size: 0.9em !important;
+      font-size: medium;
+      margin-right: 0em !important;
+      display: inline-block !important;
+    }
+    
+    
+}
+
+.menu-item-color{
+  width: 6em;
+  position: absolute;
+  border: 1px solid #dddddd;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  margin-left: 1.5rem;
+  box-sizing: border-box;
+  border-radius: 4px;
+  font-family: Lato;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  text-align: center;
+  letter-spacing: 0.02em;
+  color: #444444;
+  background-color: #9090f7 !important;
+}
+
+.menu-student_items{
+ margin-right: 2rem;
+}
+
+.menu-faculty_items{
+  margin-right: 5rem;
+ }
+ 
+
 .advanced {
   width: 55%;
   height: 2.5rem;
@@ -142,7 +315,15 @@
   padding: 0.5rem;
   background: #ffffff;
   box-shadow: 0px 7px 16px rgba(0, 0, 0, 0.03);
-  border-radius: 4px;
+  border-radius: 2px;
+}
+
+.advanced-all {
+  width: 55%;
+  padding: 0%;
+  background: #ffffff;
+  box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.03);
+  border-radius: 0px;
 }
 
 .link {
@@ -162,7 +343,7 @@
 }
 
 .result-segment {
-  width: 85%;
+  width: 75%;
   height: 5rem;
   border-top: 0px;
   margin-top: 1rem !important;
@@ -170,12 +351,52 @@
 
 .result-item {
   height: 2.5rem;
-  padding: 1rem;
-  margin-top: 1rem;
+  padding: 0rem;
+  margin-top: 0.7rem;
   margin-bottom: 1rem;
-  margin-left: 0.1rem;
+  margin-left: 0rem;
   margin-right: 1em;
   font-family: Lato;
+  font-size: medium;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  text-align: center;
+  letter-spacing: 0.02em;
+  color: #444444;
+}
+
+.result-item-name{
+  margin-top: 0.7rem;
+  margin-bottom: 1rem;
+  font-size: medium;
+  margin-right: 3.5em;
+}
+
+.result-item-enrolment{
+  margin-top: 0.7rem;
+  margin-bottom: 1rem;
+  font-size: medium;
+  margin-right: 3.5em;
+}
+
+
+.result-item-branch{
+  margin-top: 0.7rem;
+  margin-bottom: 1%;
+  font-size: medium;
+  margin-right: 1em;
+}
+
+.result-item-interest{
+  height: 2.5rem;
+  padding: 0rem;
+  margin-top: 0.4rem;
+  margin-bottom: 1rem;
+  margin-left: 0rem;
+  margin-right: 0em;
+  font-family: Lato;
+  font-size: medium;
   font-style: normal;
   font-weight: normal;
   line-height: normal;
@@ -204,4 +425,22 @@
 .info-item {
   margin: 0.5rem;
   padding: 0.5rem;
+}
+
+.search-title-heading{
+  font-size: 1.5em;
+  font-family: Lato;
+  font-weight: bold;
+  margin-left: 0%;
+}
+
+.no-match{
+  font-size: 1.5em;
+  font-family: Lato;
+  margin-left: 0%;
+  margin-bottom: 2em;
+}
+
+.student-div{
+  margin-bottom: 3em;
 }

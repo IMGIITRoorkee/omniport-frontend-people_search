@@ -5,7 +5,7 @@ import { Icon, List, Button, Form, Modal, Card, Checkbox, Grid, Image, Container
 import { DefaultDP } from 'formula_one'
 import { studentProfile, setVisibility } from '../../actions/index'
 
-import blocks from '../../css/app.css'
+import blocks from '../../css/profile.css'
 
 
 class Profile extends Component {
@@ -153,10 +153,10 @@ class Profile extends Component {
     const { studentInfo } = this.state
     return (
       <Container styleName='blocks.content-div'>
-        <center styleName='blocks.center'>
-          <div>
-            <Grid columns={2} divided>
-              <Grid.Column width={5}>
+        <center>
+          <div styleName='blocks.profile-div'>
+            <Grid columns={2}>
+              <Grid.Column width={3}>
                 {(studentInfo.length !== 0) &&
                   <Card>
                     {studentInfo.displayPicture ? (
@@ -170,7 +170,7 @@ class Profile extends Component {
                     <Card.Content>
                       <Card.Header>{studentInfo.fullName}</Card.Header>
                       <Card.Meta>{studentInfo.enrolmentNumber}</Card.Meta>
-                      <Card.Description>{studentInfo.branchName}</Card.Description>
+                      <Card.Description styleName = "blocks.branch-text">{studentInfo.branchName}</Card.Description>
                     </Card.Content>
                   </Card>
                 }
@@ -187,31 +187,31 @@ class Profile extends Component {
                             <List divided verticalAlign='middle'>
                               {studentInfo.emailAddress &&
                                 <List.Item styleName='blocks.info-item'>
-                                  < List.Content floated='right' >< Icon link name='users' onClick={(e) => this.showModal('emailVisibility')
+                                  < List.Content floated='right' styleName='blocks.info-text'>< Icon link name='users' onClick={(e) => this.showModal('emailVisibility')
                                   } /></List.Content>
 
-                                  <List.Content floated='left'>{studentInfo.emailAddress}</List.Content>
+                                  <List.Content floated='left' styleName='blocks.info-text'>{studentInfo.emailAddress}</List.Content>
                                 </List.Item>
                               }
                               {studentInfo.mobileNumber &&
                                 <List.Item styleName='blocks.info-item'>
-                                  < List.Content floated='right' >< Icon link name='users' onClick={(e) => this.showModal('mobileNumberVisibility')
+                                  < List.Content floated='right' styleName='blocks.info-text' >< Icon link name='users' onClick={(e) => this.showModal('mobileNumberVisibility')
                                   } /></List.Content>
-                                  <List.Content floated='left'>{studentInfo.mobileNumber}</List.Content>
+                                  <List.Content floated='left' styleName='blocks.info-text'>{studentInfo.mobileNumber}</List.Content>
                                 </List.Item>
                               }
                               {studentInfo.roomNoInformation &&
                                 <List.Item styleName='blocks.info-item'>
-                                  < List.Content floated='right' >< Icon link name='users' onClick={(e) => this.showModal('roomNumberVisibility')
+                                  < List.Content floated='right' styleName='blocks.info-text' >< Icon link name='users' onClick={(e) => this.showModal('roomNumberVisibility')
                                   } /></List.Content>
-                                  <List.Content floated='left'>{studentInfo.roomNoInformation}</List.Content>
+                                  <List.Content floated='left' styleName='blocks.info-text'>{studentInfo.roomNoInformation}</List.Content>
                                 </List.Item>
                               }
                               {studentInfo.bhawanInformation &&
                                 <List.Item styleName='blocks.info-item'>
-                                  < List.Content floated='right' >< Icon link name='users' onClick={(e) => this.showModal('bhawanVisibility')
+                                  < List.Content floated='right' styleName='blocks.info-text' >< Icon link name='users' onClick={(e) => this.showModal('bhawanVisibility')
                                   } /></List.Content>
-                                  <List.Content floated='left'>{studentInfo.bhawanInformation}</List.Content>
+                                  <List.Content floated='left' styleName='blocks.info-text'>{studentInfo.bhawanInformation}</List.Content>
                                 </List.Item>
                               }
                             </List>
