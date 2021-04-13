@@ -243,7 +243,8 @@ class Search extends Component {
       return (
         <div styleName='blocks.student-div'>
           <div styleName='blocks.search-title-heading'> Students </div>
-          {this.state.studentresults.map(x =>
+          {this.state.studentresults.length ? 
+          this.state.studentresults.map(x =>
             <Segment styleName='blocks.result-segment'>
               <Grid columns='8'>
                 <Grid.Column styleName='blocks.result-item-name' width={2} style={{ color: '#6a6cff' }} >{x.fullName}</Grid.Column>
@@ -258,11 +259,11 @@ class Search extends Component {
                       x.currentYear==1 ? (
                         <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}{"st"}</Grid.Column>
                         ) : (
-                    <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}{"rd"}</Grid.Column>
+                    <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}{"th"}</Grid.Column>
                   )}
                 <Grid.Column styleName='blocks.result-item' width={2}>{x.emailAddress}</Grid.Column>
                 <Grid.Column styleName='blocks.result-item' width={2}>{x.mobileNumber}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item' width={3}>{x.roomNoInformation}{"  "}{x.bhawanInformation}</Grid.Column>
+                <Grid.Column styleName='blocks.result-item' width={2}>{x.roomNoInformation}{"  "}{x.bhawanInformation}</Grid.Column>
                 {x.interests.length !== 0 &&
                   <Grid.Column styleName='blocks.result-item-interests' width={2}>
                     <Menu vertical size='mini'>
@@ -278,11 +279,13 @@ class Search extends Component {
                 }
               </Grid>
             </Segment>
-          )}
+          ) : 
+          <div styleName='blocks.no-match'>There are no students matching your query</div>
+          }
         </div>
         )
     } else {
-      return <div styleName='blocks.no-match'>There are no students matching your query</div>
+      return null
     }
   }
 
@@ -291,7 +294,8 @@ class Search extends Component {
       return (
         <div>
           <div styleName='blocks.search-title-heading'> Faculty </div>
-          {this.state.facultyresults.map(x =>
+          {this.state.facultyresults.length ? 
+          this.state.facultyresults.map(x =>
             <Segment styleName='blocks.result-segment'>
               <Grid columns='9'>
                 <Grid.Column styleName='blocks.result-item-name' width={1} style={{ color: '#6a6cff' }} >{x.name}</Grid.Column>
@@ -299,10 +303,12 @@ class Search extends Component {
                 <Grid.Column styleName='blocks.result-item-branch-faculty' width={3}>{x.designation}</Grid.Column>
               </Grid>
             </Segment>
-          )}
+          ) : 
+          <div styleName='blocks.no-match'>There is no faculty matching your query</div>
+          }
         </div>)
     } else {
-      return <div styleName='blocks.no-match'>There is no faculty matching your query</div>
+      return null
     }
   }
   handleDrop = () => {

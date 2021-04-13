@@ -215,6 +215,7 @@
   }
   .menu-student_items{
     width: 8em !important;
+    font-size: small !important;
   }  
 }
 
@@ -222,6 +223,7 @@
 
    .menu-faculty_items{
      margin-right: 5rem;
+     font-size: small !important;
     }
     .result-segment {
       width: 90em !important;
@@ -236,7 +238,7 @@
       padding: 0rem;
       margin-top: auto;
       font-family: Lato;
-      font-size: medium;
+      font-size: small;
       font-style: normal;
       font-weight: normal;
       line-height: normal;
@@ -246,7 +248,7 @@
     }
     
     .result-item-name{
-      font-size: medium;
+      font-size: small;
       margin-top: auto;
       display: flex;
       flex-direction: row;
@@ -262,12 +264,12 @@
     }
 
     .result-item-enrolment{
-      font-size: medium;
+      font-size: small;
     }
     
     
     .result-item-branch{
-      font-size: medium;
+      font-size: small;
     }        
 }
 
@@ -292,10 +294,14 @@
 
 .menu-student_items{
  margin-right: 2rem;
+ width: 15em !important;
+ font-size: small !important;
 }
 
 .menu-faculty_items{
-  margin-right: 5rem;
+  width: 15em !important;
+  margin-right: 2rem;
+  font-size: small !important;
  }
  
 
@@ -346,7 +352,7 @@
   padding: 0rem;
   margin-top: 0.75em;
   font-family: Lato;
-  font-size: medium;
+  font-size: small;
   font-style: normal;
   font-weight: normal;
   line-height: normal;
@@ -356,7 +362,7 @@
 }
 
 .result-item-name{
-  font-size: medium;
+  font-size: small;
   margin-top: 0.75em;
   display: flex;
   flex-direction: row;
@@ -364,22 +370,22 @@
 }
 
 .result-item-enrolment{
-  font-size: medium;
+  font-size: small;
 }
 
 
 .result-item-branch{
-  font-size: medium;
+  font-size: small;
 }
 
 .result-item-branch-faculty{
-  font-size: medium;
+  font-size: small;
   margin-top: 0.75em;
 }
 
 .result-item-interest{
   font-family: Lato;
-  font-size: medium;
+  font-size: small;
   font-style: normal;
   font-weight: normal;
   line-height: normal;
@@ -421,6 +427,7 @@
   font-size: 1.5em;
   font-family: Lato;
   margin-left: 0%;
+  margin-top: 1em;
   margin-bottom: 2em;
 }
 
