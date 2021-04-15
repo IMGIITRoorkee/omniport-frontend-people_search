@@ -43,12 +43,12 @@ class Search extends Component {
   }
   successStudentOptionsCallback = res => {
     const { data } = res
-    let residenceName = [...new Set(data.results.map(({ bhawanInformation }) => bhawanInformation).filter(x => x))]
-    let residenceCode = [...new Set(data.results.map(({ bhawanCode }) => bhawanCode).filter(x => x))]
+    let residenceName = [...new Set(data.map(({ bhawanInformation }) => bhawanInformation).filter(x => x))]
+    let residenceCode = [...new Set(data.map(({ bhawanCode }) => bhawanCode).filter(x => x))]
     let residence = {}
     residenceName.forEach((key, i) => residence[key] = residenceCode[i])
-    let year = [...new Set(data.results.map(({ currentYear }) => currentYear).filter(x => x))]
-    let branch = [...new Set(data.results.map(({ branchName }) => branchName).filter(x => x))]
+    let year = [...new Set(data.map(({ currentYear }) => currentYear).filter(x => x))]
+    let branch = [...new Set(data.map(({ branchName }) => branchName).filter(x => x))]
     var residenceList = []
     var yearList = []
     var branchList = []
@@ -70,10 +70,10 @@ class Search extends Component {
   }
   successFacultyOptionsCallback = res => {
     const { data } = res
-    let designationName = data.results.map(({ designation }) => designation).filter(x => x)
-    let designationCode = data.results.map(({ designationCode }) => designationCode).filter(x => x)
-    let departmentName = data.results.map(({ department }) => department).filter(x => x).map(({ name }) => name)
-    let departmentCode = data.results.map(({ department }) => department).filter(x => x).map(({ code }) => code)
+    let designationName = data.map(({ designation }) => designation).filter(x => x)
+    let designationCode = data.map(({ designationCode }) => designationCode).filter(x => x)
+    let departmentName = data.map(({ department }) => department).filter(x => x).map(({ name }) => name)
+    let departmentCode = data.map(({ department }) => department).filter(x => x).map(({ code }) => code)
     let department = {}
     departmentName.forEach((key, i) => department[key] = departmentCode[i])
     let designation = {}
@@ -104,7 +104,7 @@ class Search extends Component {
       }
     }).then(response => {
       this.setState({
-        studentresults: response.data.results
+        studentresults: response.data
       })
     })
   }
@@ -121,7 +121,7 @@ class Search extends Component {
       }
     }).then(response => {
       this.setState({
-        facultyresults: response.data.results
+        facultyresults: response.data
       })
     })
   }
@@ -135,7 +135,7 @@ class Search extends Component {
       }
     }).then(response => {
       this.setState({
-        studentresults: this.state.studentresults.concat(response.data.results)
+        studentresults: this.state.studentresults.concat(response.data)
       })
     })
   }
@@ -153,7 +153,7 @@ class Search extends Component {
       if (event.key == 'Enter') {
         this.hide;
       } else {
-        if (this.state.query && this.state.query.length > 2) {
+        if (this.state.query) {
           this.hide()
           this.studentSearch()
           this.facultySearch()
@@ -182,10 +182,10 @@ class Search extends Component {
   }
 
   successStudentCallback = res => {
-    this.setState({ studentresults: res.data.results })
+    this.setState({ studentresults: res.data })
   }
   successFacultyCallback = res => {
-    this.setState({ facultyresults: res.data.results })
+    this.setState({ facultyresults: res.data })
   }
 
   handleItemClick = (e, { name }) => {
