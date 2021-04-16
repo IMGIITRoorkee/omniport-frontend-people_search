@@ -7,13 +7,14 @@ import {
   urlInterestQuery,
   urlFacultyProfile,
   urlStudentProfile,
-  getWhoAmIApi
+  getWhoAmIApi,
+  urlOptions,
 } from '../urls'
 
 export const studentOptions = (successCallback, errCallback) => {
   return dispatch => {
     axios
-      .get(urlStudentQuery())
+      .get(urlOptions())
       .then(res => {
         dispatch({
           type: `STUDENT_OPTIONS`,
@@ -26,10 +27,11 @@ export const studentOptions = (successCallback, errCallback) => {
       })
   }
 }
+
 export const facultyOptions = (successCallback, errCallback) => {
   return dispatch => {
     axios
-      .get(urlFacultyQuery())
+      .get(urlOptions())
       .then(res => {
         dispatch({
           type: `FACULTY_OPTIONS`,

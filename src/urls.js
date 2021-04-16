@@ -8,6 +8,10 @@ export const urlProfile = () => {
   return `${appBaseUrl()}/profile/`
 }
 
+export const urlOptions = () => {
+  return `/api/people_search/advanced_search/`
+}
+
 export const getWhoAmIApi = () => {
   return '/kernel/who_am_i/'
 }
