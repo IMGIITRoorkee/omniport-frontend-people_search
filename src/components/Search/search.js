@@ -168,17 +168,17 @@ class Search extends Component {
       if (event.key == 'Enter') {
         this.hide;
       } else {
-        if (this.state.query) {
+        // if (this.state.query) {
           this.hide()
           this.studentSearch()
           this.facultySearch()
           this.interestSearch()
-        }
+        // }
       }
     })
   }
   handleSubmit = () => {
-    if (this.state.query.length > 0) {
+    if (this.state.query.length > -1) {
       if (this.state.activeItem == 'student') {
         this.hide()
         this.studentSearch()
