@@ -22,6 +22,10 @@ class App extends Component {
       {
         name: 'Pushpam Choudhary',
         role: 'Frontend developer',
+      },
+      {
+        name: 'Gagan Sharma',
+        role: 'Frontend developer',
       }
     ]
 

@@ -18,7 +18,6 @@ class StudentOptionsComponent extends Component{
                         name='current_year'
                         onChange={(e, { name, value }) => dropdownChange(name, value)}
                         placeholder="Year"
-                        styleName = "blocks.menu-student_items"
                         options={yearOptions}
                         selection
                         clearable
