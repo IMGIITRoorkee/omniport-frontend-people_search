@@ -3,9 +3,8 @@
 }
 
 .content-div {
-  height: 100%;
-  overflow-y: scroll;
-  overflow-x: scroll;
+  height: fit-content;
+  min-height: 100%;
   display: flex !important;
   flex-direction: column;
   justify-content: center;
@@ -115,15 +114,39 @@
   text-align: center !important;
 }
 
+.tabMenu {
+  width: 80%;
+  min-width: fit-content;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.tabMenuItem {
+  width: 50%;
+  min-width: fit-content;
+  padding: 10px;
+  background-color: #f5f6fa;
+  border: none;
+  height: 44px;
+  box-sizing: border-box;
+}
+
+.tabMenuItem-color{
+  border-bottom: 2px solid #6a6cff;
+}
+
 .menu {
   width: 100%;
-  height: 5rem;
+  min-height: 5rem;
+  height: fit-content;
   border-top: 0px;
   border: none;
   margin-top: 0rem;
   background-color: white;
   padding: 0rem;
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-start;
 }
 
@@ -152,7 +175,6 @@
 
 .menu-item {
   width: 6em;
-  position: absolute;
   border: 1px solid #dddddd;
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -171,7 +193,6 @@
 @media only screen and (max-width: 1302px) {
   .menu-item {
     width: 6em;
-    position: absolute;
     border: 1px solid #dddddd;
     margin-top: 1rem;
     margin-bottom: 1rem;
@@ -185,20 +206,6 @@
     text-align: center;
     letter-spacing: 0.02em;
     color: #444444;
-  }
-
-  .menu {
-    width: 100%;
-    height: 15rem;
-    border-top: 0px;
-    border: none;
-    margin-top: 0rem;
-    background-color: white;
-    padding: 0rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
   }
 
   .center{
@@ -281,7 +288,6 @@
 
 .menu-item-color{
   width: 6em;
-  position: absolute;
   border: 1px solid #dddddd;
   margin-top: 1rem;
   margin-bottom: 1rem;
