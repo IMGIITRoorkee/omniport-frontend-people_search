@@ -119,22 +119,32 @@
   width: 80%;
   min-width: fit-content;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   flex-wrap: wrap;
 }
 
 .tabMenuItem {
-  width: 50%;
+  width: 177px;
   min-width: fit-content;
   padding: 10px;
-  background-color: #f5f6fa;
   border: none;
   height: 44px;
   box-sizing: border-box;
+  opacity: 0.5;
+}
+
+.tabMenuItemStudent {
+  background-color: #ECECFC;
+  border-bottom: 4px solid #6A6CFF;
+}
+
+.tabMenuItemFaculty {
+  background-color: #fcf1e1;
+  border-bottom: 4px solid #fcc26d;
 }
 
 .tabMenuItem-color{
-  border-bottom: 2px solid #6a6cff;
+  opacity: 1;
 }
 
 .menu {

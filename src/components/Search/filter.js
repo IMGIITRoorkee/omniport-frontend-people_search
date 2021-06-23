@@ -7,17 +7,20 @@ class Filters extends Component{
     }
 
     render(){
-        const { current_year, branch, residence,  designation, department } = this.props.state
-        let student = [current_year, branch, residence]
-        let faculty = [designation, department]
+        const { yearOptions, current_year, branchOptions, branch, residenceOptions, residence, designationOptions, designation, departmentOptions, department } = this.props
+        let yearVal = yearOptions.find( o => o.key===current_year)
+        let branchVal = branchOptions.find( o => o.key===branch)
+        let residenceVal = residenceOptions.find( o => o.key===residence)
+        let designationVal = designationOptions.find( o => o.key===designation)
+        let depVal = departmentOptions.find( o => o.key===department)
         return(
             <div styleName="blocks.filters">
-                {student.map(param => 
-                    param && <div styleName="blocks.filter-item blocks.filter-item-student">{param}</div>
-                )}
-                {faculty.map(param => 
-                    param && <div styleName="blocks.filter-item blocks.filter-item-faculty">{param}</div>
-                )}
+                {yearVal && <div styleName="blocks.filter-item blocks.filter-item-student">{yearVal.text}</div>}
+                {branchVal && <div styleName="blocks.filter-item blocks.filter-item-student">{branchVal.text}</div>}
+                {residenceVal && <div styleName="blocks.filter-item blocks.filter-item-student">{residenceVal.text}</div>}
+                
+                {designationVal && <div styleName="blocks.filter-item blocks.filter-item-faculty">{designationVal.text}</div>}
+                {depVal && <div styleName="blocks.filter-item blocks.filter-item-faculty">{depVal.text}</div>}
             </div>
         )
     }
