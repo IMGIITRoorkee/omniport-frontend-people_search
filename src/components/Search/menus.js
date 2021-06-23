@@ -33,13 +33,6 @@ class Menus extends Component{
                   active={activeItem === 'faculty'}
                   onClick={handleItemClick}
                 >Faculty</Menu.Item>
-                <Menu.Item
-                  as='Button'
-                  styleName={activeItem != "interests" ? "blocks.menu-item" : "blocks.menu-item-color"}
-                  name='interests'
-                  active={activeItem === 'interests'}
-                  onClick={handleItemClick}
-                >Interests</Menu.Item>
               </Menu>)
     }
 }

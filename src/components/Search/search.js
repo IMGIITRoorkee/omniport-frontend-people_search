@@ -13,7 +13,7 @@ import Menus from './menus'
 import StudentOptionsComponent from './studentOptions'
 import FacultyOptionsComponent from './facultyOptions'
 import AllList from './allList'
-
+import Filters from './filter'
 class Search extends Component {
   state = {
     query: '',
@@ -290,6 +290,7 @@ class Search extends Component {
               )
               }
             </div>
+            <Filters state={this.state}/>
             <div>
               {this.state.hide === true && (this.state.activeItem === 'student') && <StudentList showHead={true} studentresults={this.state.studentresults}/>}
             </div>

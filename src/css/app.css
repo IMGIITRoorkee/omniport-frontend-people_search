@@ -7,7 +7,6 @@
   min-height: 100%;
   display: flex !important;
   flex-direction: column;
-  justify-content: center;
   background: #f5f6fa !important;
   width: 100% !important;
 }
@@ -26,6 +25,7 @@
 
 .heading {
   height: 4rem;
+  margin-top: 3rem;
 }
 
 .people {
@@ -172,11 +172,12 @@
   border-top: 0px;
   padding: 0rem;
   margin-top: 1rem !important; 
-  margin-bottom: 4rem;
+  margin-bottom: 1rem;
 }
 
 .menu-item {
-  width: 6em;
+  min-width: 6em;
+  padding: 2px;
   border: 1px solid #dddddd;
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -250,7 +251,8 @@
 }
 
 .menu-item-color{
-  width: 6em;
+  min-width: 6em;
+  padding: 2px;
   border: 1px solid #dddddd;
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -410,4 +412,36 @@
 
 .student-div{
   margin-bottom: 3em;
+}
+
+.filters{
+  width: 55%;
+  min-width: 250px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-bottom: 3rem;
+}
+
+.filter-item{
+  margin-top: 5px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  height: fit-content;
+  color: #444444;
+  font-family: Lato;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  padding: 9px 26px 9px 18px;
+}
+
+.filter-item-student{
+  background-color: rgba(125, 127, 255, 0.35);
+}
+.filter-item-faculty{
+  background-color: #FFE8C7;
 }
