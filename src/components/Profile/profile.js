@@ -152,11 +152,9 @@ class Profile extends Component {
   render() {
     const { studentInfo } = this.state
     return (
-      <Container styleName='blocks.content-div'>
-        <center>
+      <div styleName='blocks.content-div'>
           <div styleName='blocks.profile-div'>
-            <Grid columns={2}>
-              <Grid.Column width={3} styleName = 'blocks.picture'>
+              <div styleName = 'blocks.picture'>
                 {(studentInfo.length !== 0) &&
                   <Card>
                     {studentInfo.displayPicture ? (
@@ -174,9 +172,8 @@ class Profile extends Component {
                     </Card.Content>
                   </Card>
                 }
-              </Grid.Column>
-              <Grid.Column width={10}>
-                <Container styleName='blocks.info-box' >
+              </div>
+              <div styleName='blocks.info-box' >
                   <List verticalAlign='middle'>
                     <List.Item>
 
@@ -241,13 +238,10 @@ class Profile extends Component {
                       </List.Item>
                     }
                   </List>
-                </Container>
-              </Grid.Column>
+              </div>
 
-            </Grid>
           </div >
-        </center>
-      </Container >
+      </div >
     )
   }
 }

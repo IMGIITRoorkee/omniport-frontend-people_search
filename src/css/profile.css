@@ -3,17 +3,14 @@
   }
   
   .content-div {
-    height: 100%;
+    height: fit-content;
+    min-height: 100%;
     display: flex !important;
-    overflow-y: scroll;
     overflow-x: hidden;
     flex-direction: column;
     background: #f5f6fa !important;
     width: 100% !important;
-  }
-  .profile-div{
-    margin-top: 2%;
-    margin-left: 10%;
+    align-items: center;
   }
 
   .branch-text{
@@ -124,7 +121,8 @@
   .info-box {
     background-color: #ffffff;
     height: 100%;
-    width: 15rem;
+    width:70%;
+    min-width: 353px;
     padding: 2rem;
   }
   
@@ -141,6 +139,17 @@
       padding-top: 0.5rem;
   }
 
+  .profile-div{
+    width: 80%;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 2%;
+  }
+
+  .picture{
+    width:20%;
+  }
+
 @media only screen and (max-width: 804px) {
   .content-div {
     height: 100%;
@@ -150,13 +159,9 @@
     flex-direction: column;
     background: #f5f6fa !important;
     width: 100% !important;
+    align-items: center;
   }
   .picture{
-    visibility: hidden;
-  }
-  .profile-div{
-    margin-top: 2%;
-    margin-left: 2%;
-    margin-right: 2%;
+    display: none;
   }
 }
