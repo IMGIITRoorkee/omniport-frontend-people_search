@@ -13,13 +13,13 @@ class FacultyList extends Component{
             {this.props.showHead && <div styleName='blocks.search-title-heading'> Faculty </div>}
             {this.props.facultyresults.length ? 
             this.props.facultyresults.map(x =>
-                <Segment styleName='blocks.result-segment'>
-                <Grid columns='9'>
-                    <Grid.Column styleName='blocks.result-item-name' width={1} style={{ color: '#6a6cff' }} >{x.name}</Grid.Column>
-                    <Grid.Column styleName='blocks.result-item-branch-faculty' width={5}>{x.department.name}</Grid.Column>
-                    <Grid.Column styleName='blocks.result-item-branch-faculty' width={3}>{x.designation}</Grid.Column>
-                </Grid>
-                </Segment>
+                <div styleName='blocks.result-segment'>
+                <div style={{display:"flex", flexWrap:"wrap"}}>
+                    <div styleName='blocks.result-item'  style={{ color: '#6a6cff' }} >{x.name}</div>
+                    <div styleName='blocks.result-item'  >{x.department.name}</div>
+                    <div styleName='blocks.result-item'  >{x.designation}</div>
+                </div>
+                </div>
             ) : 
             <div styleName='blocks.no-match'>There is no faculty matching your query</div>
             }

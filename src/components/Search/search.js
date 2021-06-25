@@ -291,9 +291,9 @@ class Search extends Component {
               }
             </div>
             
-              {this.state.hide === true && (this.state.activeItem === 'student') && <StudentList showHead={true} studentresults={this.state.studentresults}/>}
+              {this.state.hide === true && (this.state.activeItem === 'student') && <StudentList showHead={false} studentresults={this.state.studentresults}/>}
 
-              {this.state.hide === true && (this.state.activeItem === 'faculty') && <FacultyList showHead={true} facultyresults={this.state.facultyresults}/>}
+              {this.state.hide === true && (this.state.activeItem === 'faculty') && <FacultyList showHead={false} facultyresults={this.state.facultyresults}/>}
  
             {this.state.hide === true && (this.state.activeItem === 'all') && 
               <>

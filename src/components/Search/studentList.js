@@ -15,40 +15,37 @@ class StudentList extends Component {
             {this.props.showHead && <div styleName='blocks.search-title-heading'> Students </div>}
             {this.props.studentresults.length ? 
             this.props.studentresults.map(x =>
-                <Segment styleName='blocks.result-segment'>
-                <Grid columns='8'>
-                    <Grid.Column styleName='blocks.result-item-name' width={2} style={{ color: '#6a6cff' }} >{x.fullName}</Grid.Column>
-                    <Grid.Column styleName='blocks.result-item' width={1}>{x.enrolmentNumber}</Grid.Column>
-                    <Grid.Column styleName='blocks.result-item' width={3}>{x.branchName}</Grid.Column>
+                <div styleName='blocks.result-segment'>
+                <div style={{display:"flex", flexWrap:"wrap"}}>
+                    <div styleName='blocks.result-item'  style={{ color: '#6a6cff'}} >{x.fullName}</div>
+                    <div styleName='blocks.result-item'>{x.enrolmentNumber}</div>
+                    <div styleName='blocks.result-item'>{x.branchName}</div>
                     {x.currentYear==3 ? (
-                    <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}{"rd"}</Grid.Column>
+                    <div styleName='blocks.result-item'>{x.currentYear}{"rd"}</div>
                     ) : 
                     x.currentYear==2 ? (
-                        <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}{"nd"}</Grid.Column>
+                        <div styleName='blocks.result-item' >{x.currentYear}{"nd"}</div>
                     ) : 
                         x.currentYear==1 ? (
-                            <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}{"st"}</Grid.Column>
+                            <div styleName='blocks.result-item' >{x.currentYear}{"st"}</div>
                             ) : (
-                        <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}{"th"}</Grid.Column>
+                        <div styleName='blocks.result-item' >{x.currentYear}{"th"}</div>
                     )}
-                    <Grid.Column styleName='blocks.result-item' width={2}>{x.emailAddress}</Grid.Column>
-                    <Grid.Column styleName='blocks.result-item' width={2}>{x.mobileNumber}</Grid.Column>
-                    <Grid.Column styleName='blocks.result-item' width={2}>{x.roomNoInformation}{"  "}{x.bhawanInformation}</Grid.Column>
+                    <div styleName='blocks.result-item' >{x.emailAddress}</div>
+                    <div styleName='blocks.result-item' >{x.mobileNumber}</div>
+                    <div styleName='blocks.result-item' >{x.roomNoInformation}{"  "}{x.bhawanInformation}</div>
+                </div>
+
                     {x.interests.length !== 0 &&
-                    <Grid.Column styleName='blocks.result-item-interests' width={2}>
-                        <Menu vertical size='mini'>
-                        <Dropdown item text='Interests'>
-                            <Dropdown.Menu>
+                    <div styleName="blocks.filters" style={{marginBottom:"0px"}}>
+                   
                             {x.interests.map((item, i) => (
-                                <Dropdown.Item>{item}</Dropdown.Item>
+                                <div styleName="blocks.filter-item blocks.filter-item-student">{item}</div>
                             ))}
-                            </Dropdown.Menu>
-                        </Dropdown>
-                        </Menu>
-                    </Grid.Column>
+                    </div>
                     }
-                </Grid>
-                </Segment>
+                
+                </div>
             ) : 
             <div styleName='blocks.no-match'>There are no students matching your query</div>
             }

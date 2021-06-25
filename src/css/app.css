@@ -124,6 +124,7 @@
 }
 
 .tabMenuItem {
+  margin-bottom: 1em;
   width: 177px;
   min-width: fit-content;
   padding: 10px;
@@ -209,31 +210,12 @@
     width: 100%;
 
   }
+  .tabMenu{
+    justify-content: center;
+  }
 }
 
 @media only screen and (max-width: 1600px) {
-    .result-segment {
-      width: 90em !important;
-      height: 6rem;
-      border-top: 0px;
-      margin-top: 1rem !important;
-      margin-left: 2% !important;
-      padding-right: 4em !important;
-    }
-    
-    .result-item {
-      padding: 0rem;
-      margin-top: auto;
-      font-family: Lato;
-      font-size: small;
-      font-style: normal;
-      font-weight: normal;
-      line-height: normal;
-      text-align: center;
-      letter-spacing: 0.02em;
-      color: #444444;
-    }
-    
     .result-item-name{
       font-size: small;
       margin-top: auto;
@@ -329,23 +311,33 @@
 }
 
 .result-segment {
+  margin-bottom: 1em;
+  background-color: #ffffff;
   width: 80%;
-  height: 6rem;
+  height: fit-content;
   border-top: 0px;
-  padding-right: 6em !important;
   display: flex;
+  padding: 1em;
+  padding-bottom: 1.5em;
   flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 1px 2px 0 rgb(34 36 38 / 15%);
+  min-height: 5em;
+  border-radius: .28571429rem;
+  border : 1px solid rgba(34,36,38,.15);
 }
 
 .result-item {
-  padding: 0rem;
+  width: fit-content;
+  align-items: center;
+  padding-right: 2em;
   margin-top: 0.75em;
   font-family: Lato;
   font-size: small;
   font-style: normal;
   font-weight: normal;
   line-height: normal;
-  text-align: center;
+  text-align: left;
   letter-spacing: 0.02em;
   color: #444444;
 }
