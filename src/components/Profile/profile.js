@@ -96,6 +96,15 @@ class Profile extends Component {
                 onChange={(e, { name, value }) => this.handleChange(name, value)}
               />
             </Form.Field>
+            <Form.Field>
+              <Checkbox
+                label='None'
+                name={this.state.name}
+                value='none'
+                checked={this.state[this.state.name] === 'none'}
+                onChange={(e, { name, value }) => this.handleChange(name, value)}
+              />
+            </Form.Field>
           </Form>
         </Modal.Content>
         <Modal.Actions>
