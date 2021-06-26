@@ -16,24 +16,24 @@ class StudentList extends Component {
             {this.props.studentresults.length ? 
             this.props.studentresults.map(x =>
                 <div styleName='blocks.result-segment'>
-                <div style={{display:"flex", flexWrap:"wrap"}}>
-                    <div styleName='blocks.result-item'  style={{ color: '#6a6cff'}} >{x.fullName}</div>
-                    <div styleName='blocks.result-item'>{x.enrolmentNumber}</div>
-                    <div styleName='blocks.result-item'>{x.branchName}</div>
+                <div style={{display:"flex", flexWrap:"wrap", justifyContent: 'space-around'}}>
+                    <div styleName='blocks.result-item'  style={{ color: '#6a6cff', width:'98px'}} >{x.fullName}</div>
+                    <div styleName='blocks.result-item' style={{width:'108px'}}>{x.enrolmentNumber}</div>
+                    <div styleName='blocks.result-item' style={{width:'285px'}}>{x.branchName}</div>
                     {x.currentYear==3 ? (
-                    <div styleName='blocks.result-item'>{x.currentYear}{"rd"}</div>
+                    <div styleName='blocks.result-item' style={{width:'69px'}}>{x.currentYear}{"rd"}</div>
                     ) : 
                     x.currentYear==2 ? (
-                        <div styleName='blocks.result-item' >{x.currentYear}{"nd"}</div>
+                        <div styleName='blocks.result-item' style={{width:'69px'}}>{x.currentYear}{"nd"}</div>
                     ) : 
                         x.currentYear==1 ? (
-                            <div styleName='blocks.result-item' >{x.currentYear}{"st"}</div>
+                            <div styleName='blocks.result-item' style={{width:'69px'}}>{x.currentYear}{"st"}</div>
                             ) : (
-                        <div styleName='blocks.result-item' >{x.currentYear}{"th"}</div>
+                        <div styleName='blocks.result-item' style={{width:'69px'}}>{x.currentYear}{"th"}</div>
                     )}
-                    <div styleName='blocks.result-item' >{x.emailAddress}</div>
-                    <div styleName='blocks.result-item' >{x.mobileNumber}</div>
-                    <div styleName='blocks.result-item' >{x.roomNoInformation}{"  "}{x.bhawanInformation}</div>
+                    <div styleName='blocks.result-item' style={{width:'216px'}}>{x.emailAddress}</div>
+                    <div styleName='blocks.result-item' style={{width:'118px'}}>{x.mobileNumber}</div>
+                    <div styleName='blocks.result-item' style={{width:'180px'}}>{x.roomNoInformation}{"  "}{x.bhawanInformation}</div>
                 </div>
 
                     {x.interests.length !== 0 &&

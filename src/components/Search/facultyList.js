@@ -14,10 +14,10 @@ class FacultyList extends Component{
             {this.props.facultyresults.length ? 
             this.props.facultyresults.map(x =>
                 <div styleName='blocks.result-segment'>
-                <div style={{display:"flex", flexWrap:"wrap"}}>
-                    <div styleName='blocks.result-item'  style={{ color: '#6a6cff' }} >{x.name}</div>
-                    <div styleName='blocks.result-item'  >{x.department.name}</div>
-                    <div styleName='blocks.result-item'  >{x.designation}</div>
+                <div style={{display:"flex", flexWrap:"wrap", justifyContent: 'space-around'}}>
+                    <div styleName='blocks.result-item'  style={{ color: '#6a6cff', width:'90px' }} >{x.name}</div>
+                    <div styleName='blocks.result-item'  style={{width:'370px'}}>{x.department.name}</div>
+                    <div styleName='blocks.result-item'  style={{width:'222px'}}>{x.designation}</div>
                 </div>
                 </div>
             ) : 
