@@ -291,14 +291,14 @@ class Search extends Component {
               }
             </div>
             
-              {this.state.hide === true && (this.state.activeItem === 'student') && <StudentList showHead={false} studentresults={this.state.studentresults}/>}
+              {this.state.hide === true && (this.state.activeItem === 'student') && <StudentList history={this.props.history} showHead={false} studentresults={this.state.studentresults}/>}
 
               {this.state.hide === true && (this.state.activeItem === 'faculty') && <FacultyList showHead={false} facultyresults={this.state.facultyresults}/>}
  
             {this.state.hide === true && (this.state.activeItem === 'all') && 
               <>
               <Filters yearOptions={yearOptions} current_year={current_year} branch={branch} branchOptions={branchOptions} residence={residence} residenceOptions={residenceOptions} designationOptions={designationOptions} designation={designation} department={department} departmentOptions={departmentOptions} />
-              <AllList studentresults={this.state.studentresults} facultyresults={this.state.facultyresults}/>
+              <AllList studentresults={this.state.studentresults} facultyresults={this.state.facultyresults} history={this.props.history}/>
               </>
             }
     

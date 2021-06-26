@@ -20,7 +20,7 @@ class AllList extends Component{
                     <button styleName={"blocks.search-title-heading blocks.tabMenuItem blocks.tabMenuItemStudent " + (this.state.active?"blocks.tabMenuItem-color":"")} onClick={this.onChange}> Students </button>
                     <button styleName={"blocks.search-title-heading blocks.tabMenuItem blocks.tabMenuItemFaculty " + (!this.state.active?"blocks.tabMenuItem-color":"")} onClick={this.onChange}> Faculty </button>
                 </div>
-                {this.state.active && <StudentList showHead={false} studentresults={this.props.studentresults}/>}
+                {this.state.active && <StudentList history={this.props.history} showHead={false} studentresults={this.props.studentresults}/>}
                 {!this.state.active && <FacultyList showHead={false} facultyresults={this.props.facultyresults}/>}
             </div>
         )

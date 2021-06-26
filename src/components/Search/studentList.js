@@ -8,6 +8,10 @@ class StudentList extends Component {
         super(props)
     }
     
+    studentHomepage = (id) => {
+        this.props.history.push({ pathname: `/student_profile/${id}/` })
+    }
+
     render(){
         
         return (
@@ -17,7 +21,9 @@ class StudentList extends Component {
             this.props.studentresults.map(x =>
                 <div styleName='blocks.result-segment'>
                 <div style={{display:"flex", flexWrap:"wrap", justifyContent: 'space-around'}}>
-                    <div styleName='blocks.result-item'  style={{ color: '#6a6cff', width:'98px'}} >{x.fullName}</div>
+                    <div styleName='blocks.result-item'  style={{ color: '#6a6cff', width:'98px'}} >
+                        <a onClick={() => this.studentHomepage(x.enrolmentNumber)} style={{cursor:'pointer'}}>{x.fullName}</a>
+                    </div>
                     <div styleName='blocks.result-item' style={{width:'108px'}}>{x.enrolmentNumber}</div>
                     <div styleName='blocks.result-item' style={{width:'285px'}}>{x.branchName}</div>
                     {x.currentYear==3 ? (
