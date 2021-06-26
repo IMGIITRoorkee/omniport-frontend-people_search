@@ -250,7 +250,7 @@ class Search extends Component {
             <form onSubmit={this.submitHandler}>
               <input
                 styleName='blocks.search-bar'
-                placeholder="Search"
+                placeholder="Search By Interest, Enrollment Number, Name, or Residence "
                 ref={input => this.search = input}
                 onChange={this.handleInputChange}
               />
