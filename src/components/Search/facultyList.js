@@ -13,7 +13,7 @@ class FacultyList extends Component{
             {this.props.showHead && <div styleName='blocks.search-title-heading'> Faculty </div>}
             {this.props.facultyresults.length ? 
             this.props.facultyresults.map(x =>
-                <div styleName='blocks.result-segment'>
+                <div styleName='blocks.result-segment' style={{maxWidth:'74%'}}>
                 <div style={{display:"flex", flexWrap:"wrap", justifyContent: 'space-around'}}>
                     <div styleName='blocks.result-item'  style={{ color: '#6a6cff', width:'90px' }} >{x.name}</div>
                     <div styleName='blocks.result-item'  style={{width:'370px'}}>{x.department.name}</div>
