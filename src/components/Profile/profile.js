@@ -231,7 +231,12 @@ class Profile extends Component {
                     {(studentInfo.length !== 0) &&
                       <List.Item>
                         <List.Content>
-                          <List.Header><List.Content floated='left'><h3 style={{ color: '#6a6cff' }}>Interests</h3></List.Content></List.Header>
+                          <List.Header>
+                            <List.Content floated='right' styleName='blocks.info-text blocks.edit-interest' >
+                              < Icon link name='edit' onClick={(e) => this.props.history.push({ pathname: `/student_profile/` })} />
+                            </List.Content>
+                            <List.Content floated='left'><h3 style={{ color: '#6a6cff' }}>Interests</h3></List.Content>
+                          </List.Header>
                           {studentInfo.interests &&
                             <Container styleName='blocks.info-list'>
                               <List divided verticalAlign='middle'>

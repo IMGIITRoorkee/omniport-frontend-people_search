@@ -35,7 +35,8 @@ class Search extends Component {
     student: true,
     dropIndex: false,
     studentRole: false,
-    activeItem: 'all'
+    activeItem: 'all',
+    shouldScroll : 0,
   }
   componentDidMount() {
     this.props.StudentOptions(this.successStudentOptionsCallback, this.errorCallback)
@@ -124,9 +125,11 @@ class Search extends Component {
         residence
       }
     }).then(response => {
-      this.setState({
-        studentresults: response.data.results
-      })
+      this.setState( prevState => (
+        {
+          shouldScroll : prevState.shouldScroll + 1, 
+          studentresults: response.data.results
+        }))
     })
   }
 
@@ -141,9 +144,10 @@ class Search extends Component {
         department
       }
     }).then(response => {
-      this.setState({
+      this.setState( prevState => ({
+        shouldScroll : prevState.shouldScroll + 1, 
         facultyresults: response.data.results
-      })
+      }))
     })
   }
   interestSearch = () => {
@@ -155,9 +159,10 @@ class Search extends Component {
         query
       }
     }).then(response => {
-      this.setState({
+      this.setState( prevState => ({
+        shouldScroll : prevState.shouldScroll + 1, 
         studentresults: this.state.studentresults.concat(response.data.results)
-      })
+      }))
     })
   }
 
@@ -236,7 +241,12 @@ class Search extends Component {
   dropdownChange = (name, value) => {
     this.setState({ [name]: value });
   }
-
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.shouldScroll != this.state.shouldScroll){
+      const element = document.getElementById('scrollTo');
+      element.scrollIntoView({behavior: 'smooth'});
+    }
+  }
   render() {
     const { residenceOptions, yearOptions, branchOptions, designationOptions, departmentOptions, current_year, branch, residence, designation, department, selfId } = this.state
     return (
@@ -290,7 +300,7 @@ class Search extends Component {
               )
               }
             </div>
-            
+              <div id="scrollTo"></div>
               {this.state.hide === true && (this.state.activeItem === 'student') && <StudentList history={this.props.history} showHead={false} studentresults={this.state.studentresults}/>}
 
               {this.state.hide === true && (this.state.activeItem === 'faculty') && <FacultyList showHead={false} facultyresults={this.state.facultyresults}/>}

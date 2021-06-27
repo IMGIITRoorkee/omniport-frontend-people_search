@@ -43,7 +43,7 @@ class StudentList extends Component {
                 </div>
 
                     {x.interests.length !== 0 &&
-                    <div styleName="blocks.filters" style={{marginBottom:"0px"}}>
+                    <div styleName="blocks.filters" style={{marginBottom:"0px",width:"100%"}}>
                    
                             {x.interests.map((item, i) => (
                                 <div styleName="blocks.filter-item blocks.filter-item-student">{item}</div>
