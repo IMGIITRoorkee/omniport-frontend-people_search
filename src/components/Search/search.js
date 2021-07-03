@@ -175,17 +175,6 @@ class Search extends Component {
   handleInputChange = () => {
     this.setState({
       query: this.search.value
-    }, () => {
-      if (event.key == 'Enter') {
-        this.hide;
-      } else {
-        // if (this.state.query) {
-          this.hide()
-          this.studentSearch()
-          this.facultySearch()
-          this.interestSearch()
-        // }
-      }
     })
   }
   handleSubmit = () => {
