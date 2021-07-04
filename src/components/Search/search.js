@@ -14,6 +14,8 @@ import StudentOptionsComponent from './studentOptions'
 import FacultyOptionsComponent from './facultyOptions'
 import AllList from './allList'
 import Filters from './filter'
+import Pagination from './pagination'
+
 class Search extends Component {
   state = {
     query: '',
@@ -124,8 +126,8 @@ class Search extends Component {
       departmentOptions: [...new Set(departmentsList)]
     })
   }
-  studentSearch = () => {
-    const { query, branch, current_year, residence, studentPage } = this.state;
+  studentSearch = (studentPage = 1) => {
+    const { query, branch, current_year, residence } = this.state;
     axios({
       method: 'get',
       url: urlStudentQuery(),
@@ -142,13 +144,14 @@ class Search extends Component {
           loading: false,
           shouldScroll : prevState.shouldScroll + 1, 
           studentresults: response.data.results,
-          studentTotalPages: response.data.totalPages
+          studentTotalPages: response.data.totalPages,
+          studentPage: response.data.current,
         }))
     })
   }
 
-  facultySearch = () => {
-    const { query, designation, department, facultyPage } = this.state;
+  facultySearch = (facultyPage = 1) => {
+    const { query, designation, department } = this.state;
     axios({
       method: 'get',
       url: urlFacultyQuery(),
@@ -163,19 +166,19 @@ class Search extends Component {
         loading: false,
         shouldScroll : prevState.shouldScroll + 1, 
         facultyresults: response.data.results,
-        facultyTotalPages: response.data.totalPages
+        facultyTotalPages: response.data.totalPages,
+        facultyPage: response.data.current
       }))
     })
   }
 
   allSearch = async () => {
-    const { query, designation, department, facultyPage, branch, current_year, residence, studentPage  } = this.state;
+    const { query, designation, department, branch, current_year, residence  } = this.state;
     
     let response = await axios({
       method: 'get',
       url: urlFacultyQuery(),
       params: {
-        page: facultyPage,
         query,
         designation,
         department
@@ -185,14 +188,14 @@ class Search extends Component {
     this.setState( prevState => ({
       shouldScroll : prevState.shouldScroll + 1, 
       facultyresults: response.data.results,
-      facultyTotalPages: response.data.totalPages
+      facultyTotalPages: response.data.totalPages,
+      facultyPage: response.data.current,
     }))
     
     response = await axios({
       method: 'get',
       url: urlStudentQuery(),
       params: {
-        page: studentPage,
         query,
         branch,
         current_year,
@@ -205,9 +208,9 @@ class Search extends Component {
         loading: false,
         shouldScroll : prevState.shouldScroll + 1, 
         studentresults: response.data.results,
-        studentTotalPages: response.data.totalPages
+        studentTotalPages: response.data.totalPages,
+        studentPage: response.data.current,
       }))
-
   }
   // interestSearch = () => {
   //   const { query, studentPage } = this.state;
@@ -290,6 +293,11 @@ class Search extends Component {
   dropdownChange = (name, value) => {
     this.setState({ [name]: value });
   }
+  onChangeFacultyPage = (p) => {
+    this.setState({
+      facultyPage : p
+    })
+  }
   componentDidUpdate(prevProps, prevState) {
     if(prevState.shouldScroll != this.state.shouldScroll){
       const element = document.getElementById('scrollTo');
@@ -351,19 +359,20 @@ class Search extends Component {
               )
               }
             </div>
-              <div id="scrollTo"></div>
-              {this.state.hide === true && (this.state.activeItem === 'student') && <StudentList history={this.props.history} showHead={false} studentresults={this.state.studentresults}/>}
+            <div id="scrollTo"></div>
+            {this.state.hide === true && (this.state.activeItem === 'student') && <StudentList history={this.props.history} showHead={false} studentresults={this.state.studentresults}/>}
 
-              {this.state.hide === true && (this.state.activeItem === 'faculty') && <FacultyList showHead={false} facultyresults={this.state.facultyresults}/>}
- 
+            {this.state.hide === true && (this.state.activeItem === 'faculty') && <FacultyList showHead={false} facultyresults={this.state.facultyresults}/>}
+
             {this.state.hide === true && (this.state.activeItem === 'all') && 
               <>
               <Filters yearOptions={yearOptions} current_year={current_year} branch={branch} branchOptions={branchOptions} residence={residence} residenceOptions={residenceOptions} designationOptions={designationOptions} designation={designation} department={department} departmentOptions={departmentOptions} />
               <AllList onChange={this.onTabChange} active={this.state.active}studentresults={this.state.studentresults} facultyresults={this.state.facultyresults} history={this.props.history}/>
               </>
             }
-    
-          </div >
+            { this.state.hide === true && (this.state.activeItem === 'student' || ( this.state.activeItem === 'all' && this.state.active) ) && <Pagination pageNumber={this.state.studentPage} totalPages={this.state.studentTotalPages} onChangePage={(p) => this.studentSearch(p)}/> }
+            { this.state.hide === true && (this.state.activeItem === 'faculty' || ( this.state.activeItem === 'all' && !this.state.active) ) && <Pagination pageNumber={this.state.facultyPage} totalPages={this.state.facultyTotalPages} onChangePage={(p) => this.facultySearch(p)}/> }
+          </div>
         </center>
       </div>
     )
