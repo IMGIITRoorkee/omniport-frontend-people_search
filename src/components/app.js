@@ -17,11 +17,16 @@ class App extends Component {
       {
         name: "Anshul Dutt Sharma",
         role: "Full Stack Developer",
-        link: 'https://internet.channeli.in/maintainer_site/team/Anshul/',      },
-
+        link: 'https://internet.channeli.in/maintainer_site/team/Anshul/',
+      },
       {
         name: 'Pushpam Choudhary',
         role: 'Frontend developer',
+      },
+      {
+        name: 'Gagan Sharma',
+        role: "Full Stack Developer",
+        link: "https://channeli.in/maintainer_site/team/gagan_sharma/",
       }
     ]
 

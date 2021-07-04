@@ -96,6 +96,15 @@ class Profile extends Component {
                 onChange={(e, { name, value }) => this.handleChange(name, value)}
               />
             </Form.Field>
+            <Form.Field>
+              <Checkbox
+                label='None'
+                name={this.state.name}
+                value='none'
+                checked={this.state[this.state.name] === 'none'}
+                onChange={(e, { name, value }) => this.handleChange(name, value)}
+              />
+            </Form.Field>
           </Form>
         </Modal.Content>
         <Modal.Actions>
@@ -152,11 +161,9 @@ class Profile extends Component {
   render() {
     const { studentInfo } = this.state
     return (
-      <Container styleName='blocks.content-div'>
-        <center>
+      <div styleName='blocks.content-div'>
           <div styleName='blocks.profile-div'>
-            <Grid columns={2}>
-              <Grid.Column width={3} styleName = 'blocks.picture'>
+              <div styleName = 'blocks.picture'>
                 {(studentInfo.length !== 0) &&
                   <Card>
                     {studentInfo.displayPicture ? (
@@ -174,9 +181,8 @@ class Profile extends Component {
                     </Card.Content>
                   </Card>
                 }
-              </Grid.Column>
-              <Grid.Column width={10}>
-                <Container styleName='blocks.info-box' >
+              </div>
+              <div styleName='blocks.info-box' >
                   <List verticalAlign='middle'>
                     <List.Item>
 
@@ -225,7 +231,12 @@ class Profile extends Component {
                     {(studentInfo.length !== 0) &&
                       <List.Item>
                         <List.Content>
-                          <List.Header><List.Content floated='left'><h3 style={{ color: '#6a6cff' }}>Interests</h3></List.Content></List.Header>
+                          <List.Header>
+                            <List.Content floated='right' styleName='blocks.info-text blocks.edit-interest' >
+                              < Icon link name='edit' onClick={(e) => this.props.history.push({ pathname: `/student_profile/` })} />
+                            </List.Content>
+                            <List.Content floated='left'><h3 style={{ color: '#6a6cff' }}>Interests</h3></List.Content>
+                          </List.Header>
                           {studentInfo.interests &&
                             <Container styleName='blocks.info-list'>
                               <List divided verticalAlign='middle'>
@@ -241,13 +252,10 @@ class Profile extends Component {
                       </List.Item>
                     }
                   </List>
-                </Container>
-              </Grid.Column>
+              </div>
 
-            </Grid>
           </div >
-        </center>
-      </Container >
+      </div >
     )
   }
 }
