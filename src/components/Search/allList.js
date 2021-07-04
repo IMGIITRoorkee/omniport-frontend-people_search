@@ -7,21 +7,18 @@ import blocks from '../../css/app.css'
 class AllList extends Component{
     constructor(props){
         super(props)
-        this.state = {active: true}
-    }
-    onChange = () => {
-        this.setState({active: !this.state.active})
     }
 
     render(){
+        const {onChange, active} = this.props
         return(
             <div styleName='blocks.student-div'>
                 <div styleName='blocks.tabMenu'>
-                    <button styleName={"blocks.search-title-heading blocks.tabMenuItem blocks.tabMenuItemStudent " + (this.state.active?"blocks.tabMenuItem-color":"")} onClick={this.onChange}> Students </button>
-                    <button styleName={"blocks.search-title-heading blocks.tabMenuItem blocks.tabMenuItemFaculty " + (!this.state.active?"blocks.tabMenuItem-color":"")} onClick={this.onChange}> Faculty </button>
+                    <button styleName={"blocks.search-title-heading blocks.tabMenuItem blocks.tabMenuItemStudent " + (active?"blocks.tabMenuItem-color":"")} onClick={onChange}> Students </button>
+                    <button styleName={"blocks.search-title-heading blocks.tabMenuItem blocks.tabMenuItemFaculty " + (!active?"blocks.tabMenuItem-color":"")} onClick={onChange}> Faculty </button>
                 </div>
-                {this.state.active && <StudentList history={this.props.history} showHead={false} studentresults={this.props.studentresults}/>}
-                {!this.state.active && <FacultyList showHead={false} facultyresults={this.props.facultyresults}/>}
+                {active && <StudentList history={this.props.history} showHead={false} studentresults={this.props.studentresults}/>}
+                {!active && <FacultyList showHead={false} facultyresults={this.props.facultyresults}/>}
             </div>
         )
     }

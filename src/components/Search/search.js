@@ -42,7 +42,13 @@ class Search extends Component {
     studentTotalPages: 1,
     facultyTotalPages: 1,
     loading: false,
+    active: true,
   }
+
+  onTabChange = () => {
+    this.setState({active: !this.state.active})
+  }
+
   componentDidMount() {
     this.props.StudentOptions(this.successStudentOptionsCallback, this.errorCallback)
     this.props.FacultyOptions(this.successFacultyOptionsCallback, this.errorCallback)
@@ -353,7 +359,7 @@ class Search extends Component {
             {this.state.hide === true && (this.state.activeItem === 'all') && 
               <>
               <Filters yearOptions={yearOptions} current_year={current_year} branch={branch} branchOptions={branchOptions} residence={residence} residenceOptions={residenceOptions} designationOptions={designationOptions} designation={designation} department={department} departmentOptions={departmentOptions} />
-              <AllList studentresults={this.state.studentresults} facultyresults={this.state.facultyresults} history={this.props.history}/>
+              <AllList onChange={this.onTabChange} active={this.state.active}studentresults={this.state.studentresults} facultyresults={this.state.facultyresults} history={this.props.history}/>
               </>
             }
     
