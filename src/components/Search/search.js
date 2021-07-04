@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
-import { Icon, Button,} from 'semantic-ui-react'
+import { Icon, Button, Loader} from 'semantic-ui-react'
 
 import { studentOptions, facultyOptions, whoami } from '../../actions/index'
 import { urlStudentQuery, urlFacultyQuery, urlInterestQuery, urlProfile, } from '../../urls'
@@ -41,6 +41,7 @@ class Search extends Component {
     facultyPage: 1,
     studentTotalPages: 1,
     facultyTotalPages: 1,
+    loading: false,
   }
   componentDidMount() {
     this.props.StudentOptions(this.successStudentOptionsCallback, this.errorCallback)
@@ -132,6 +133,7 @@ class Search extends Component {
     }).then(response => {
       this.setState( prevState => (
         {
+          loading: false,
           shouldScroll : prevState.shouldScroll + 1, 
           studentresults: response.data.results,
           studentTotalPages: response.data.totalPages
@@ -152,11 +154,54 @@ class Search extends Component {
       }
     }).then(response => {
       this.setState( prevState => ({
+        loading: false,
         shouldScroll : prevState.shouldScroll + 1, 
         facultyresults: response.data.results,
         facultyTotalPages: response.data.totalPages
       }))
     })
+  }
+
+  allSearch = async () => {
+    const { query, designation, department, facultyPage, branch, current_year, residence, studentPage  } = this.state;
+    
+    let response = await axios({
+      method: 'get',
+      url: urlFacultyQuery(),
+      params: {
+        page: facultyPage,
+        query,
+        designation,
+        department
+      }
+    })
+    
+    this.setState( prevState => ({
+      shouldScroll : prevState.shouldScroll + 1, 
+      facultyresults: response.data.results,
+      facultyTotalPages: response.data.totalPages
+    }))
+    
+    response = await axios({
+      method: 'get',
+      url: urlStudentQuery(),
+      params: {
+        page: studentPage,
+        query,
+        branch,
+        current_year,
+        residence
+      }
+    })
+    
+    this.setState( prevState => (
+      {
+        loading: false,
+        shouldScroll : prevState.shouldScroll + 1, 
+        studentresults: response.data.results,
+        studentTotalPages: response.data.totalPages
+      }))
+
   }
   // interestSearch = () => {
   //   const { query, studentPage } = this.state;
@@ -189,6 +234,7 @@ class Search extends Component {
   }
   handleSubmit = () => {
     if (this.state.query.length > -1) {
+      this.setState({loading: true})
       if (this.state.activeItem == 'student') {
         this.hide()
         this.studentSearch()
@@ -199,8 +245,7 @@ class Search extends Component {
       }
       if(this.state.activeItem == 'all'){
         this.hide()
-        this.studentSearch()
-        this.facultySearch()
+        this.allSearch()
       }
     }
   }
@@ -285,7 +330,9 @@ class Search extends Component {
             }
             <div styleName='blocks.submit-menu'>
               <Button onClick={this.handleSubmit} styleName='blocks.icon-button' style={{ backgroundColor: '#6a6cff', color: '#ffffff' }}>
-                Search
+                {this.state.loading ?
+                  <Loader inline inverted active/> : 'Search'
+                }
               </Button>
               {this.state.studentRole && (
                 <Button
