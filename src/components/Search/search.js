@@ -37,6 +37,10 @@ class Search extends Component {
     studentRole: false,
     activeItem: 'all',
     shouldScroll : 0,
+    studentPage: 1,
+    facultyPage: 1,
+    studentTotalPages: 1,
+    facultyTotalPages: 1,
   }
   componentDidMount() {
     this.props.StudentOptions(this.successStudentOptionsCallback, this.errorCallback)
@@ -114,11 +118,12 @@ class Search extends Component {
     })
   }
   studentSearch = () => {
-    const { query, branch, current_year, residence } = this.state;
+    const { query, branch, current_year, residence, studentPage } = this.state;
     axios({
       method: 'get',
       url: urlStudentQuery(),
       params: {
+        page: studentPage,
         query,
         branch,
         current_year,
@@ -128,17 +133,19 @@ class Search extends Component {
       this.setState( prevState => (
         {
           shouldScroll : prevState.shouldScroll + 1, 
-          studentresults: response.data.results
+          studentresults: response.data.results,
+          studentTotalPages: response.data.totalPages
         }))
     })
   }
 
   facultySearch = () => {
-    const { query, designation, department } = this.state;
+    const { query, designation, department, facultyPage } = this.state;
     axios({
       method: 'get',
       url: urlFacultyQuery(),
       params: {
+        page: facultyPage,
         query,
         designation,
         department
@@ -146,25 +153,28 @@ class Search extends Component {
     }).then(response => {
       this.setState( prevState => ({
         shouldScroll : prevState.shouldScroll + 1, 
-        facultyresults: response.data.results
+        facultyresults: response.data.results,
+        facultyTotalPages: response.data.totalPages
       }))
     })
   }
-  interestSearch = () => {
-    const { query } = this.state;
-    axios({
-      method: 'get',
-      url: urlInterestQuery(),
-      params: {
-        query
-      }
-    }).then(response => {
-      this.setState( prevState => ({
-        shouldScroll : prevState.shouldScroll + 1, 
-        studentresults: this.state.studentresults.concat(response.data.results)
-      }))
-    })
-  }
+  // interestSearch = () => {
+  //   const { query, studentPage } = this.state;
+  //   axios({
+  //     method: 'get',
+  //     url: urlInterestQuery(),
+  //     params: {
+  //       page: studentPage,
+  //       query
+  //     }
+  //   }).then(response => {
+  //     this.setState( prevState => ({
+  //       shouldScroll : prevState.shouldScroll + 1, 
+  //       studentresults: this.state.studentresults.concat(response.data.results),
+  //       studentTotalPages: response.data.totalPages
+  //     }))
+  //   })
+  // }
 
   hide = () => {
     if (this.state.hide === false) {
@@ -190,7 +200,6 @@ class Search extends Component {
       if(this.state.activeItem == 'all'){
         this.hide()
         this.studentSearch()
-        this.interestSearch()
         this.facultySearch()
       }
     }
