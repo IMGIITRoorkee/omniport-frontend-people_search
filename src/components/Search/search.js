@@ -1,12 +1,20 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
-import { Icon, Menu, Container, Button, Dropdown, Segment, Grid } from 'semantic-ui-react'
+import { Icon, Button, Loader} from 'semantic-ui-react'
 
 import { studentOptions, facultyOptions, whoami } from '../../actions/index'
-import { urlStudentQuery, urlFacultyQuery, urlInterestQuery, urlProfile, appBaseUrl } from '../../urls'
+import { urlStudentQuery, urlFacultyQuery, urlInterestQuery, urlProfile, } from '../../urls'
 
 import blocks from '../../css/app.css'
+import StudentList from './studentList'
+import FacultyList from './facultyList'
+import Menus from './menus'
+import StudentOptionsComponent from './studentOptions'
+import FacultyOptionsComponent from './facultyOptions'
+import AllList from './allList'
+import Filters from './filter'
+import Pagination from './pagination'
 
 class Search extends Component {
   state = {
@@ -29,8 +37,20 @@ class Search extends Component {
     student: true,
     dropIndex: false,
     studentRole: false,
-    activeItem: 'all'
+    activeItem: 'all',
+    shouldScroll : 0,
+    studentPage: 1,
+    facultyPage: 1,
+    studentTotalPages: 1,
+    facultyTotalPages: 1,
+    loading: false,
+    active: true,
   }
+
+  onTabChange = () => {
+    this.setState({active: !this.state.active})
+  }
+
   componentDidMount() {
     this.props.StudentOptions(this.successStudentOptionsCallback, this.errorCallback)
     this.props.FacultyOptions(this.successFacultyOptionsCallback, this.errorCallback)
@@ -106,9 +126,73 @@ class Search extends Component {
       departmentOptions: [...new Set(departmentsList)]
     })
   }
-  studentSearch = () => {
+  studentSearch = (studentPage = 1) => {
     const { query, branch, current_year, residence } = this.state;
     axios({
+      method: 'get',
+      url: urlStudentQuery(),
+      params: {
+        page: studentPage,
+        query,
+        branch,
+        current_year,
+        residence
+      }
+    }).then(response => {
+      this.setState( prevState => (
+        {
+          loading: false,
+          shouldScroll : prevState.shouldScroll + 1, 
+          studentresults: response.data.results,
+          studentTotalPages: response.data.totalPages,
+          studentPage: response.data.current,
+        }))
+    })
+  }
+
+  facultySearch = (facultyPage = 1) => {
+    const { query, designation, department } = this.state;
+    axios({
+      method: 'get',
+      url: urlFacultyQuery(),
+      params: {
+        page: facultyPage,
+        query,
+        designation,
+        department
+      }
+    }).then(response => {
+      this.setState( prevState => ({
+        loading: false,
+        shouldScroll : prevState.shouldScroll + 1, 
+        facultyresults: response.data.results,
+        facultyTotalPages: response.data.totalPages,
+        facultyPage: response.data.current
+      }))
+    })
+  }
+
+  allSearch = async () => {
+    const { query, designation, department, branch, current_year, residence  } = this.state;
+    
+    let response = await axios({
+      method: 'get',
+      url: urlFacultyQuery(),
+      params: {
+        query,
+        designation,
+        department
+      }
+    })
+    
+    this.setState( prevState => ({
+      shouldScroll : prevState.shouldScroll + 1, 
+      facultyresults: response.data.results,
+      facultyTotalPages: response.data.totalPages,
+      facultyPage: response.data.current,
+    }))
+    
+    response = await axios({
       method: 'get',
       url: urlStudentQuery(),
       params: {
@@ -117,43 +201,34 @@ class Search extends Component {
         current_year,
         residence
       }
-    }).then(response => {
-      this.setState({
-        studentresults: response.data.results
-      })
     })
+    
+    this.setState( prevState => (
+      {
+        loading: false,
+        shouldScroll : prevState.shouldScroll + 1, 
+        studentresults: response.data.results,
+        studentTotalPages: response.data.totalPages,
+        studentPage: response.data.current,
+      }))
   }
-
-  facultySearch = () => {
-    const { query, designation, department } = this.state;
-    axios({
-      method: 'get',
-      url: urlFacultyQuery(),
-      params: {
-        query,
-        designation,
-        department
-      }
-    }).then(response => {
-      this.setState({
-        facultyresults: response.data.results
-      })
-    })
-  }
-  interestSearch = () => {
-    const { query } = this.state;
-    axios({
-      method: 'get',
-      url: urlInterestQuery(),
-      params: {
-        query
-      }
-    }).then(response => {
-      this.setState({
-        studentresults: this.state.studentresults.concat(response.data.results)
-      })
-    })
-  }
+  // interestSearch = () => {
+  //   const { query, studentPage } = this.state;
+  //   axios({
+  //     method: 'get',
+  //     url: urlInterestQuery(),
+  //     params: {
+  //       page: studentPage,
+  //       query
+  //     }
+  //   }).then(response => {
+  //     this.setState( prevState => ({
+  //       shouldScroll : prevState.shouldScroll + 1, 
+  //       studentresults: this.state.studentresults.concat(response.data.results),
+  //       studentTotalPages: response.data.totalPages
+  //     }))
+  //   })
+  // }
 
   hide = () => {
     if (this.state.hide === false) {
@@ -164,21 +239,11 @@ class Search extends Component {
   handleInputChange = () => {
     this.setState({
       query: this.search.value
-    }, () => {
-      if (event.key == 'Enter') {
-        this.hide;
-      } else {
-        // if (this.state.query) {
-          this.hide()
-          this.studentSearch()
-          this.facultySearch()
-          this.interestSearch()
-        // }
-      }
     })
   }
   handleSubmit = () => {
     if (this.state.query.length > -1) {
+      this.setState({loading: true})
       if (this.state.activeItem == 'student') {
         this.hide()
         this.studentSearch()
@@ -189,9 +254,7 @@ class Search extends Component {
       }
       if(this.state.activeItem == 'all'){
         this.hide()
-        this.studentSearch()
-        this.interestSearch()
-        this.facultySearch()
+        this.allSearch()
       }
     }
   }
@@ -211,36 +274,6 @@ class Search extends Component {
     e.preventDefault();
   }
 
-  menus = () => {
-    const { activeItem } = this.state
-    return (
-      <div>
-        <Menu styleName='blocks.menu'>
-          <Menu.Item
-            as='Button'
-            name='all'
-            active={activeItem === 'all'}
-            styleName={activeItem != "all" ? "blocks.menu-item" : "blocks.menu-item-color"}
-            onClick={this.handleItemClick
-            }>All</Menu.Item>
-          <Menu.Item
-            as='Button'
-            styleName={activeItem != "student" ? "blocks.menu-item" : "blocks.menu-item-color"}
-            name='student'
-            active={activeItem === 'student'}
-            onClick={this.handleItemClick
-            }>Student</Menu.Item>
-          <Menu.Item
-            as='Button'
-            styleName={activeItem != "faculty" ? "blocks.menu-item" : "blocks.menu-item-color"}
-            name='faculty'
-            active={activeItem === 'faculty'}
-            onClick={this.handleItemClick}
-          >Faculty</Menu.Item>
-        </Menu>
-      </div>)
-
-  }
   profileDirect = (id) => {
     this.props.history.push({
       pathname: urlProfile(),
@@ -253,86 +286,24 @@ class Search extends Component {
   facultyHomepage = (id) => {
     this.props.history.push({ pathname: `/faculty_profile/${id}` })
   }
-  studentList = () => {
-    if (this.state.hide === true && (this.state.activeItem === 'student' || this.state.activeItem === 'all')) {
-      return (
-        <div styleName='blocks.student-div'>
-          <div styleName='blocks.search-title-heading'> Students </div>
-          {this.state.studentresults.length ? 
-          this.state.studentresults.map(x =>
-            <Segment styleName='blocks.result-segment'>
-              <Grid columns='8'>
-                <Grid.Column styleName='blocks.result-item-name' width={2} style={{ color: '#6a6cff' }} >{x.fullName}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item' width={1}>{x.enrolmentNumber}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item' width={3}>{x.branchName}</Grid.Column>
-                {x.currentYear==3 ? (
-                  <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}{"rd"}</Grid.Column>
-                ) : 
-                  x.currentYear==2 ? (
-                    <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}{"nd"}</Grid.Column>
-                  ) : 
-                      x.currentYear==1 ? (
-                        <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}{"st"}</Grid.Column>
-                        ) : (
-                    <Grid.Column styleName='blocks.result-item' width={1}>{x.currentYear}{"th"}</Grid.Column>
-                  )}
-                <Grid.Column styleName='blocks.result-item' width={2}>{x.emailAddress}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item' width={2}>{x.mobileNumber}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item' width={2}>{x.roomNoInformation}{"  "}{x.bhawanInformation}</Grid.Column>
-                {x.interests.length !== 0 &&
-                  <Grid.Column styleName='blocks.result-item-interests' width={2}>
-                    <Menu vertical size='mini'>
-                      <Dropdown item text='Interests'>
-                        <Dropdown.Menu>
-                          {x.interests.map((item, i) => (
-                            <Dropdown.Item>{item}</Dropdown.Item>
-                          ))}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </Menu>
-                  </Grid.Column>
-                }
-              </Grid>
-            </Segment>
-          ) : 
-          <div styleName='blocks.no-match'>There are no students matching your query</div>
-          }
-        </div>
-        )
-    } else {
-      return null
-    }
-  }
 
-  facultyList = () => {
-    if (this.state.hide === true && (this.state.activeItem === 'faculty' || this.state.activeItem === 'all')) {
-      return (
-        <div>
-          <div styleName='blocks.search-title-heading'> Faculty </div>
-          {this.state.facultyresults.length ? 
-          this.state.facultyresults.map(x =>
-            <Segment styleName='blocks.result-segment'>
-              <Grid columns='9'>
-                <Grid.Column styleName='blocks.result-item-name' width={1} style={{ color: '#6a6cff' }} >{x.name}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item-branch-faculty' width={5}>{x.department.name}</Grid.Column>
-                <Grid.Column styleName='blocks.result-item-branch-faculty' width={3}>{x.designation}</Grid.Column>
-              </Grid>
-            </Segment>
-          ) : 
-          <div styleName='blocks.no-match'>There is no faculty matching your query</div>
-          }
-        </div>)
-    } else {
-      return null
-    }
-  }
   handleDrop = () => {
     this.setState({ dropIndex: !this.state.dropIndex })
   }
   dropdownChange = (name, value) => {
     this.setState({ [name]: value });
   }
-
+  onChangeFacultyPage = (p) => {
+    this.setState({
+      facultyPage : p
+    })
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.shouldScroll != this.state.shouldScroll){
+      const element = document.getElementById('scrollTo');
+      element.scrollIntoView({behavior: 'smooth'});
+    }
+  }
   render() {
     const { residenceOptions, yearOptions, branchOptions, designationOptions, departmentOptions, current_year, branch, residence, designation, department, selfId } = this.state
     return (
@@ -346,7 +317,7 @@ class Search extends Component {
             <form onSubmit={this.submitHandler}>
               <input
                 styleName='blocks.search-bar'
-                placeholder="Search"
+                placeholder="Search By Interest, Enrollment Number, Name, or Residence "
                 ref={input => this.search = input}
                 onChange={this.handleInputChange}
               />
@@ -358,85 +329,13 @@ class Search extends Component {
             </div >
             {this.state.dropIndex ? (
               <div styleName='blocks.advanced-all'>
-                {this.menus()}
+                <Menus activeItem={this.state.activeItem} handleItemClick={this.handleItemClick}/>
                 {this.state.activeItem == 'student' ? (
-                  <div styleName='blocks.menu-student-filters'>
-                    <Grid columns={4}>
-                      <Grid.Column styleName = "blocks.menu-student_items">
-                        <Dropdown
-                          name='current_year'
-                          onChange={(e, { name, value }) => this.dropdownChange(name, value)}
-                          placeholder="Year"
-                          styleName = "blocks.menu-student_items"
-                          options={yearOptions}
-                          selection
-                          clearable
-                          scrolling
-                          search
-                          value={current_year}
-                        />
-                      </Grid.Column>
-                      <Grid.Column styleName = "blocks.menu-student_items">
-                        <Dropdown
-                          name='branch'
-                          onChange={(e, { name, value }) => this.dropdownChange(name, value)}
-                          placeholder="Branch"
-                          options={branchOptions}
-                          selection
-                          clearable
-                          scrolling
-                          search
-                          value={branch}
-                        />
-                      </Grid.Column>
-                      <Grid.Column styleName = "blocks.menu-student_items">
-                        <Dropdown
-                          name='residence'
-                          onChange={(e, { name, value }) => this.dropdownChange(name, value)}
-                          placeholder="Bhawan"
-                          options={residenceOptions}
-                          selection
-                          clearable
-                          scrolling
-                          search
-                          value={residence}
-                        />
-                      </Grid.Column>
-                    </Grid>
-                  </div>
-                ) : <></>
+                  <StudentOptionsComponent yearOptions={yearOptions} current_year={current_year} branchOptions={branchOptions} branch={branch} residenceOptions={residenceOptions} residence={residence} dropdownChange={this.dropdownChange}/>
+                  ) : <></>
                 }
                 {this.state.activeItem == 'faculty' ? (
-                  <div styleName='blocks.menu-student-filters'>
-                    <Grid columns={4}>
-                      <Grid.Column styleName = "blocks.menu-faculty_items">
-                        <Dropdown
-                          name='designation'
-                          onChange={(e, { name, value }) => this.dropdownChange(name, value)}
-                          placeholder="Designation"
-                          options={designationOptions}
-                          selection
-                          clearable
-                          scrolling
-                          search
-                          value={designation}
-                        />
-                      </Grid.Column >
-                      <Grid.Column styleName = "blocks.menu-faculty_items">
-                        <Dropdown
-                          name='department'
-                          onChange={(e, { name, value }) => this.dropdownChange(name, value)}
-                          placeholder="Department"
-                          options={departmentOptions}
-                          selection
-                          clearable
-                          scrolling
-                          search
-                          value={department}
-                        />
-                      </Grid.Column>
-                    </Grid>
-                  </div>
+                  <FacultyOptionsComponent designationOptions={designationOptions} designation={designation} departmentOptions={departmentOptions} department={department} dropdownChange={this.dropdownChange}/>
                 ) : <></>
                 }
               </div>
@@ -445,7 +344,9 @@ class Search extends Component {
             }
             <div styleName='blocks.submit-menu'>
               <Button onClick={this.handleSubmit} styleName='blocks.icon-button' style={{ backgroundColor: '#6a6cff', color: '#ffffff' }}>
-                Search
+                {this.state.loading ?
+                  <Loader inline inverted active/> : 'Search'
+                }
               </Button>
               {this.state.studentRole && (
                 <Button
@@ -458,9 +359,20 @@ class Search extends Component {
               )
               }
             </div>
-            <div> {this.studentList()} </div>
-            <div> {this.facultyList()} </div>
-          </div >
+            <div id="scrollTo"></div>
+            {this.state.hide === true && (this.state.activeItem === 'student') && <StudentList history={this.props.history} showHead={false} studentresults={this.state.studentresults}/>}
+
+            {this.state.hide === true && (this.state.activeItem === 'faculty') && <FacultyList showHead={false} facultyresults={this.state.facultyresults}/>}
+
+            {this.state.hide === true && (this.state.activeItem === 'all') && 
+              <>
+              <Filters yearOptions={yearOptions} current_year={current_year} branch={branch} branchOptions={branchOptions} residence={residence} residenceOptions={residenceOptions} designationOptions={designationOptions} designation={designation} department={department} departmentOptions={departmentOptions} />
+              <AllList onChange={this.onTabChange} active={this.state.active}studentresults={this.state.studentresults} facultyresults={this.state.facultyresults} history={this.props.history}/>
+              </>
+            }
+            { this.state.hide === true && (this.state.activeItem === 'student' || ( this.state.activeItem === 'all' && this.state.active) ) && <Pagination pageNumber={this.state.studentPage} totalPages={this.state.studentTotalPages} onChangePage={(p) => this.studentSearch(p)}/> }
+            { this.state.hide === true && (this.state.activeItem === 'faculty' || ( this.state.activeItem === 'all' && !this.state.active) ) && <Pagination pageNumber={this.state.facultyPage} totalPages={this.state.facultyTotalPages} onChangePage={(p) => this.facultySearch(p)}/> }
+          </div>
         </center>
       </div>
     )

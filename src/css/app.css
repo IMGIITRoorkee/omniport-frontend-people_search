@@ -3,12 +3,10 @@
 }
 
 .content-div {
-  height: 100%;
-  overflow-y: scroll;
-  overflow-x: scroll;
+  height: fit-content;
+  min-height: 100%;
   display: flex !important;
   flex-direction: column;
-  justify-content: center;
   background: #f5f6fa !important;
   width: 100% !important;
 }
@@ -27,6 +25,7 @@
 
 .heading {
   height: 4rem;
+  margin-top: 3rem;
 }
 
 .people {
@@ -55,6 +54,7 @@
   font-weight: normal;
   color: #b8b8b8;
   width: 55%;
+  min-width: 250px;
   height: 3rem;
 }
 
@@ -115,21 +115,57 @@
   text-align: center !important;
 }
 
+.tabMenu {
+  width: 74%;
+  min-width: fit-content;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.tabMenuItem {
+  margin-bottom: 1em;
+  width: 177px;
+  min-width: fit-content;
+  padding: 10px;
+  border: none;
+  height: 44px;
+  box-sizing: border-box;
+  opacity: 0.5;
+}
+
+.tabMenuItemStudent {
+  background-color: #ECECFC;
+  border-bottom: 4px solid #6A6CFF;
+}
+
+.tabMenuItemFaculty {
+  background-color: #fcf1e1;
+  border-bottom: 4px solid #fcc26d;
+}
+
+.tabMenuItem-color{
+  opacity: 1;
+}
+
 .menu {
   width: 100%;
-  height: 5rem;
+  min-height: 5rem;
+  height: fit-content;
   border-top: 0px;
   border: none;
   margin-top: 0rem;
   background-color: white;
   padding: 0rem;
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-start;
 }
 
 .menu-student-filters{
   width: 100%;
-  height: 7rem;
+  min-width: fit-content;
+  height: fit-content;
   border-top: 0px;
   border: none;
   margin-top: 0rem;
@@ -147,12 +183,12 @@
   border-top: 0px;
   padding: 0rem;
   margin-top: 1rem !important; 
-  margin-bottom: 4rem;
+  margin-bottom: 1rem;
 }
 
 .menu-item {
-  width: 6em;
-  position: absolute;
+  min-width: 6em;
+  padding: 2px;
   border: 1px solid #dddddd;
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -169,90 +205,17 @@
 }
 
 @media only screen and (max-width: 1302px) {
-  .menu-item {
-    width: 6em;
-    position: absolute;
-    border: 1px solid #dddddd;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    margin-left: 1.5rem;
-    box-sizing: border-box;
-    border-radius: 4px;
-    font-family: Lato;
-    font-style: normal;
-    font-weight: normal;
-    line-height: normal;
-    text-align: center;
-    letter-spacing: 0.02em;
-    color: #444444;
-  }
-
-  .menu {
-    width: 100%;
-    height: 15rem;
-    border-top: 0px;
-    border: none;
-    margin-top: 0rem;
-    background-color: white;
-    padding: 0rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-  }
-
   .center{
     position: relative;
     width: 100%;
 
   }
-
-  .menu-student-filters{
-    width: 40%;
-    height: 15em;
-    border-top: 0px;
-    border: none;
-    margin-top: 0rem;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    margin-left: -50% !important;
-    justify-content: left;
+  .tabMenu{
+    justify-content: center;
   }
-  .menu-student_items{
-    width: 8em !important;
-    font-size: small !important;
-  }  
 }
 
 @media only screen and (max-width: 1600px) {
-
-   .menu-faculty_items{
-     margin-right: 5rem;
-     font-size: small !important;
-    }
-    .result-segment {
-      width: 90em !important;
-      height: 6rem;
-      border-top: 0px;
-      margin-top: 1rem !important;
-      margin-left: 2% !important;
-      padding-right: 4em !important;
-    }
-    
-    .result-item {
-      padding: 0rem;
-      margin-top: auto;
-      font-family: Lato;
-      font-size: small;
-      font-style: normal;
-      font-weight: normal;
-      line-height: normal;
-      text-align: center;
-      letter-spacing: 0.02em;
-      color: #444444;
-    }
-    
     .result-item-name{
       font-size: small;
       margin-top: auto;
@@ -280,8 +243,8 @@
 }
 
 .menu-item-color{
-  width: 6em;
-  position: absolute;
+  min-width: 6em;
+  padding: 2px;
   border: 1px solid #dddddd;
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -313,6 +276,7 @@
 
 .advanced {
   width: 55%;
+  min-width: 250px;
   height: 2.5rem;
   margin: 1rem 1rem 0rem 1rem;
   padding: 0.5rem;
@@ -323,6 +287,7 @@
 
 .advanced-all {
   width: 55%;
+  min-width: 250px;
   padding: 0%;
   background: #ffffff;
   box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.03);
@@ -346,25 +311,37 @@
 }
 
 .result-segment {
-  width: 80%;
-  height: 6rem;
+  margin-bottom: 1em;
+  background-color: #ffffff;
+  max-width: fit-content;
+  width:80%;
+  height: fit-content;
   border-top: 0px;
-  padding-right: 6em !important;
   display: flex;
+  padding: 1em;
+  padding-bottom: 1.5em;
   flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 1px 2px 0 rgb(34 36 38 / 15%);
+  min-height: 5em;
+  border-radius: .28571429rem;
+  border : 1px solid rgba(34,36,38,.15);
 }
 
 .result-item {
-  padding: 0rem;
+  height: fit-content;
+  align-items: center;
   margin-top: 0.75em;
   font-family: Lato;
-  font-size: small;
+  font-size: medium;
   font-style: normal;
   font-weight: normal;
   line-height: normal;
-  text-align: center;
+  text-align: left;
   letter-spacing: 0.02em;
   color: #444444;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .result-item-name{
@@ -439,4 +416,71 @@
 
 .student-div{
   margin-bottom: 3em;
+}
+
+.filters{
+  width: 55%;
+  min-width: 250px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-bottom: 3rem;
+}
+
+.filter-item{
+  margin-top: 5px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  height: fit-content;
+  color: #444444;
+  font-family: Lato;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  padding: 9px 26px 9px 18px;
+}
+
+.filter-item-student{
+  background-color: rgba(125, 127, 255, 0.35);
+}
+.filter-item-faculty{
+  background-color: #FFE8C7;
+}
+
+.pageNumber{
+  color: #131313;
+  border: none;
+  background: none;
+  padding: 10px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.pageNumber-active{
+  color: #000000;
+  border: none;
+  background-color: #e0e1e2;
+  padding: 10px;
+  font-size: 18px;
+}
+
+.angleIcon{
+  border: none;
+  background: none;
+  opacity: 0.5;
+  color: #000000;
+  padding: 10px;
+  font-size: 18px;
+}
+
+.angleIcon-active{
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: #7D7FFF;
+  padding: 10px;
+  font-size: 18px;
 }
