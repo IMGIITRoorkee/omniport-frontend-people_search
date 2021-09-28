@@ -5,7 +5,7 @@ import { Icon, Button, Loader} from 'semantic-ui-react'
 
 import { studentOptions, facultyOptions, whoami } from '../../actions/index'
 import { urlStudentQuery, urlFacultyQuery, urlInterestQuery, urlProfile, } from '../../urls'
-
+import { debounce } from 'lodash'
 import blocks from '../../css/app.css'
 import StudentList from './studentList'
 import FacultyList from './facultyList'
@@ -203,6 +203,7 @@ class Search extends Component {
       }
     })
     
+
     this.setState( prevState => (
       {
         loading: false,
@@ -240,6 +241,21 @@ class Search extends Component {
     this.setState({
       query: this.search.value
     })
+    if (this.search.value.length > -1) {
+      this.setState({loading: true})
+      if (this.state.activeItem == 'student') {
+        this.hide()
+        this.studentSearch()
+      }
+      if (this.state.activeItem == 'faculty') {
+        this.hide()
+        this.facultySearch()
+      }
+      if(this.state.activeItem == 'all'){
+        this.hide()
+        this.allSearch()
+      }
+    }
   }
   handleSubmit = () => {
     if (this.state.query.length > -1) {
@@ -319,7 +335,7 @@ class Search extends Component {
                 styleName='blocks.search-bar'
                 placeholder="Search By Interest, Enrollment Number, Name, or Residence "
                 ref={input => this.search = input}
-                onChange={this.handleInputChange}
+                onChange={debounce(this.handleInputChange,500)}
               />
             </form>
 
