@@ -203,6 +203,7 @@ class Search extends Component {
       }
     })
     
+
     this.setState( prevState => (
       {
         loading: false,
