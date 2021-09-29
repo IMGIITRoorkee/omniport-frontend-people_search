@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { Menu, Dropdown, Segment, Grid } from 'semantic-ui-react'
+import { Menu, Dropdown, Segment, Grid, Accordion, Icon } from 'semantic-ui-react'
 
 import blocks from '../../css/app.css'
 
 class StudentList extends Component {
     constructor(props){
         super(props)
+        this.state={activeIndex : -1}
     }
     
     studentHomepage = (id) => {
@@ -20,29 +21,42 @@ class StudentList extends Component {
             {this.props.studentresults.length ? 
             this.props.studentresults.map(x =>
                 <div styleName='blocks.result-segment'>
-                <div style={{display:"flex", flexWrap:"wrap", justifyContent: 'space-around'}}>
-                    <div styleName='blocks.result-item'  style={{ color: '#6a6cff', width:'98px'}} >
-                        <a onClick={() => this.studentHomepage(x.enrolmentNumber)} style={{cursor:'pointer'}}>{x.fullName}</a>
-                    </div>
-                    <div styleName='blocks.result-item' style={{width:'108px'}}>{x.enrolmentNumber}</div>
-                    <div styleName='blocks.result-item' style={{width:'285px'}}>{x.branchName}</div>
-                    {x.currentYear==3 ? (
-                    <div styleName='blocks.result-item' style={{width:'69px'}}>{x.currentYear}{"rd"}</div>
-                    ) : 
-                    x.currentYear==2 ? (
-                        <div styleName='blocks.result-item' style={{width:'69px'}}>{x.currentYear}{"nd"}</div>
-                    ) : 
-                        x.currentYear==1 ? (
-                            <div styleName='blocks.result-item' style={{width:'69px'}}>{x.currentYear}{"st"}</div>
-                            ) : (
-                        <div styleName='blocks.result-item' style={{width:'69px'}}>{x.currentYear}{"th"}</div>
-                    )}
-                    <div styleName='blocks.result-item' style={{width:'216px'}}>{x.emailAddress}</div>
-                    <div styleName='blocks.result-item' style={{width:'118px'}}>{x.mobileNumber}</div>
-                    <div styleName='blocks.result-item' style={{width:'180px'}}>{x.roomNoInformation}{"  "}{x.bhawanInformation}</div>
-                </div>
-
-                    {x.interests.length !== 0 &&
+                <Accordion>
+                    <Accordion.Title
+                    active={this.state.activeIndex === x.enrolmentNumber}
+                    index={0}
+                    style={{padding:"0"}}
+                    onClick={() => this.state.activeIndex !== x.enrolmentNumber ? 
+                        this.setState({activeIndex : x.enrolmentNumber}) : 
+                        this.setState({activeIndex : -1})}
+                    >
+                        <div style={{display:"flex", flexWrap:"wrap", justifyContent: 'space-between'}}>
+                            <div styleName='blocks.result-item'  style={{ display:'flex',color: '#6a6cff', width:'98px'}} >
+                                
+                                {window.innerWidth<=991 && <Icon name='dropdown' color="black"/> }
+                                
+                                <a onClick={() => this.studentHomepage(x.enrolmentNumber)} style={{cursor:'pointer'}}>{x.fullName}</a>
+                            </div>
+                            <div styleName='blocks.result-item' style={{width:'108px'}}>{x.enrolmentNumber}</div>
+                            <div styleName='blocks.result-item' style={{width:'285px'}}>{x.branchName}</div>
+                            {x.currentYear==3 ? (
+                            <div styleName='blocks.result-item' style={{width:'69px'}}>{x.currentYear}{"rd"}</div>
+                            ) : 
+                            x.currentYear==2 ? (
+                                <div styleName='blocks.result-item' style={{width:'69px'}}>{x.currentYear}{"nd"}</div>
+                            ) : 
+                                x.currentYear==1 ? (
+                                    <div styleName='blocks.result-item' style={{width:'69px'}}>{x.currentYear}{"st"}</div>
+                                    ) : (
+                                <div styleName='blocks.result-item' style={{width:'69px'}}>{x.currentYear}{"th"}</div>
+                            )}
+                            <div styleName='blocks.result-item' style={{width:'216px'}}>{x.emailAddress}</div>
+                            <div styleName='blocks.result-item' style={{width:'118px'}}>{x.mobileNumber}</div>
+                            <div styleName='blocks.result-item' style={{width:'180px'}}>{x.roomNoInformation}{"  "}{x.bhawanInformation}</div>
+                        </div>
+                        </Accordion.Title>
+                    </Accordion>
+                    {x.interests.length !== 0 && ( this.state.activeIndex === x.enrolmentNumber || window.innerWidth>991 )&&
                     <div styleName="blocks.filters" style={{marginBottom:"0px",width:"100%"}}>
                    
                             {x.interests.map((item, i) => (
