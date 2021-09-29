@@ -98,10 +98,8 @@ class Search extends Component {
   successFacultyOptionsCallback = res => {
     const { data } = res
     let designationName = Object.keys(data.results[0].designation)
-    console.log(designationName);
 
     let designationCode = Object.values(data.results[0].designation)
-    console.log(designationCode);
 
     let departmentName = Object.keys(data.results[0].department)
     let departmentCode = Object.values(data.results[0].department)
@@ -203,7 +201,6 @@ class Search extends Component {
       }
     })
     
-
     this.setState( prevState => (
       {
         loading: false,
@@ -333,7 +330,7 @@ class Search extends Component {
             <form onSubmit={this.submitHandler}>
               <input
                 styleName='blocks.search-bar'
-                placeholder="Search By Interest, Enrollment Number, Name, or Residence "
+                placeholder="Search By Name, Enrollment Number, Interest, or Residence "
                 ref={input => this.search = input}
                 onChange={debounce(this.handleInputChange,500)}
               />
