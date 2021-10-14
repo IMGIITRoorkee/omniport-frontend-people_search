@@ -313,7 +313,6 @@
 .result-segment {
   margin-bottom: 1em;
   background-color: #ffffff;
-  max-width: fit-content;
   width:80%;
   height: fit-content;
   border-top: 0px;
@@ -441,6 +440,8 @@
   font-size: 14px;
   line-height: 17px;
   padding: 9px 26px 9px 18px;
+  word-wrap: break-word;
+  max-width: 100%;
 }
 
 .filter-item-student{

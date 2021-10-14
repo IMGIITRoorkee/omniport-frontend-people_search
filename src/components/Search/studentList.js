@@ -33,7 +33,7 @@ class StudentList extends Component {
                         <div style={{display:"flex", flexWrap:"wrap", justifyContent: 'space-between'}}>
                             <div styleName='blocks.result-item'  style={{ display:'flex',color: '#6a6cff', width:'98px'}} >
                                 
-                                {window.innerWidth<=991 && <Icon name='dropdown' color="black"/> }
+                                {window.innerWidth<=991 && x.interests.length !== 0 && <Icon name='dropdown' color="black"/> }
                                 
                                 <a onClick={() => this.studentHomepage(x.enrolmentNumber)} style={{cursor:'pointer'}}>{x.fullName}</a>
                             </div>
