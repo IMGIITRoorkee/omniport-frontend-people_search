@@ -135,8 +135,8 @@
 }
 
 .tabMenuItemStudent {
-  background-color: #ECECFC;
-  border-bottom: 4px solid #6A6CFF;
+  background-color: #ececfc;
+  border-bottom: 4px solid #6a6cff;
 }
 
 .tabMenuItemFaculty {
@@ -144,7 +144,7 @@
   border-bottom: 4px solid #fcc26d;
 }
 
-.tabMenuItem-color{
+.tabMenuItem-color {
   opacity: 1;
 }
 
@@ -162,7 +162,7 @@
   justify-content: flex-start;
 }
 
-.menu-student-filters{
+.menu-student-filters {
   width: 100%;
   min-width: fit-content;
   height: fit-content;
@@ -182,7 +182,7 @@
   justify-content: flex-end;
   border-top: 0px;
   padding: 0rem;
-  margin-top: 1rem !important; 
+  margin-top: 1rem !important;
   margin-bottom: 1rem;
 }
 
@@ -205,44 +205,42 @@
 }
 
 @media only screen and (max-width: 1302px) {
-  .center{
+  .center {
     position: relative;
     width: 100%;
-
   }
-  .tabMenu{
+  .tabMenu {
     justify-content: center;
   }
 }
 
 @media only screen and (max-width: 1600px) {
-    .result-item-name{
-      font-size: small;
-      margin-top: auto;
-      display: flex;
-      flex-direction: row;
-      justify-content: start;
-    }
-    
-    .result-item-interests{
-      font-size: medium;
-      margin-top: 0.3em;
-      display: flex;
-      flex-direction: row;
-      justify-content: start;
-    }
+  .result-item-name {
+    font-size: small;
+    margin-top: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+  }
 
-    .result-item-enrolment{
-      font-size: small;
-    }
-    
-    
-    .result-item-branch{
-      font-size: small;
-    }        
+  .result-item-interests {
+    font-size: medium;
+    margin-top: 0.3em;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+  }
+
+  .result-item-enrolment {
+    font-size: small;
+  }
+
+  .result-item-branch {
+    font-size: small;
+  }
 }
 
-.menu-item-color{
+.menu-item-color {
   min-width: 6em;
   padding: 2px;
   border: 1px solid #dddddd;
@@ -261,18 +259,17 @@
   background-color: #9090f7 !important;
 }
 
-.menu-student_items{
- margin-right: 2rem;
- width: 15em !important;
- font-size: small !important;
+.menu-student_items {
+  margin-right: 2rem;
+  width: 15em !important;
+  font-size: small !important;
 }
 
-.menu-faculty_items{
+.menu-faculty_items {
   width: 15em !important;
   margin-right: 2rem;
   font-size: small !important;
- }
- 
+}
 
 .advanced {
   width: 55%;
@@ -313,7 +310,7 @@
 .result-segment {
   margin-bottom: 1em;
   background-color: #ffffff;
-  width:80%;
+  width: 80%;
   height: fit-content;
   border-top: 0px;
   display: flex;
@@ -323,8 +320,8 @@
   justify-content: center;
   box-shadow: 0 1px 2px 0 rgb(34 36 38 / 15%);
   min-height: 5em;
-  border-radius: .28571429rem;
-  border : 1px solid rgba(34,36,38,.15);
+  border-radius: 0.28571429rem;
+  border: 1px solid rgba(34, 36, 38, 0.15);
 }
 
 .result-item {
@@ -343,7 +340,7 @@
   overflow-wrap: break-word;
 }
 
-.result-item-name{
+.result-item-name {
   font-size: small;
   margin-top: 0.75em;
   display: flex;
@@ -351,21 +348,20 @@
   justify-content: start;
 }
 
-.result-item-enrolment{
+.result-item-enrolment {
   font-size: small;
 }
 
-
-.result-item-branch{
+.result-item-branch {
   font-size: small;
 }
 
-.result-item-branch-faculty{
+.result-item-branch-faculty {
   font-size: small;
   margin-top: 0.75em;
 }
 
-.result-item-interest{
+.result-item-interest {
   font-family: Lato;
   font-size: small;
   font-style: normal;
@@ -398,14 +394,14 @@
   padding: 0.5rem;
 }
 
-.search-title-heading{
+.search-title-heading {
   font-size: 1.5em;
   font-family: Lato;
   font-weight: bold;
   margin-left: 0%;
 }
 
-.no-match{
+.no-match {
   font-size: 1.5em;
   font-family: Lato;
   margin-left: 0%;
@@ -413,11 +409,11 @@
   margin-bottom: 2em;
 }
 
-.student-div{
+.student-div {
   margin-bottom: 3em;
 }
 
-.filters{
+.filters {
   width: 55%;
   min-width: 250px;
   display: flex;
@@ -426,7 +422,7 @@
   margin-bottom: 3rem;
 }
 
-.filter-item{
+.filter-item {
   margin-top: 5px;
   margin-right: 10px;
   margin-bottom: 10px;
@@ -444,14 +440,14 @@
   max-width: 100%;
 }
 
-.filter-item-student{
+.filter-item-student {
   background-color: rgba(125, 127, 255, 0.35);
 }
-.filter-item-faculty{
-  background-color: #FFE8C7;
+.filter-item-faculty {
+  background-color: #ffe8c7;
 }
 
-.pageNumber{
+.pageNumber {
   color: #131313;
   border: none;
   background: none;
@@ -460,7 +456,7 @@
   cursor: pointer;
 }
 
-.pageNumber-active{
+.pageNumber-active {
   color: #000000;
   border: none;
   background-color: #e0e1e2;
@@ -468,7 +464,7 @@
   font-size: 18px;
 }
 
-.angleIcon{
+.angleIcon {
   border: none;
   background: none;
   opacity: 0.5;
@@ -477,11 +473,26 @@
   font-size: 18px;
 }
 
-.angleIcon-active{
+.angleIcon-active {
   cursor: pointer;
   border: none;
   background: none;
-  color: #7D7FFF;
+  color: #7d7fff;
   padding: 10px;
   font-size: 18px;
+}
+
+.category {
+  width: 55%;
+  border-top: 0px;
+  padding: 0rem;
+  margin-top: 1rem !important;
+  margin-bottom: 1rem;
+  overflow: auto;
+}
+
+.category-container {
+  min-width: 440px;
+  display: flex;
+  justify-content: flex-start;
 }
