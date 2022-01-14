@@ -447,7 +447,7 @@ class Search extends Component {
           }
         );
       }
-      if (this.state.branchCategory) {
+      if (this.state.bhawanCategory) {
         this.setState(
           {
             categoryOptions: this.state.categoryOptions.filter(function (obj) {
