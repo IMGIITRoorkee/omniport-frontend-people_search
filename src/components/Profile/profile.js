@@ -14,17 +14,18 @@ import {
 } from "semantic-ui-react";
 
 import { DefaultDP } from "formula_one";
-import { studentProfile, setVisibility } from "../../actions/index";
+import { getStudentProfile } from "../../actions/profile";
+import { setVisibilityPut } from "../../actions/setVisibility";
 
 import blocks from "../../css/profile.css";
 
 class Profile extends Component {
   state = {
     studentInfo: [],
-    emailVisibility: "",
-    mobileNumberVisibility: "",
-    roomNumberVisibility: "",
-    bhawanVisibility: "",
+    emailVisibility: [],
+    mobileNumberVisibility: [],
+    roomNumberVisibility: [],
+    bhawanVisibility: [],
     name: "",
     error: false,
     open: false,
@@ -69,10 +70,17 @@ class Profile extends Component {
           <Form>
             <Form.Field>
               <Checkbox
-                label="All"
+                label="Students"
                 name={this.state.name}
-                value="all"
-                checked={this.state[this.state.name] === "all"}
+                value="std"
+                disabled={
+                  this.state[this.state.name] &&
+                  this.state[this.state.name].includes("non")
+                }
+                checked={
+                  this.state[this.state.name] &&
+                  this.state[this.state.name].includes("std")
+                }
                 onChange={(e, { name, value }) =>
                   this.handleChange(name, value)
                 }
@@ -80,10 +88,17 @@ class Profile extends Component {
             </Form.Field>
             <Form.Field>
               <Checkbox
-                label="Only Students"
+                label="Faculty"
                 name={this.state.name}
-                value="students"
-                checked={this.state[this.state.name] === "students"}
+                value="fac"
+                disabled={
+                  this.state[this.state.name] &&
+                  this.state[this.state.name].includes("non")
+                }
+                checked={
+                  this.state[this.state.name] &&
+                  this.state[this.state.name].includes("fac")
+                }
                 onChange={(e, { name, value }) =>
                   this.handleChange(name, value)
                 }
@@ -91,10 +106,17 @@ class Profile extends Component {
             </Form.Field>
             <Form.Field>
               <Checkbox
-                label="Only Faculty"
+                label="Branch"
                 name={this.state.name}
-                value="faculty"
-                checked={this.state[this.state.name] === "faculty"}
+                value="brn"
+                disabled={
+                  this.state[this.state.name] &&
+                  this.state[this.state.name].includes("non")
+                }
+                checked={
+                  this.state[this.state.name] &&
+                  this.state[this.state.name].includes("brn")
+                }
                 onChange={(e, { name, value }) =>
                   this.handleChange(name, value)
                 }
@@ -102,21 +124,17 @@ class Profile extends Component {
             </Form.Field>
             <Form.Field>
               <Checkbox
-                label="Only Branch"
+                label="Bhawan"
                 name={this.state.name}
-                value="branch"
-                checked={this.state[this.state.name] === "branch"}
-                onChange={(e, { name, value }) =>
-                  this.handleChange(name, value)
+                value="bhw"
+                disabled={
+                  this.state[this.state.name] &&
+                  this.state[this.state.name].includes("non")
                 }
-              />
-            </Form.Field>
-            <Form.Field>
-              <Checkbox
-                label="Only Bhawan"
-                name={this.state.name}
-                value="bhawan"
-                checked={this.state[this.state.name] === "bhawan"}
+                checked={
+                  this.state[this.state.name] &&
+                  this.state[this.state.name].includes("bhw")
+                }
                 onChange={(e, { name, value }) =>
                   this.handleChange(name, value)
                 }
@@ -126,8 +144,11 @@ class Profile extends Component {
               <Checkbox
                 label="None"
                 name={this.state.name}
-                value="none"
-                checked={this.state[this.state.name] === "none"}
+                value="non"
+                checked={
+                  this.state[this.state.name] &&
+                  this.state[this.state.name].includes("non")
+                }
                 onChange={(e, { name, value }) =>
                   this.handleChange(name, value)
                 }
@@ -146,7 +167,24 @@ class Profile extends Component {
     );
   };
   handleChange = (name, value) => {
-    this.setState({ [name]: value });
+    if (this.state[this.state.name].includes(value)) {
+      this.setState({
+        [name]: this.state[this.state.name].filter(function (obj) {
+          return obj !== value;
+        }),
+      });
+    } else {
+      if (value == "non") {
+        this.setState(() => ({
+          [name]: [value],
+        }));
+      }
+      if (!this.state[this.state.name].includes("non")) {
+        this.setState((prevState) => ({
+          [name]: [...prevState[prevState.name], value],
+        }));
+      }
+    }
   };
   handleSubmit = () => {
     const {
@@ -158,10 +196,14 @@ class Profile extends Component {
     } = this.state;
     const formData = new FormData();
     formData.append("student", studentInfo.student);
-    formData.append("primary_email_id", emailVisibility);
-    formData.append("primary_mobile_no", mobileNumberVisibility);
-    formData.append("room_no", roomNumberVisibility);
-    formData.append("bhawan", bhawanVisibility);
+    for (var i = 0; i < emailVisibility.length; i++)
+      formData.append("primary_email_id", emailVisibility[i]);
+    for (var i = 0; i < mobileNumberVisibility.length; i++)
+      formData.append("primary_mobile_no", mobileNumberVisibility[i]);
+    for (var i = 0; i < roomNumberVisibility.length; i++)
+      formData.append("room_no", roomNumberVisibility[i]);
+    for (var i = 0; i < bhawanVisibility.length; i++)
+      formData.append("bhawan", bhawanVisibility[i]);
     this.props.SetVisibility(
       this.props.location.state.id,
       formData,
@@ -354,10 +396,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     StudentProfile: (id, successCallback, errCallback) => {
-      dispatch(studentProfile(id, successCallback, errCallback));
+      dispatch(getStudentProfile(id, successCallback, errCallback));
     },
     SetVisibility: (id, formData, successCallback, errCallback) => {
-      dispatch(setVisibility(id, formData, successCallback, errCallback));
+      dispatch(setVisibilityPut(id, formData, successCallback, errCallback));
     },
   };
 };
