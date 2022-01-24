@@ -1,16 +1,9 @@
 import React, { Component } from "react";
-import axios from "axios";
 import { connect } from "react-redux";
 import { Icon, Button, Loader, Label } from "semantic-ui-react";
 import { debounce } from "lodash";
-
-import { studentOptions, facultyOptions, whoami } from "../../actions/index";
-import {
-  urlStudentQuery,
-  urlFacultyQuery,
-  urlInterestQuery,
-  urlProfile,
-} from "../../urls";
+import { whoami } from "../../actions/getPerson";
+import { urlProfile } from "../../urls";
 import blocks from "../../css/app.css";
 import StudentList from "./studentList";
 import FacultyList from "./facultyList";
@@ -20,6 +13,10 @@ import FacultyOptionsComponent from "./facultyOptions";
 import AllList from "./allList";
 import Filters from "./filter";
 import Pagination from "./pagination";
+import { getStudentSearch } from "../../actions/studentSearch";
+import { getfacultySearch } from "../../actions/facultySearch";
+import { getfacultyOptions } from "../../actions/facultyOptions";
+import { getstudentOptions } from "../../actions/studentOptions";
 
 class Search extends Component {
   state = {
@@ -81,15 +78,15 @@ class Search extends Component {
   successStudentOptionsCallback = (res) => {
     const { data } = res;
 
-    let residenceName = data.results[0].bhawanInformation;
+    let residenceName = data.bhawanInformation;
 
-    let residenceCode = data.results[0].bhawanCode;
+    let residenceCode = data.bhawanCode;
 
     let residence = {};
     residenceName.forEach((key, i) => (residence[key] = residenceCode[i]));
 
     let year = ["1", "2", "3", "4", "5", "6", "7"];
-    let branch = data.results[0].branchName;
+    let branch = data.branchName;
 
     var residenceList = [];
     var yearList = [];
@@ -118,12 +115,12 @@ class Search extends Component {
   };
   successFacultyOptionsCallback = (res) => {
     const { data } = res;
-    let designationName = Object.keys(data.results[0].designation);
+    let designationName = Object.keys(data.designation);
 
-    let designationCode = Object.values(data.results[0].designation);
+    let designationCode = Object.values(data.designation);
 
-    let departmentName = Object.keys(data.results[0].department);
-    let departmentCode = Object.values(data.results[0].department);
+    let departmentName = Object.keys(data.department);
+    let departmentCode = Object.values(data.department);
 
     let department = {};
     departmentName.forEach((key, i) => (department[key] = departmentCode[i]));
@@ -158,49 +155,26 @@ class Search extends Component {
   studentSearch = (studentPage = 1) => {
     const { query, branch, current_year, residence, categoryOptions } =
       this.state;
-    axios({
-      method: "get",
-      url: urlStudentQuery(),
-      params: {
-        page: studentPage,
-        query,
-        branch,
-        current_year,
-        residence,
-        categoryOptions,
-      },
-    }).then((response) => {
-      console.log(response.data.results);
-      this.setState((prevState) => ({
-        loading: false,
-        shouldScroll: prevState.shouldScroll + 1,
-        studentresults: response.data.results,
-        studentTotalPages: response.data.totalPages,
-        studentPage: response.data.current,
-      }));
-    });
+    this.props.StudentSearch(
+      query,
+      branch,
+      current_year,
+      residence,
+      categoryOptions,
+      studentPage,
+      this.successStudentResultsCallback
+    );
   };
 
   facultySearch = (facultyPage = 1) => {
     const { query, designation, department } = this.state;
-    axios({
-      method: "get",
-      url: urlFacultyQuery(),
-      params: {
-        page: facultyPage,
-        query,
-        designation,
-        department,
-      },
-    }).then((response) => {
-      this.setState((prevState) => ({
-        loading: false,
-        shouldScroll: prevState.shouldScroll + 1,
-        facultyresults: response.data.results,
-        facultyTotalPages: response.data.totalPages,
-        facultyPage: response.data.current,
-      }));
-    });
+    this.props.FacultySearch(
+      query,
+      designation,
+      department,
+      facultyPage,
+      this.successFacultyResultsCallback
+    );
   };
 
   allSearch = async () => {
@@ -214,35 +188,29 @@ class Search extends Component {
       categoryOptions,
     } = this.state;
 
-    let response = await axios({
-      method: "get",
-      url: urlFacultyQuery(),
-      params: {
-        query,
-        designation,
-        department,
-      },
-    });
+    let studentPage = 1;
+    let facultyPage = 1;
 
-    this.setState((prevState) => ({
-      shouldScroll: prevState.shouldScroll + 1,
-      facultyresults: response.data.results,
-      facultyTotalPages: response.data.totalPages,
-      facultyPage: response.data.current,
-    }));
+    this.props.FacultySearch(
+      query,
+      designation,
+      department,
+      facultyPage,
+      this.successFacultyResultsCallback
+    );
 
-    response = await axios({
-      method: "get",
-      url: urlStudentQuery(),
-      params: {
-        query,
-        branch,
-        current_year,
-        residence,
-        categoryOptions,
-      },
-    });
+    this.props.StudentSearch(
+      query,
+      branch,
+      current_year,
+      residence,
+      categoryOptions,
+      studentPage,
+      this.successStudentResultsCallback
+    );
+  };
 
+  successStudentResultsCallback = (response) => {
     this.setState((prevState) => ({
       loading: false,
       shouldScroll: prevState.shouldScroll + 1,
@@ -251,24 +219,16 @@ class Search extends Component {
       studentPage: response.data.current,
     }));
   };
-  // interestSearch = () => {
-  //   const { query, studentPage } = this.state;
-  //   axios({
-  //     method: 'get',
-  //     url: urlInterestQuery(),
-  //     params: {
-  //       page: studentPage,
-  //       query
-  //     }
-  //   }).then(response => {
-  //     this.setState( prevState => ({
-  //       shouldScroll : prevState.shouldScroll + 1,
-  //       studentresults: this.state.studentresults.concat(response.data.results),
-  //       studentTotalPages: response.data.totalPages
-  //     }))
-  //   })
-  // }
 
+  successFacultyResultsCallback = (response) => {
+    this.setState((prevState) => ({
+      loading: false,
+      shouldScroll: prevState.shouldScroll + 1,
+      facultyresults: response.data.results,
+      facultyTotalPages: response.data.totalPages,
+      facultyPage: response.data.current,
+    }));
+  };
   hide = () => {
     if (this.state.hide === false) {
       this.setState({ hide: true });
@@ -797,18 +757,57 @@ const mapStateToProps = (state) => {
     studentOptions: state.studentOptions,
     facultyOptions: state.facultyOptions,
     whoami: state.whoami,
+    studentSearch: state.studentSearch,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
     StudentOptions: (successCallback, errCallback) => {
-      dispatch(studentOptions(successCallback, errCallback));
+      dispatch(getstudentOptions(successCallback, errCallback));
     },
     FacultyOptions: (successCallback, errCallback) => {
-      dispatch(facultyOptions(successCallback, errCallback));
+      dispatch(getfacultyOptions(successCallback, errCallback));
     },
     Whoami: (successCallback, errCallback) => {
       dispatch(whoami(successCallback, errCallback));
+    },
+    StudentSearch: (
+      query,
+      branch,
+      current_year,
+      residence,
+      categoryOptions,
+      studentPage,
+      successStudentResultsCallback
+    ) => {
+      dispatch(
+        getStudentSearch(
+          query,
+          branch,
+          current_year,
+          residence,
+          categoryOptions,
+          studentPage,
+          successStudentResultsCallback
+        )
+      );
+    },
+    FacultySearch: (
+      query,
+      designation,
+      department,
+      facultyPage,
+      successFacultyResultsCallback
+    ) => {
+      dispatch(
+        getfacultySearch(
+          query,
+          designation,
+          department,
+          facultyPage,
+          successFacultyResultsCallback
+        )
+      );
     },
   };
 };

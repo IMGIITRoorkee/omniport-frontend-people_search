@@ -14,17 +14,13 @@ class App extends Component {
     const creators = [
       {
         name: "Anshul Dutt Sharma",
-        role: "Full Stack Developer",
+        role: "Mentor",
         link: "https://internet.channeli.in/maintainer_site/team/Anshul/",
       },
       {
-        name: "Pushpam Choudhary",
-        role: "Frontend developer",
-      },
-      {
-        name: "Gagan Sharma",
+        name: "Rochak Jain",
         role: "Full Stack Developer",
-        link: "https://channeli.in/maintainer_site/team/gagan_sharma/",
+        link: "https://github.com/rochakjain361",
       },
     ];
 

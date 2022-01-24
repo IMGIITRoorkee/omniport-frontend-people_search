@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Segment, Grid } from "semantic-ui-react";
 import blocks from "../../css/app.css";
 
 class FacultyList extends Component {
@@ -27,13 +26,13 @@ class FacultyList extends Component {
                   styleName="blocks.result-item"
                   style={{ color: "#6a6cff", width: "90px" }}
                 >
-                  {x.name}
+                  {x.person.fullName}
                 </div>
                 <div styleName="blocks.result-item" style={{ width: "370px" }}>
                   {x.department.name}
                 </div>
                 <div styleName="blocks.result-item" style={{ width: "222px" }}>
-                  {x.designation}
+                  {x.person.roles[0].data.designation}
                 </div>
               </div>
             </div>
