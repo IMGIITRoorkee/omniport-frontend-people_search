@@ -1,8 +1,18 @@
-import { combineReducers } from 'redux'
-import exampleReducer from './exampleReducer'
+import { combineReducers } from "redux";
+import studentProfile from "./studentProfile";
+import setVisibility from "./setVisibility";
+import studentSearch from "./studentSearch";
+import facultySearch from "./facultySearch";
+import facultyOptions from "./facultyOptions";
+import studentOptions from "./studentOptions";
 
 const rootReducers = combineReducers({
-  exampleReducer
-})
+  studentProfile,
+  setVisibility,
+  studentSearch,
+  facultySearch,
+  facultyOptions,
+  studentOptions,
+});
 
-export default rootReducers
+export default rootReducers;
