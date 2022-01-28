@@ -30,10 +30,10 @@ const getStudentProfileFail = ({ error }) => {
   };
 };
 
-export const getStudentProfile = (id, successCallback, errCallback) => {
+export const getStudentProfile = (successCallback, errCallback) => {
   return (dispatch) => {
     dispatch(getStudentProfileStart());
-    const url = urls.urlStudentProfile(id);
+    const url = urls.urlStudentProfile();
 
     axios
       .get(url)

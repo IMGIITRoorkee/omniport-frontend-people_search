@@ -32,7 +32,6 @@ class Profile extends Component {
   };
   componentDidMount() {
     this.props.StudentProfile(
-      this.props.location.state.id,
       this.successStudentCallback,
       this.errStudentCallback
     );
@@ -233,14 +232,12 @@ class Profile extends Component {
     } else {
       formData.append("bhawan", []);
     }
-    this.props.SetVisibility(
-      this.props.location.state.id,
-      formData,
-      this.successCallback,
-      this.errCallback
-    );
+    this.props.SetVisibility(formData, this.successCallback, this.errCallback);
   };
   successCallback = (res) => {
+    this.setState({ open: false });
+  };
+  errCallback = (res) => {
     this.setState({ open: false });
   };
   render() {
@@ -424,11 +421,11 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    StudentProfile: (id, successCallback, errCallback) => {
-      dispatch(getStudentProfile(id, successCallback, errCallback));
+    StudentProfile: (successCallback, errCallback) => {
+      dispatch(getStudentProfile(successCallback, errCallback));
     },
-    SetVisibility: (id, formData, successCallback, errCallback) => {
-      dispatch(setVisibilityPut(id, formData, successCallback, errCallback));
+    SetVisibility: (formData, successCallback, errCallback) => {
+      dispatch(setVisibilityPut(formData, successCallback, errCallback));
     },
   };
 };

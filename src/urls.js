@@ -24,6 +24,6 @@ export const urlFacultyQuery = () => {
 export const urlFacultyProfile = (id) => {
   return `${urlFacultyQuery()}${id}`;
 };
-export const urlStudentProfile = (id) => {
-  return `/api/people_search/student_detail/${id}/`;
+export const urlStudentProfile = () => {
+  return `/api/people_search/student_detail/`;
 };

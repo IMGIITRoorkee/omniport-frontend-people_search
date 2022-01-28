@@ -26,7 +26,6 @@ class Search extends Component {
     residence: "",
     designation: "",
     department: "",
-    userData: [],
     studentresults: [],
     facultyresults: [],
     residenceOptions: [],
@@ -72,7 +71,7 @@ class Search extends Component {
   }
   successUserCheck = (res) => {
     if (res.data.roles[0].role === "Student") {
-      this.setState({ studentRole: true, userData: res.data.roles[0].data });
+      this.setState({ studentRole: true });
     }
   };
   successStudentOptionsCallback = (res) => {
@@ -441,17 +440,10 @@ class Search extends Component {
     e.preventDefault();
   };
 
-  profileDirect = (id) => {
+  profileDirect = () => {
     this.props.history.push({
       pathname: urlProfile(),
-      state: { id: id },
     });
-  };
-  studentHomepage = (id) => {
-    this.props.history.push({ pathname: `/student_profile/${id}` });
-  };
-  facultyHomepage = (id) => {
-    this.props.history.push({ pathname: `/faculty_profile/${id}` });
   };
 
   handleDrop = () => {
@@ -483,7 +475,6 @@ class Search extends Component {
       residence,
       designation,
       department,
-      userData,
     } = this.state;
     return (
       <div styleName="blocks.content-div">
@@ -679,7 +670,7 @@ class Search extends Component {
               {this.state.studentRole && (
                 <Button
                   secondary
-                  onClick={(e) => this.profileDirect(userData.id)}
+                  onClick={(e) => this.profileDirect()}
                   styleName="blocks.icon-button"
                   style={{ backgroundColor: "#303030", color: "#ffffff" }}
                 >

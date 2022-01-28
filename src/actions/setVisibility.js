@@ -56,10 +56,10 @@ export const setVisibilityPut = (
   };
   return (dispatch) => {
     dispatch(setVisibilityStart());
-    const url = urls.urlStudentProfile(id);
+    const url = urls.urlStudentProfile();
 
     axios
-      .put(url, formData, { headers: headers })
+      .post(url, formData, { headers: headers })
       .then((res) => {
         dispatch(
           setVisibilitySuccess({
