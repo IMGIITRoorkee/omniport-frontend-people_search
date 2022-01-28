@@ -178,8 +178,7 @@ class Profile extends Component {
         this.setState(() => ({
           [name]: [value],
         }));
-      }
-      if (!this.state[this.state.name].includes("non")) {
+      } else if (!this.state[this.state.name].includes("non")) {
         this.setState((prevState) => ({
           [name]: [...prevState[prevState.name], value],
         }));
@@ -196,14 +195,44 @@ class Profile extends Component {
     } = this.state;
     const formData = new FormData();
     formData.append("student", studentInfo.student);
-    for (var i = 0; i < emailVisibility.length; i++)
-      formData.append("primary_email_id", emailVisibility[i]);
-    for (var i = 0; i < mobileNumberVisibility.length; i++)
-      formData.append("primary_mobile_no", mobileNumberVisibility[i]);
-    for (var i = 0; i < roomNumberVisibility.length; i++)
-      formData.append("room_no", roomNumberVisibility[i]);
-    for (var i = 0; i < bhawanVisibility.length; i++)
-      formData.append("bhawan", bhawanVisibility[i]);
+    let filteredEmailVisibilty = emailVisibility.filter((item) => item !== "");
+    let filteredMobileNumberVisibilty = mobileNumberVisibility.filter(
+      (item) => item !== ""
+    );
+    let filteredRoomNumberVisibilty = roomNumberVisibility.filter(
+      (item) => item !== ""
+    );
+    let filteredbhawanVisibilty = bhawanVisibility.filter(
+      (item) => item !== ""
+    );
+
+    if (filteredEmailVisibilty.length > 0) {
+      for (var i = 0; i < filteredEmailVisibilty.length; i++)
+        formData.append("primary_email_id", filteredEmailVisibilty[i]);
+    } else {
+      formData.append("primary_email_id", []);
+    }
+
+    if (filteredMobileNumberVisibilty.length > 0) {
+      for (var i = 0; i < filteredMobileNumberVisibilty.length; i++)
+        formData.append("primary_mobile_no", filteredMobileNumberVisibilty[i]);
+    } else {
+      formData.append("primary_mobile_no", []);
+    }
+
+    if (filteredRoomNumberVisibilty.length > 0) {
+      for (var i = 0; i < filteredRoomNumberVisibilty.length; i++)
+        formData.append("room_no", filteredRoomNumberVisibilty[i]);
+    } else {
+      formData.append("room_no", []);
+    }
+
+    if (filteredbhawanVisibilty.length > 0) {
+      for (var i = 0; i < filteredbhawanVisibilty.length; i++)
+        formData.append("bhawan", filteredbhawanVisibilty[i]);
+    } else {
+      formData.append("bhawan", []);
+    }
     this.props.SetVisibility(
       this.props.location.state.id,
       formData,

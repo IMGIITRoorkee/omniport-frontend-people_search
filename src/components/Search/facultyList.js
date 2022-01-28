@@ -24,7 +24,7 @@ class FacultyList extends Component {
               >
                 <div
                   styleName="blocks.result-item"
-                  style={{ color: "#6a6cff", width: "90px" }}
+                  style={{ color: "#6a6cff", width: "120px" }}
                 >
                   {x.person.fullName}
                 </div>

@@ -26,7 +26,7 @@ class Search extends Component {
     residence: "",
     designation: "",
     department: "",
-    selfId: "",
+    userData: [],
     studentresults: [],
     facultyresults: [],
     residenceOptions: [],
@@ -72,7 +72,7 @@ class Search extends Component {
   }
   successUserCheck = (res) => {
     if (res.data.roles[0].role === "Student") {
-      this.setState({ studentRole: true, selfId: res.data.roles[0].data.id });
+      this.setState({ studentRole: true, userData: res.data.roles[0].data });
     }
   };
   successStudentOptionsCallback = (res) => {
@@ -483,7 +483,7 @@ class Search extends Component {
       residence,
       designation,
       department,
-      selfId,
+      userData,
     } = this.state;
     return (
       <div styleName="blocks.content-div">
@@ -679,7 +679,7 @@ class Search extends Component {
               {this.state.studentRole && (
                 <Button
                   secondary
-                  onClick={(e) => this.profileDirect(selfId)}
+                  onClick={(e) => this.profileDirect(userData.id)}
                   styleName="blocks.icon-button"
                   style={{ backgroundColor: "#303030", color: "#ffffff" }}
                 >

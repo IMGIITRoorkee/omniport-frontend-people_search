@@ -52,7 +52,7 @@ class StudentList extends Component {
                       style={{
                         display: "flex",
                         color: "#6a6cff",
-                        width: "98px",
+                        width: "120px",
                       }}
                     >
                       {window.innerWidth <= 991 && x.interests.length !== 0 && (
@@ -113,13 +113,13 @@ class StudentList extends Component {
                     )}
                     <div
                       styleName="blocks.result-item"
-                      style={{ width: "216px" }}
+                      style={{ width: "210px" }}
                     >
                       {x.emailAddress}
                     </div>
                     <div
                       styleName="blocks.result-item"
-                      style={{ width: "118px" }}
+                      style={{ width: "130px" }}
                     >
                       {x.mobileNumber}
                     </div>
