@@ -6,7 +6,6 @@ export const whoami = (successCallback, errCallback) => {
     axios
       .get(getWhoAmIApi())
       .then((res) => {
-        console.log(res);
         successCallback(res);
       })
       .catch((err) => {

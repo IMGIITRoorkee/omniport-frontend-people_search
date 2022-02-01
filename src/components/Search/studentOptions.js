@@ -31,6 +31,7 @@ class StudentOptionsComponent extends Component {
               clearable
               scrolling
               search
+              selectOnBlur={false}
               value={current_year}
             />
           </Grid.Column>
@@ -44,6 +45,7 @@ class StudentOptionsComponent extends Component {
               clearable
               scrolling
               search
+              selectOnBlur={false}
               value={branch}
             />
           </Grid.Column>
@@ -57,6 +59,7 @@ class StudentOptionsComponent extends Component {
               clearable
               scrolling
               search
+              selectOnBlur={false}
               value={residence}
             />
           </Grid.Column>

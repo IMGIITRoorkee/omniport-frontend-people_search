@@ -41,7 +41,6 @@ export const getfacultyOptions = (
     axios
       .get(url)
       .then((res) => {
-        console.log(res);
         dispatch(
           getfacultyOptionsSuccess({
             faculty_options: res.data,

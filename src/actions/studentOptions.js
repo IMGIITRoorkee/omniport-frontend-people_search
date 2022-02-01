@@ -41,7 +41,6 @@ export const getstudentOptions = (
     axios
       .get(url)
       .then((res) => {
-        console.log(res);
         dispatch(
           getstudentOptionsSuccess({
             student_options: res.data,

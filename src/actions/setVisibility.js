@@ -45,12 +45,7 @@ const setVisibiltyFail = ({ error }) => {
   };
 };
 
-export const setVisibilityPut = (
-  id,
-  formData,
-  successCallback,
-  errCallback
-) => {
+export const setVisibilityPut = (formData, successCallback, errCallback) => {
   let headers = {
     "X-CSRFToken": getCookie("csrftoken"),
   };

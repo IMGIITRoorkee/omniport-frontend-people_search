@@ -29,6 +29,7 @@ class FacultyOptionsComponent extends Component {
               clearable
               scrolling
               search
+              selectOnBlur={false}
               value={designation}
             />
           </Grid.Column>
@@ -42,6 +43,7 @@ class FacultyOptionsComponent extends Component {
               clearable
               scrolling
               search
+              selectOnBlur={false}
               value={department}
             />
           </Grid.Column>
