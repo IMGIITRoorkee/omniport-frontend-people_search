@@ -363,66 +363,6 @@ class Search extends Component {
         interestCategory: !this.state.interestCategory,
       });
     }
-    if (category === "branch") {
-      if (!this.state.branchCategory) {
-        var joined = this.state.categoryOptions.concat("branch");
-        this.setState(
-          {
-            categoryOptions: joined,
-          },
-          () => {
-            this.hide();
-            this.studentSearch();
-          }
-        );
-      }
-      if (this.state.branchCategory) {
-        this.setState(
-          {
-            categoryOptions: this.state.categoryOptions.filter(function (obj) {
-              return obj !== "branch";
-            }),
-          },
-          () => {
-            this.hide();
-            this.studentSearch();
-          }
-        );
-      }
-      this.setState({
-        branchCategory: !this.state.branchCategory,
-      });
-    }
-    if (category === "bhawan") {
-      if (!this.state.bhawanCategory) {
-        var joined = this.state.categoryOptions.concat("bhawan");
-        this.setState(
-          {
-            categoryOptions: joined,
-          },
-          () => {
-            this.hide();
-            this.studentSearch();
-          }
-        );
-      }
-      if (this.state.bhawanCategory) {
-        this.setState(
-          {
-            categoryOptions: this.state.categoryOptions.filter(function (obj) {
-              return obj !== "bhawan";
-            }),
-          },
-          () => {
-            this.hide();
-            this.studentSearch();
-          }
-        );
-      }
-      this.setState({
-        bhawanCategory: !this.state.bhawanCategory,
-      });
-    }
   };
 
   successStudentCallback = (res) => {
@@ -487,7 +427,7 @@ class Search extends Component {
             <form onSubmit={this.submitHandler}>
               <input
                 styleName="blocks.search-bar"
-                placeholder="Search By Name, Enrollment Number, Interest, or Residence "
+                placeholder="Search By Name, Enrollment Number or Interest "
                 ref={(input) => (this.search = input)}
                 onChange={debounce(this.handleInputChange, 500)}
               />
@@ -605,52 +545,6 @@ class Search extends Component {
                     as="a"
                   >
                     Interest
-                  </Label>
-                )}
-                {this.state.branchCategory ? (
-                  <Label
-                    onClick={(e) => this.handleCategorySubmit("branch")}
-                    basic
-                    circular
-                    size={"large"}
-                    style={{ color: "#6a6cff" }}
-                    as="a"
-                  >
-                    Branch
-                    <Icon name="delete" />
-                  </Label>
-                ) : (
-                  <Label
-                    onClick={(e) => this.handleCategorySubmit("branch")}
-                    basic
-                    circular
-                    size={"large"}
-                    as="a"
-                  >
-                    Branch
-                  </Label>
-                )}
-                {this.state.bhawanCategory ? (
-                  <Label
-                    onClick={(e) => this.handleCategorySubmit("bhawan")}
-                    basic
-                    circular
-                    size={"large"}
-                    style={{ color: "#6a6cff" }}
-                    as="a"
-                  >
-                    Bhawan
-                    <Icon name="delete" />
-                  </Label>
-                ) : (
-                  <Label
-                    onClick={(e) => this.handleCategorySubmit("bhawan")}
-                    basic
-                    circular
-                    size={"large"}
-                    as="a"
-                  >
-                    Bhawan
                   </Label>
                 )}
               </div>

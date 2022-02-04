@@ -492,8 +492,12 @@
   overflow: auto;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 .category-container {
-  min-width: 440px;
+  min-width: 270px;
   display: flex;
   justify-content: flex-start;
 }

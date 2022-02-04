@@ -1,12 +1,5 @@
 import React, { Component } from "react";
-import {
-  Menu,
-  Dropdown,
-  Segment,
-  Grid,
-  Accordion,
-  Icon,
-} from "semantic-ui-react";
+import { Accordion, Icon } from "semantic-ui-react";
 
 import blocks from "../../css/app.css";
 
@@ -17,7 +10,8 @@ class StudentList extends Component {
   }
 
   studentHomepage = (id) => {
-    this.props.history.push({ pathname: `/student_profile/${id}/` });
+    const win = window.open(`/student_profile/${id}/`, "_blank");
+    win.focus();
   };
 
   render() {
