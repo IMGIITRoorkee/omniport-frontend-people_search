@@ -486,10 +486,6 @@
   overflow: auto;
 }
 
-::-webkit-scrollbar {
-  display: none;
-}
-
 .category-container {
   min-width: 270px;
   display: flex;

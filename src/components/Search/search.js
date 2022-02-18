@@ -39,7 +39,6 @@ class Search extends Component {
     dropIndex: false,
     studentRole: false,
     activeItem: "all",
-    shouldScroll: 0,
     studentPage: 1,
     facultyPage: 1,
     studentTotalPages: 1,
@@ -212,7 +211,6 @@ class Search extends Component {
   successStudentResultsCallback = (response) => {
     this.setState((prevState) => ({
       loading: false,
-      shouldScroll: prevState.shouldScroll + 1,
       studentresults: response.data.results,
       studentTotalPages: response.data.totalPages,
       studentPage: response.data.current,
@@ -222,7 +220,6 @@ class Search extends Component {
   successFacultyResultsCallback = (response) => {
     this.setState((prevState) => ({
       loading: false,
-      shouldScroll: prevState.shouldScroll + 1,
       facultyresults: response.data.results,
       facultyTotalPages: response.data.totalPages,
       facultyPage: response.data.current,
@@ -397,12 +394,6 @@ class Search extends Component {
       facultyPage: p,
     });
   };
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.shouldScroll != this.state.shouldScroll) {
-      const element = document.getElementById("scrollTo");
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  }
   render() {
     const {
       residenceOptions,
@@ -572,7 +563,6 @@ class Search extends Component {
                 </Button>
               )}
             </div>
-            <div id="scrollTo"></div>
             {this.state.hide === true &&
               this.state.activeItem === "student" && (
                 <StudentList
